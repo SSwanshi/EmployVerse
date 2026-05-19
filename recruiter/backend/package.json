@@ -1,0 +1,57 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --forceExit",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "cron": "^4.3.3",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "graphql": "^16.13.2",
+    "graphql-playground-middleware-express": "^1.7.23",
+    "gridfs-stream": "^1.1.1",
+    "ioredis": "^5.10.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.2",
+    "morgan": "^1.10.1",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.11",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
+    "stripe": "^20.4.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.2.2"
+  },
+  "overrides": {
+    "graphql-playground-middleware-express": {
+      "express": "$express"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
