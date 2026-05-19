@@ -1,0 +1,56 @@
+<definitions name="PremiumUserService"
+ targetNamespace="http://example.com/premiumusers"
+ xmlns="http://schemas.xmlsoap.org/wsdl/"
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:tns="http://example.com/premiumusers"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <types>
+    <xsd:schema targetNamespace="http://example.com/premiumusers">
+      <xsd:complexType name="User">
+        <xsd:sequence>
+          <xsd:element name="email" type="xsd:string"/>
+          <xsd:element name="firstName" type="xsd:string"/>
+          <xsd:element name="lastName" type="xsd:string"/>
+          <xsd:element name="memberSince" type="xsd:string"/>
+          <xsd:element name="status" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="UserList">
+        <xsd:sequence>
+          <xsd:element name="users" type="tns:User" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+
+  <message name="GetPremiumUsersRequest"/>
+  <message name="GetPremiumUsersResponse">
+    <part name="users" type="tns:UserList"/>
+  </message>
+
+  <portType name="PremiumUserPortType">
+    <operation name="GetPremiumUsers">
+      <input message="tns:GetPremiumUsersRequest"/>
+      <output message="tns:GetPremiumUsersResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="PremiumUserBinding" type="tns:PremiumUserPortType">
+    <soap:binding style="rpc"
+      transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetPremiumUsers">
+      <soap:operation soapAction="GetPremiumUsers"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+
+  <service name="PremiumUserService">
+    <port name="PremiumUserPort" binding="tns:PremiumUserBinding">
+      <soap:address location="http://localhost:3000/wsdl"/>
+    </port>
+  </service>
+
+</definitions>
