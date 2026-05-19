@@ -91,7 +91,7 @@ const Login = () => {
           {show2FA ? "Two-Factor Auth" : "Applicant Sign In"}
         </h2>
         <p className="text-center text-yellow-500 font-medium mb-6">
-          {show2FA ? "Verify your identity" : "Welcome back to GoHire"}
+          {show2FA ? "Verify your identity" : "Welcome back to EmployVerse"}
         </p>
 
         <form onSubmit={show2FA ? handleVerify2FA : handleSubmit} className="space-y-6">

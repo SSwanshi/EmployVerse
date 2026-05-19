@@ -8,8 +8,8 @@ const Terms = () => {
         </h1>
 
         <p className="text-gray-700 mb-4">
-          These Terms of Service (“Terms”) govern your use of the GoHire platform as a job applicant. 
-          By accessing or using GoHire, you agree to comply with and be bound by these Terms. 
+          These Terms of Service (“Terms”) govern your use of the EmployVerse platform as a job applicant. 
+          By accessing or using EmployVerse, you agree to comply with and be bound by these Terms. 
           If you do not agree, please discontinue using the platform.
         </p>
 
@@ -17,7 +17,7 @@ const Terms = () => {
           1. Eligibility
         </h2>
         <p className="text-gray-700 mb-4">
-          To use GoHire as an applicant, you must:
+          To use EmployVerse as an applicant, you must:
         </p>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
           <li>Be at least 16 years old</li>
@@ -39,7 +39,7 @@ const Terms = () => {
           3. Platform Use
         </h2>
         <p className="text-gray-700 mb-4">
-          As an applicant, you may use GoHire to:
+          As an applicant, you may use EmployVerse to:
         </p>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
           <li>Search and apply for job opportunities</li>
@@ -53,7 +53,7 @@ const Terms = () => {
         <ul className="list-disc pl-6 text-gray-700 mb-4">
           <li>Scrape or extract platform data using automated tools</li>
           <li>Upload harmful content, malware, or spam</li>
-          <li>Use GoHire for non-professional or illegal activities</li>
+          <li>Use EmployVerse for non-professional or illegal activities</li>
         </ul>
 
         <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
@@ -61,15 +61,15 @@ const Terms = () => {
         </h2>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
           <li>All communication must remain respectful and professional.</li>
-          <li>GoHire does not guarantee responses from recruiters.</li>
-          <li>GoHire is not responsible for third-party employer behavior.</li>
+          <li>EmployVerse does not guarantee responses from recruiters.</li>
+          <li>EmployVerse is not responsible for third-party employer behavior.</li>
         </ul>
 
         <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
           5. Privacy and Data Usage
         </h2>
         <p className="text-gray-700 mb-4">
-          By using GoHire, you agree that your information may be shared with recruiters 
+          By using EmployVerse, you agree that your information may be shared with recruiters 
           when you apply for jobs or make your profile visible. All data handling follows 
           our Privacy Policy.
         </p>
@@ -79,7 +79,7 @@ const Terms = () => {
         </h2>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
           <li>You may delete your account anytime.</li>
-          <li>GoHire may suspend or terminate your account for violations of these Terms.</li>
+          <li>EmployVerse may suspend or terminate your account for violations of these Terms.</li>
           <li>Illegal activities may result in reporting to authorities.</li>
         </ul>
 
@@ -87,7 +87,7 @@ const Terms = () => {
           7. No Job Guarantee
         </h2>
         <p className="text-gray-700 mb-4">
-          GoHire provides tools for exploring opportunities but does not guarantee job 
+          EmployVerse provides tools for exploring opportunities but does not guarantee job 
           placement, interviews, or responses from recruiters.
         </p>
 
@@ -95,7 +95,7 @@ const Terms = () => {
           8. Changes to These Terms
         </h2>
         <p className="text-gray-700 mb-4">
-          GoHire may update these Terms at any time. Continued use of the platform 
+          EmployVerse may update these Terms at any time. Continued use of the platform 
           indicates acceptance of the updated Terms.
         </p>
 
@@ -105,7 +105,7 @@ const Terms = () => {
         <p className="text-gray-700 mb-2">
           For questions or concerns regarding these Terms, contact:
         </p>
-        <p className="font-medium text-blue-700">support@gohire.com</p>
+        <p className="font-medium text-blue-700">support@employverse.com</p>
 
         <p className="mt-8 text-sm text-gray-500">Last Updated: December 2025</p>
 

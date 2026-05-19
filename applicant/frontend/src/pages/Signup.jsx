@@ -227,7 +227,7 @@ const Signup = () => {
           Create Your Account
         </h2>
         <p className="text-center text-yellow-500 font-medium mb-6">
-          Join GoHire and start your journey today!
+          Join EmployVerse and start your journey today!
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">

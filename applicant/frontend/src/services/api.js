@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://gohire-applicant.onrender.com';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://employverse-applicant.onrender.com';
 
 const api = axios.create({
   baseURL: `${API_BASE}/api`,

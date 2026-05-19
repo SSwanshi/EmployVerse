@@ -275,7 +275,7 @@ const Home = () => {
                   smart minds
                 </p>
                 <Link
-                  to="https://gohire-recruiter.vercel.app/login"
+                  to="https://employverse-recruiter.vercel.app/login"
                   className="bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 inline-block mt-2"
                 >
                   Login as Recruiter
@@ -343,7 +343,7 @@ const Home = () => {
         `}</style>
       </section>
 
-      {/* Who's Using GoHire Section */}
+      {/* Who's Using EmployVerse Section */}
       <section className="text-center py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2
@@ -351,7 +351,7 @@ const Home = () => {
             className="text-4xl font-bold text-blue-700 mb-3 transform transition-all duration-500 opacity-0"
             id="who-heading"
           >
-            Who's using <span className="text-yellow-500">GoHire</span>?
+            Who's using <span className="text-yellow-500">EmployVerse</span>?
           </h2>
           <p
             ref={whoSubheadingRef}
@@ -462,7 +462,7 @@ const Home = () => {
               </h2>
               <p className="text-blue-100 mb-8">
                 Join thousands of professionals who have already discovered new opportunities
-                through GoHire.
+                through EmployVerse.
               </p>
               <Link
                 to="/login"

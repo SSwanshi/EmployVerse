@@ -8,10 +8,10 @@ const Privacy = () => {
         </h1>
 
         <p className="text-gray-700 mb-4">
-          GoHire (“we”, “our”, “us”) is committed to protecting your privacy. This
+          EmployVerse (“we”, “our”, “us”) is committed to protecting your privacy. This
           Privacy Policy explains how we collect, use, store, and safeguard the personal
           information of applicants, recruiters, and all users accessing our platform.
-          By using GoHire, you agree to the practices described in this policy.
+          By using EmployVerse, you agree to the practices described in this policy.
         </p>
 
         <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
@@ -87,7 +87,7 @@ const Privacy = () => {
           7. Data Retention
         </h2>
         <p className="text-gray-700 mb-4">
-          Your data remains stored as long as your GoHire account is active. Some
+          Your data remains stored as long as your EmployVerse account is active. Some
           information may remain in backups for security and compliance reasons.
         </p>
 
@@ -95,7 +95,7 @@ const Privacy = () => {
           8. Children’s Privacy
         </h2>
         <p className="text-gray-700 mb-4">
-          GoHire is not intended for individuals under 16. We do not knowingly collect
+          EmployVerse is not intended for individuals under 16. We do not knowingly collect
           personal data from children.
         </p>
 
@@ -113,7 +113,7 @@ const Privacy = () => {
         <p className="text-gray-700 mb-2">
           For questions or data requests, contact:
         </p>
-        <p className="font-medium text-blue-700">support@gohire.com</p>
+        <p className="font-medium text-blue-700">support@employverse.com</p>
 
         <p className="mt-8 text-sm text-gray-500">Last Updated: December 2025</p>
       </div>

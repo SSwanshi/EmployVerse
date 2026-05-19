@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">GoHire</h3>
+            <h3 className="text-lg font-semibold mb-4">EmployVerse</h3>
             <p className="text-gray-400">Find your dream job or internship.</p>
           </div>
           <div>
@@ -26,7 +26,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 border-t border-gray-700 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} GoHire. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} EmployVerse. All rights reserved.</p>
         </div>
       </div>
     </footer>

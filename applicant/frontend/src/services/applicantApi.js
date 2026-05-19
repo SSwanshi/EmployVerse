@@ -89,7 +89,7 @@ export const applicantApi = {
   },
 
   getLogo: (logoId) => {
-    const API_BASE = import.meta.env.VITE_API_BASE || 'https://gohire-applicant.onrender.com';
+    const API_BASE = import.meta.env.VITE_API_BASE;
     return `${API_BASE}/api/applicant/logo/${logoId}`;
   },
 
