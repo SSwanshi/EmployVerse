@@ -59,7 +59,10 @@ const AppliedInternshipSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-AppliedInternshipSchema.index({ userId: 1, internshipId: 1 }, { unique: true });
+AppliedInternshipSchema.index({ userId: 1, internshipId: 1 }, { unique: true }); // duplicate apply guard
+AppliedInternshipSchema.index({ userId: 1 });                                    // get my applied internships
+AppliedInternshipSchema.index({ internshipId: 1 });                              // recruiter-side lookup
+AppliedInternshipSchema.index({ AppliedAt: -1 });                                // sort by latest applied
 
 module.exports = mongoose.model('Applied_for_Internships', AppliedInternshipSchema);
 

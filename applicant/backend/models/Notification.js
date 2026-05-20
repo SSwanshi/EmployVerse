@@ -45,8 +45,9 @@ const NotificationSchema = new mongoose.Schema({
   }
 });
 
-// Create separate indexes just in case
-NotificationSchema.index({ receiverId: 1 });
-NotificationSchema.index({ createdAt: -1 });
+// Compound index — covers: fetch by receiver sorted by date (most common query)
+NotificationSchema.index({ receiverId: 1, createdAt: -1 });
+// Covers unread count query: find all unread for a user
+NotificationSchema.index({ receiverId: 1, isRead: 1 });
 
 module.exports = mongoose.model('Notification', NotificationSchema);

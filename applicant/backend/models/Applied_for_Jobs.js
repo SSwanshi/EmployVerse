@@ -59,7 +59,10 @@ const AppliedJobSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-AppliedJobSchema.index({ userId: 1, jobId: 1 }, { unique: true });
+AppliedJobSchema.index({ userId: 1, jobId: 1 }, { unique: true }); // duplicate apply guard
+AppliedJobSchema.index({ userId: 1 });                              // get my applied jobs
+AppliedJobSchema.index({ jobId: 1 });                               // recruiter-side lookup
+AppliedJobSchema.index({ AppliedAt: -1 });                          // sort by latest applied
 
 module.exports = mongoose.model('Applied_for_Jobs', AppliedJobSchema);
 

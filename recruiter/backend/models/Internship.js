@@ -18,5 +18,16 @@ const InternshipSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+// Single-field indexes for individual filter queries
+InternshipSchema.index({ intLocation: 1 });                              // location search
+InternshipSchema.index({ intStipend: 1 });                               // stipend filter
+InternshipSchema.index({ intDuration: 1 });                              // duration filter
+InternshipSchema.index({ intExperience: 1 });                            // experience filter
+InternshipSchema.index({ intCompany: 1 });                               // company populate/lookup
+InternshipSchema.index({ createdAt: -1 });                               // default sort (newest first)
+InternshipSchema.index({ intExpiry: 1 });                                // expiry filtering
+// Compound index — matches the combined filter query used in aggregation pipeline
+InternshipSchema.index({ intLocation: 1, intStipend: 1, intDuration: 1 });
+
 module.exports = mongoose.model("Internship", InternshipSchema);
 

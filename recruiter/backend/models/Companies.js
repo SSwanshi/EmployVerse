@@ -10,6 +10,11 @@ const CompanySchema = new mongoose.Schema({
   proofDocumentId: { type: mongoose.Schema.Types.ObjectId, ref: "uploads.files" },
 }, { timestamps: true });
 
+// Index for filtering verified companies (used in every company list fetch)
+CompanySchema.index({ verified: 1 });
+// Index for recruiter's own companies
+CompanySchema.index({ createdBy: 1 });
+
 CompanySchema.virtual("logoUrl").get(function () {
   if (this.logoId) {
     return `/api/company/logo/${this.logoId}`;

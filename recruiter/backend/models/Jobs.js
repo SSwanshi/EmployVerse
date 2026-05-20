@@ -18,5 +18,15 @@ const JobSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+// Single-field indexes for individual filter queries
+JobSchema.index({ jobLocation: 1 });                              // location search
+JobSchema.index({ jobSalary: 1 });                                // salary filter
+JobSchema.index({ jobExperience: 1 });                            // experience filter
+JobSchema.index({ jobCompany: 1 });                               // company populate/lookup
+JobSchema.index({ createdAt: -1 });                               // default sort (newest first)
+JobSchema.index({ jobExpiry: 1 });                                // expiry filtering
+// Compound index — matches the combined filter query used in aggregation pipeline
+JobSchema.index({ jobLocation: 1, jobSalary: 1, jobExperience: 1 });
+
 module.exports = mongoose.model("Jobs", JobSchema);
 

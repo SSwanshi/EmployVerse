@@ -21,6 +21,11 @@ const AppliedInternshipSchema = new mongoose.Schema({
   collection: 'applied_for_internships' // Use the same collection name as applicant backend
 });
 
+// Indexes for recruiter queries
+AppliedInternshipSchema.index({ internshipId: 1 });                    // list all applicants for an internship
+AppliedInternshipSchema.index({ userId: 1 });                          // lookup by applicant
+AppliedInternshipSchema.index({ isSelected: 1, isRejected: 1 });       // filter shortlisted / rejected
+
 // Get the appropriate connection to create the model (called at runtime)
 function getAppliedInternshipModel() {
   try {

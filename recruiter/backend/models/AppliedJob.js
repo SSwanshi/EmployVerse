@@ -21,6 +21,11 @@ const AppliedJobSchema = new mongoose.Schema({
   collection: 'applied_for_jobs' // Use the same collection name as applicant backend
 });
 
+// Indexes for recruiter queries
+AppliedJobSchema.index({ jobId: 1 });                     // list all applicants for a job
+AppliedJobSchema.index({ userId: 1 });                    // lookup by applicant
+AppliedJobSchema.index({ isSelected: 1, isRejected: 1 }); // filter shortlisted / rejected
+
 // Get the appropriate connection to create the model (called at runtime)
 function getAppliedJobModel() {
   try {
