@@ -173,9 +173,61 @@ const markAllAsRead = async (userId) => {
   return { success: true };
 };
 
+/**
+ * Mark a single notification as read
+ */
+const markSingleAsRead = async (userId, notificationId) => {
+  const result = await Notification.findOneAndUpdate(
+    { _id: notificationId, receiverId: userId, isRead: false },
+    { $set: { isRead: true } },
+    { new: true }
+  );
+
+  if (result) {
+    // Decrement unread count
+    const unreadKey = `unread:${userId}`;
+    const unreadExists = await redis.exists(unreadKey);
+    if (unreadExists) {
+      const newCount = await redis.decr(unreadKey);
+      if (newCount < 0) await redis.set(unreadKey, 0);
+    }
+
+    // Update list cache
+    const cacheKey = `notifications:${userId}`;
+    const cacheExists = await redis.exists(cacheKey);
+    if (cacheExists) {
+      const cachedList = await redis.lrange(cacheKey, 0, -1);
+      if (cachedList && cachedList.length > 0) {
+        const updatedList = cachedList.map(item => {
+          const notification = JSON.parse(item);
+          if (notification._id === notificationId || notification.id === notificationId) {
+            notification.isRead = true;
+          }
+          return JSON.stringify(notification);
+        });
+
+        const pipeline = redis.pipeline();
+        pipeline.del(cacheKey);
+        pipeline.rpush(cacheKey, ...updatedList);
+        pipeline.expire(cacheKey, 86400);
+        await pipeline.exec();
+      }
+    }
+
+    // Emit Socket.IO unread count update
+    try {
+      const count = await getUnreadCount(userId);
+      const io = getIO();
+      io.to(`user:${userId}`).emit('unread_count_updated', { unreadCount: count });
+    } catch (socketErr) {}
+  }
+  return result;
+};
+
 module.exports = {
   sendNotification,
   getUserNotifications,
   getUnreadCount,
-  markAllAsRead
+  markAllAsRead,
+  markSingleAsRead
 };

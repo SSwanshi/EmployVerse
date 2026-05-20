@@ -112,5 +112,10 @@ export const applicantApi = {
     const response = await api.put('/notifications/mark-read');
     return response.data;
   },
+
+  markSingleNotificationAsRead: async (id) => {
+    const response = await api.put(`/notifications/mark-read/${id}`);
+    return response.data;
+  },
 };
 

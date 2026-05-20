@@ -217,7 +217,10 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu */}
-        <div className="md:hidden relative flex items-center" id="mobile-menu-container">
+        <div className="md:hidden relative flex items-center gap-3" id="mobile-menu-container">
+          {isAuthenticated && (
+            <NotificationDropdown />
+          )}
           <button
             className="flex flex-col justify-center items-center cursor-pointer p-2 rounded-full hover:bg-slate-100 transition-colors z-50 relative"
             id="mobile-menu"
@@ -306,7 +309,7 @@ const Navbar = () => {
                 Contact Us
               </Link>
             </li>
-            
+                
             <div className="mt-auto pt-8">
               {isAuthenticated ? (
                 <li className="flex flex-col space-y-4">

@@ -3,6 +3,29 @@ const Internship = require('../models/Internship');
 const PremiumUser = require('../models/PremiumUser');
 const mongoose = require('mongoose');
 const { connectApplicantDB } = require('../config/applicantDb');
+const axios = require('axios');
+
+// Helper function to send notification to applicant backend
+const sendNotificationToApplicant = async (receiverId, type, title, message, senderId = null) => {
+  try {
+    const applicantBackendUrl = process.env.APPLICANT_BACKEND_URL || 'http://localhost:3000';
+    const response = await axios.post(
+      `${applicantBackendUrl}/api/notifications/internal`,
+      {
+        receiverId,
+        senderId,
+        type,
+        title,
+        message
+      },
+      { timeout: 5000 }
+    );
+    console.log('✅ Notification sent to applicant:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('⚠️ Failed to send notification to applicant:', error.message);
+  }
+};
 
 const getInternshipApplications = async (req, res) => {
   try {
@@ -170,6 +193,22 @@ const selectApplicant = async (req, res) => {
     if (!result) {
       return res.status(404).json({ success: false, message: 'Application not found' });
     }
+
+    try {
+      const internship = await Internship.findById(result.internshipId).populate("intCompany");
+      if (internship) {
+        const position = internship.intProfile || internship.intTitle;
+        const companyName = internship.intCompany?.companyName || 'the company';
+        await sendNotificationToApplicant(
+          result.userId,
+          'APPLICATION_SHORTLISTED',
+          'Application Shortlisted',
+          `Your application for ${position} at ${companyName} has been shortlisted.`
+        );
+      }
+    } catch (notifErr) {
+      console.error('Failed to send select notification:', notifErr.message);
+    }
     
     res.json({ success: true, message: 'Applicant selected successfully' });
   } catch (error) {
@@ -192,6 +231,22 @@ const rejectApplicant = async (req, res) => {
     
     if (!result) {
       return res.status(404).json({ success: false, message: 'Application not found' });
+    }
+
+    try {
+      const internship = await Internship.findById(result.internshipId).populate("intCompany");
+      if (internship) {
+        const position = internship.intProfile || internship.intTitle;
+        const companyName = internship.intCompany?.companyName || 'the company';
+        await sendNotificationToApplicant(
+          result.userId,
+          'APPLICATION_REJECTED',
+          'Application Update',
+          `Your application for ${position} at ${companyName} was not selected.`
+        );
+      }
+    } catch (notifErr) {
+      console.error('Failed to send reject notification:', notifErr.message);
     }
     
     res.json({ success: true, message: 'Applicant rejected successfully' });
@@ -228,6 +283,26 @@ const getResume = async (req, res) => {
     }
 
     const file = files[0];
+
+    // Trigger APPLICATION_VIEWED notification
+    try {
+      const application = await AppliedInternship.findOne({ resumeId: resumeObjectId });
+      if (application) {
+        const internship = await Internship.findById(application.internshipId).populate("intCompany");
+        if (internship) {
+          const position = internship.intProfile || internship.intTitle;
+          const companyName = internship.intCompany?.companyName || 'the company';
+          await sendNotificationToApplicant(
+            application.userId,
+            'APPLICATION_VIEWED',
+            'Application Viewed',
+            `Your application for ${position} was viewed by ${companyName}.`
+          );
+        }
+      }
+    } catch (notifErr) {
+      console.error('Failed to send view notification:', notifErr.message);
+    }
 
     // Set appropriate headers
     res.set('Content-Type', file.contentType || 'application/pdf');

@@ -86,7 +86,6 @@ const NotificationDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 4. Mark all as read
   const handleMarkAllAsRead = async () => {
     try {
       const res = await applicantApi.markNotificationsAsRead();
@@ -99,6 +98,23 @@ const NotificationDropdown = () => {
     }
   };
 
+  // 5. Mark single as read on click
+  const handleNotificationClick = async (notif) => {
+    if (notif.isRead) return;
+    try {
+      const id = notif._id || notif.id;
+      const res = await applicantApi.markSingleNotificationAsRead(id);
+      if (res?.success) {
+        setNotifications((prev) => prev.map(n => 
+          (n._id === id || n.id === id) ? { ...n, isRead: true } : n
+        ));
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      }
+    } catch (err) {
+      console.error('Failed to mark notification as read:', err);
+    }
+  };
+
   const getIcon = (type) => {
     switch (type) {
       case 'APPLICATION_RECEIVED':
@@ -108,6 +124,14 @@ const NotificationDropdown = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </div>
+        );
+      case 'APPLICATION_SUBMITTED':
+        return (
+          <div className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
         );
@@ -197,6 +221,7 @@ const NotificationDropdown = () => {
               {notifications.map((notif) => (
                 <div 
                   key={notif._id || notif.id} 
+                  onClick={() => handleNotificationClick(notif)}
                   className={`flex gap-4 px-5 py-4 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer ${notif.isRead ? 'opacity-70' : 'bg-blue-50/30'}`}
                 >
                   {getIcon(notif.type)}
@@ -209,7 +234,7 @@ const NotificationDropdown = () => {
                         {new Date(notif.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-slate-500 leading-relaxed break-words whitespace-pre-wrap">
                       {notif.message}
                     </p>
                   </div>
@@ -229,13 +254,6 @@ const NotificationDropdown = () => {
               <p className="text-sm font-semibold text-slate-500">You're all caught up!</p>
             </div>
           )}
-        </div>
-
-        {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 rounded-b-2xl text-center">
-          <Link to="/profile" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
-            View Settings
-          </Link>
         </div>
       </div>
       

@@ -199,8 +199,9 @@ const selectApplicant = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Application not found' });
     }
 
-    const job = await Job.findById(result.jobId);
+    const job = await Job.findById(result.jobId).populate("jobCompany");
     const position = job.jobTitle;
+    const companyName = job.jobCompany?.companyName || 'the company';
 
     // Send email notification
     await emailjs.send(
@@ -224,8 +225,8 @@ const selectApplicant = async (req, res) => {
     await sendNotificationToApplicant(
       result.userId,
       'APPLICATION_SHORTLISTED',
-      'Congratulations!',
-      `Your application for ${position} has been shortlisted. Check your dashboard for next steps.`
+      'Application Shortlisted',
+      `Your application for ${position} at ${companyName} has been shortlisted.`
     );
 
     res.json({ success: true, message: 'Applicant selected successfully' });
@@ -251,8 +252,9 @@ const rejectApplicant = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Application not found' });
     }
 
-    const job = await Job.findById(result.jobId);
+    const job = await Job.findById(result.jobId).populate("jobCompany");
     const position = job.jobTitle;
+    const companyName = job.jobCompany?.companyName || 'the company';
 
     // Send email notification
     await emailjs.send(
@@ -276,8 +278,8 @@ const rejectApplicant = async (req, res) => {
     await sendNotificationToApplicant(
       result.userId,
       'APPLICATION_REJECTED',
-      'Application Status Update',
-      `Thank you for applying for ${position}. We have decided to move forward with other candidates at this time.`
+      'Application Update',
+      `Your application for ${position} at ${companyName} was not selected.`
     );
     
     res.json({ success: true, message: 'Applicant rejected successfully' });
@@ -314,6 +316,26 @@ const getResume = async (req, res) => {
     }
 
     const file = files[0];
+
+    // Trigger APPLICATION_VIEWED notification
+    try {
+      const application = await AppliedJob.findOne({ resumeId: resumeObjectId });
+      if (application) {
+        const job = await Job.findById(application.jobId).populate("jobCompany");
+        if (job) {
+          const position = job.jobTitle;
+          const companyName = job.jobCompany?.companyName || 'the company';
+          await sendNotificationToApplicant(
+            application.userId,
+            'APPLICATION_VIEWED',
+            'Application Viewed',
+            `Your application for ${position} was viewed by ${companyName}.`
+          );
+        }
+      }
+    } catch (notifErr) {
+      console.error('Failed to send view notification:', notifErr.message);
+    }
 
     // Set appropriate headers
     res.set('Content-Type', file.contentType || 'application/pdf');

@@ -12,6 +12,7 @@ const Fuse = require("fuse.js");
 const { getBucket } = require("../config/db");
 const redis = require("../config/redis");
 const { cached } = require("sqlite3");
+const notificationService = require("../services/notification.service");
 
 const getJobs = async (req, res) => {
   try {
@@ -645,7 +646,8 @@ const applyForJob = async (req, res) => {
 
     const recruiterConn = await connectRecruiterDB();
     const JobFindConn = createJobModel(recruiterConn);
-    const job = await JobFindConn.findById(jobId);
+    createCompanyModel(recruiterConn); // Ensure Company model is registered
+    const job = await JobFindConn.findById(jobId).populate("jobCompany");
 
     if (!job) {
       return res.status(404).json({ error: "Job not found" });
@@ -665,6 +667,18 @@ const applyForJob = async (req, res) => {
     });
 
     await application.save();
+
+    try {
+      const companyName = job.jobCompany?.companyName || 'the company';
+      await notificationService.sendNotification({
+        receiverId: userId,
+        type: 'APPLICATION_SUBMITTED',
+        title: 'Application Submitted',
+        message: `Your application for ${job.jobTitle} at ${companyName} has been submitted successfully.`
+      });
+    } catch (notifErr) {
+      console.error("Failed to send submitted notification:", notifErr);
+    }
 
     res.json({ success: true, message: "Application submitted successfully" });
   } catch (err) {
@@ -764,7 +778,8 @@ const applyForInternship = async (req, res) => {
 
     const recruiterConn = await connectRecruiterDB();
     const InternshipFindConn = createInternshipModel(recruiterConn);
-    const internship = await InternshipFindConn.findById(internshipId);
+    createCompanyModel(recruiterConn); // Ensure Company model is registered
+    const internship = await InternshipFindConn.findById(internshipId).populate("intCompany");
 
     if (!internship) {
       return res.status(404).json({ error: "Internship not found" });
@@ -784,6 +799,19 @@ const applyForInternship = async (req, res) => {
     });
 
     await application.save();
+
+    try {
+      const position = internship.intProfile || internship.intTitle;
+      const companyName = internship.intCompany?.companyName || 'the company';
+      await notificationService.sendNotification({
+        receiverId: userId,
+        type: 'APPLICATION_SUBMITTED',
+        title: 'Application Submitted',
+        message: `Your application for ${position} at ${companyName} has been submitted successfully.`
+      });
+    } catch (notifErr) {
+      console.error("Failed to send submitted notification:", notifErr);
+    }
 
     res.json({ success: true, message: "Application submitted successfully" });
   } catch (err) {

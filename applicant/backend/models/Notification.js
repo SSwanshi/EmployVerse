@@ -16,6 +16,7 @@ const NotificationSchema = new mongoose.Schema({
     type: String,
     enum: [
       'APPLICATION_RECEIVED',
+      'APPLICATION_SUBMITTED',
       'APPLICATION_SHORTLISTED',
       'APPLICATION_REJECTED',
       'INTERVIEW_SCHEDULED',

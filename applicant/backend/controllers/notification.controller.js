@@ -82,9 +82,27 @@ const markNotificationsRead = async (req, res, next) => {
   }
 };
 
+const markSingleNotificationRead = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // From requireAuth middleware
+    const notificationId = req.params.id;
+    
+    await notificationService.markSingleAsRead(userId, notificationId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Notification marked as read'
+    });
+  } catch (error) {
+    console.error('markSingleNotificationRead controller error:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   createNotification,
   getNotifications,
   getUnreadCount,
-  markNotificationsRead
+  markNotificationsRead,
+  markSingleNotificationRead
 };

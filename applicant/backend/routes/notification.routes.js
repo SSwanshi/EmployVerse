@@ -19,4 +19,7 @@ router.get('/unread-count', notificationController.getUnreadCount);
 // PUT /api/notifications/mark-read
 router.put('/mark-read', notificationController.markNotificationsRead);
 
+// PUT /api/notifications/mark-read/:id
+router.put('/mark-read/:id', notificationController.markSingleNotificationRead);
+
 module.exports = router;

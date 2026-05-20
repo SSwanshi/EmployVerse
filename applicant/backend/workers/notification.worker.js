@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Worker } = require('bullmq');
 const Redis = require('ioredis');
 const Notification = require('../models/Notification');
