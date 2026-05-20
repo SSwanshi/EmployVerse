@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { sendOtp, verifyOtp, resetPassword, setEmail, setOtp, resetState } from '../store/slices/forgotPasswordSlice';
-import signupImg from '../assets/images/header_image.webp';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { validateEmail } from '../utils/emailValidation';
 
@@ -76,13 +75,13 @@ const ForgotPassword = () => {
   };
 
   const renderEmailStep = () => (
-    <form onSubmit={handleSendOtp} className="space-y-6">
+    <form onSubmit={handleSendOtp} className="space-y-5">
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-semibold text-blue-800 mb-2"
+          className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
         >
-          Email Address <span className="text-yellow-500">*</span>
+          Email Address
         </label>
         <input
           id="email"
@@ -97,23 +96,23 @@ const ForgotPassword = () => {
             const error = validateEmail(e.target.value);
             setEmailError(error);
           }}
-          placeholder="Enter your registered email"
-          className={`w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${
+          placeholder="name@example.com"
+          className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
             emailError
-              ? "border-red-500 focus:ring-red-500"
-              : "border-blue-300 focus:ring-blue-500"
+              ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+              : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
           }`}
         />
         {emailError && (
-          <p className="mt-1 text-sm text-red-600">{emailError}</p>
+          <p className="mt-1.5 text-xs font-semibold text-red-600">{emailError}</p>
         )}
-        <p className="text-xs text-gray-600 mt-1">
-          We'll send a 6-digit OTP to your email address
+        <p className="text-[10px] font-semibold text-slate-400 mt-1">
+          We will send a 6-digit verification code to your email address
         </p>
       </div>
 
       {(error || localError) && (
-        <div className="bg-red-100 border border-red-400 text-red-800 px-4 py-2 rounded text-center text-sm">
+        <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed">
           {error || localError}
         </div>
       )}
@@ -121,17 +120,17 @@ const ForgotPassword = () => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+        className="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-205 disabled:opacity-50 cursor-pointer"
       >
-        {loading ? 'Sending OTP...' : 'Send OTP'}
+        {loading ? 'Sending Verification...' : 'Send Verification Code'}
       </button>
 
-      <div className="text-center">
+      <div className="text-center mt-4">
         <Link
           to="/login"
-          className="text-sm text-blue-600 hover:text-blue-500 font-medium inline-flex items-center"
+          className="text-xs text-blue-600 hover:text-blue-700 font-bold inline-flex items-center"
         >
-          <ArrowLeft className="w-4 h-4 mr-1" />
+          <ArrowLeft className="w-3.5 h-3.5 mr-1" />
           Back to Login
         </Link>
       </div>
@@ -139,16 +138,16 @@ const ForgotPassword = () => {
   );
 
   const renderOtpStep = () => (
-    <form onSubmit={handleVerifyOtp} className="space-y-6">
+    <form onSubmit={handleVerifyOtp} className="space-y-5">
       <div>
-        <p className="text-sm text-gray-700 mb-4">
-          We've sent a 6-digit OTP to <span className="font-semibold text-blue-800">{email}</span>
+        <p className="text-xs text-slate-500 font-semibold mb-4 leading-relaxed">
+          We've sent a 6-digit verification code to <span className="font-bold text-slate-800">{email}</span>
         </p>
         <label
           htmlFor="otp"
-          className="block text-sm font-semibold text-blue-800 mb-2"
+          className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
         >
-          Enter OTP <span className="text-yellow-500">*</span>
+          Enter Verification Code
         </label>
         <input
           id="otp"
@@ -157,16 +156,16 @@ const ForgotPassword = () => {
           maxLength={6}
           value={localOtp}
           onChange={(e) => setLocalOtp(e.target.value.replace(/\D/g, ''))}
-          placeholder="000000"
-          className="w-full rounded-md border border-blue-300 p-2 text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="0 0 0 0 0 0"
+          className="w-full rounded-xl border border-slate-200 py-3 px-4 text-center text-xl font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all duration-200 text-slate-800 placeholder:text-slate-300 bg-slate-50"
         />
-        <p className="text-xs text-gray-600 mt-1">
-          OTP expires in 10 minutes
+        <p className="text-[10px] font-semibold text-slate-400 mt-1">
+          Code expires in 10 minutes
         </p>
       </div>
 
       {(error || localError) && (
-        <div className="bg-red-100 border border-red-400 text-red-800 px-4 py-2 rounded text-center text-sm">
+        <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed">
           {error || localError}
         </div>
       )}
@@ -174,12 +173,12 @@ const ForgotPassword = () => {
       <button
         type="submit"
         disabled={loading || localOtp.length !== 6}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+        className="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-205 disabled:opacity-50 cursor-pointer"
       >
-        {loading ? 'Verifying...' : 'Verify OTP'}
+        {loading ? 'Verifying...' : 'Verify Code'}
       </button>
 
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-3 mt-4">
         <button
           type="button"
           onClick={() => {
@@ -187,16 +186,16 @@ const ForgotPassword = () => {
             setLocalEmail('');
             setLocalOtp('');
           }}
-          className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+          className="text-xs text-blue-600 hover:text-blue-700 font-bold block w-full text-center cursor-pointer"
         >
           Use a different email
         </button>
         <div>
           <Link
             to="/login"
-            className="text-sm text-blue-600 hover:text-blue-500 font-medium inline-flex items-center"
+            className="text-xs text-blue-600 hover:text-blue-700 font-bold inline-flex items-center"
           >
-            <ArrowLeft className="w-4 h-4 mr-1" />
+            <ArrowLeft className="w-3.5 h-3.5 mr-1" />
             Back to Login
           </Link>
         </div>
@@ -205,13 +204,13 @@ const ForgotPassword = () => {
   );
 
   const renderResetStep = () => (
-    <form onSubmit={handleResetPassword} className="space-y-6">
+    <form onSubmit={handleResetPassword} className="space-y-5">
       <div>
         <label
           htmlFor="newPassword"
-          className="block text-sm font-semibold text-blue-800 mb-2"
+          className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
         >
-          New Password <span className="text-yellow-500">*</span>
+          New Password
         </label>
         <input
           id="newPassword"
@@ -220,9 +219,9 @@ const ForgotPassword = () => {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="Enter new password"
-          className="w-full rounded-md border border-blue-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-xl border border-slate-200 py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all duration-200 text-sm text-slate-800 placeholder:text-slate-400 bg-slate-50"
         />
-        <p className="text-xs text-gray-600 mt-1">
+        <p className="text-[10px] font-semibold text-slate-400 mt-1">
           Password must be at least 4 characters long
         </p>
       </div>
@@ -230,9 +229,9 @@ const ForgotPassword = () => {
       <div>
         <label
           htmlFor="confirmPassword"
-          className="block text-sm font-semibold text-blue-800 mb-2"
+          className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
         >
-          Confirm Password <span className="text-yellow-500">*</span>
+          Confirm Password
         </label>
         <input
           id="confirmPassword"
@@ -241,12 +240,12 @@ const ForgotPassword = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Confirm new password"
-          className="w-full rounded-md border border-blue-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full rounded-xl border border-slate-200 py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all duration-200 text-sm text-slate-800 placeholder:text-slate-400 bg-slate-50"
         />
       </div>
 
       {(error || localError) && (
-        <div className="bg-red-100 border border-red-400 text-red-800 px-4 py-2 rounded text-center text-sm">
+        <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed">
           {error || localError}
         </div>
       )}
@@ -254,17 +253,17 @@ const ForgotPassword = () => {
       <button
         type="submit"
         disabled={loading || !newPassword || !confirmPassword}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+        className="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-205 disabled:opacity-50 cursor-pointer"
       >
         {loading ? 'Resetting Password...' : 'Reset Password'}
       </button>
 
-      <div className="text-center">
+      <div className="text-center mt-4">
         <Link
           to="/login"
-          className="text-sm text-blue-600 hover:text-blue-500 font-medium inline-flex items-center"
+          className="text-xs text-blue-600 hover:text-blue-700 font-bold inline-flex items-center"
         >
-          <ArrowLeft className="w-4 h-4 mr-1" />
+          <ArrowLeft className="w-3.5 h-3.5 mr-1" />
           Back to Login
         </Link>
       </div>
@@ -272,26 +271,26 @@ const ForgotPassword = () => {
   );
 
   const renderSuccessStep = () => (
-    <div className="space-y-6 text-center">
+    <div className="space-y-5 text-center">
       <div className="flex justify-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-          <CheckCircle className="w-10 h-10 text-green-600" />
+        <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center border border-green-100">
+          <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
       </div>
       <div>
-        <h3 className="text-2xl font-bold text-blue-800 mb-2">Password Reset Successful!</h3>
-        <p className="text-gray-700">
+        <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-2">Password Reset Successful!</h3>
+        <p className="text-slate-500 text-xs leading-relaxed font-semibold">
           Your password has been reset successfully. You can now login with your new password.
         </p>
       </div>
-      <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-        <p className="text-sm text-blue-800">
+      <div className="bg-blue-50 border border-blue-100 rounded-xl p-3.5">
+        <p className="text-xs text-blue-700 font-bold leading-relaxed">
           Redirecting to login page in a few seconds...
         </p>
       </div>
       <Link
         to="/login"
-        className="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="inline-block w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold text-sm shadow-md text-center transition-all"
       >
         Go to Login
       </Link>
@@ -301,39 +300,50 @@ const ForgotPassword = () => {
   const getStepTitle = () => {
     switch (step) {
       case 'email':
-        return 'Forgot Password';
+        return 'Reset your password';
       case 'otp':
-        return 'Verify OTP';
+        return 'Verify your identity';
       case 'reset':
-        return 'Reset Password';
+        return 'Choose new password';
       case 'success':
-        return 'Success';
+        return 'All done!';
       default:
-        return 'Forgot Password';
+        return 'Reset your password';
+    }
+  };
+
+  const getStepSubtitle = () => {
+    switch (step) {
+      case 'email':
+        return 'Enter your email to receive a verification code';
+      case 'otp':
+        return 'Check your inbox for the 6-digit code';
+      case 'reset':
+        return 'Create a strong, secure new password';
+      case 'success':
+        return 'Your password was updated';
+      default:
+        return 'Enter email to reset password';
     }
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center font-poppins relative"
-      style={{
-        backgroundImage: `url(${signupImg})`,
-        height: '100vh',
-      }}
-    >
-      {/* Blue overlay for readability */}
-      <div className="absolute inset-0 bg-blue-900/60"></div>
-
-      <div className="relative w-11/12 max-w-md bg-white/90 rounded-xl shadow-lg p-8 md:p-10">
-        <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
-          {getStepTitle()}
-        </h2>
-        <p className="text-center text-yellow-500 font-medium mb-6">
-          {step === 'email' && 'Enter your email to receive OTP'}
-          {step === 'otp' && 'Check your email for the OTP'}
-          {step === 'reset' && 'Create a new password'}
-          {step === 'success' && 'All done!'}
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-6 py-12 font-sans">
+      <div className="w-full max-w-md bg-white border border-slate-100 rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300">
+        <div className="text-center mb-8">
+          <Link
+            to="/"
+            className="text-slate-900 text-2xl font-black tracking-tight inline-flex items-center mb-4"
+          >
+            <span className="text-blue-600">Employ</span>Verse
+          </Link>
+          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            {getStepTitle()}
+          </h2>
+          <p className="text-slate-500 text-xs font-semibold mt-1">
+            {getStepSubtitle()}
+          </p>
+        </div>
 
         {step === 'email' && renderEmailStep()}
         {step === 'otp' && renderOtpStep()}
@@ -345,4 +355,3 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-

@@ -43,39 +43,42 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-gradient-to-r from-blue-700 to-blue-500 shadow-xl fixed w-full z-10 transition-all duration-300 ${
-        navbarScrolled ? 'py-3 bg-blue-700 shadow-2xl' : 'p-5'
+      className={`bg-white fixed w-full z-20 transition-all duration-300 border-b border-slate-100 ${
+        navbarScrolled ? 'py-3.5 shadow-md bg-white/95 backdrop-blur-md' : 'py-5.5 shadow-sm bg-white'
       }`}
       id="navbar"
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <Link
           to="/"
-          className="text-black text-3xl font-bold transition-transform hover:scale-105 duration-300 ml-2"
+          className="text-slate-900 text-3xl font-black transition-transform hover:scale-102 duration-300 tracking-tight flex items-center"
         >
-          Go<span className="text-yellow-400">Hire</span>
+          <span className="text-blue-600">Employ</span>Verse
         </Link>
 
         {/* Search bar */}
-        <div className="relative w-1/3 group">
+        <div className="relative w-2/5 md:max-w-md group hidden sm:block">
           <form onSubmit={handleSearch} id="search-form">
-            <input
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-slate-800/20 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+              <input
                 id="search-space"
                 type="text"
-                placeholder="Search for Opportunities"
+                placeholder="Search for opportunities..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={handleSearchKeyPress}
-                className="w-full p-3 rounded-full bg-gray-200 text-black border-2 border-black-300 focus:outline-none focus:ring-2       focus:ring-yellow-400 transition-all duration-300 shadow-md placeholder:text-gray-700"
-            />
+                className="relative w-full py-3 px-5 pr-12 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900 border-2 border-slate-400/60 focus:outline-none focus:ring-4 focus:ring-slate-900/30 focus:border-black transition-all duration-300 text-sm placeholder:text-slate-600 font-medium shadow-lg shadow-slate-900/10 hover:border-slate-600 hover:shadow-slate-900/20"
+              />
+            </div>
           </form>
-          <div className="absolute right-3 top-3.5 text-yellow-500">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 hover:text-black transition-colors">
             <button
               type="button"
               onClick={handleSearch}
               id="search-btn"
-              className="cursor-pointer"
+              className="cursor-pointer flex items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +86,7 @@ const Navbar = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="4"
+                strokeWidth="2.5"
               >
                 <path
                   strokeLinecap="round"
@@ -96,11 +99,11 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center space-x-8 text-white">
+        <ul className="hidden md:flex items-center space-x-10 text-slate-600 text-sm font-semibold">
           <li>
             <Link
               to="/"
-              className="hover:text-yellow-300 transition-colors duration-300 font-extrabold"
+              className="hover:text-blue-600 transition-colors duration-200"
             >
               Home
             </Link>
@@ -108,7 +111,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/jobs"
-              className="hover:text-yellow-300 transition-colors duration-300 font-extrabold"
+              className="hover:text-blue-600 transition-colors duration-200"
             >
               Jobs
             </Link>
@@ -116,39 +119,39 @@ const Navbar = () => {
           <li>
             <Link
               to="/internships"
-              className="hover:text-yellow-300 transition-colors duration-300 font-extrabold"
+              className="hover:text-blue-600 transition-colors duration-200"
             >
-              Internship
+              Internships
             </Link>
           </li>
           <li>
             <Link
               to="/contact"
-              className="hover:text-yellow-300 transition-colors duration-300 font-extrabold"
+              className="hover:text-blue-600 transition-colors duration-200"
             >
               Contact Us
             </Link>
           </li>
           {isAuthenticated ? (
             <li className="relative group flex items-center">
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-blue-800 font-black py-2 px-4 rounded-full transition-all duration-300 hover:shadow-lg flex items-center">
+              <button className="bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-4.5 rounded-xl transition-all duration-300 hover:shadow-md flex items-center text-sm cursor-pointer">
                 {user?.profileImageId ? (
                   <img
                     src={`/profile/image`}
-                    className="w-8 h-8 rounded-full object-cover mr-2 border-2 border-blue-800"
+                    className="w-5 h-5 rounded-full object-cover mr-2 border border-slate-700"
                     alt="Profile"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-blue-800 text-white flex items-center justify-center mr-2 font-bold text-sm">
+                  <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center mr-2 font-bold text-[10px]">
                     {user?.firstName?.charAt(0).toUpperCase() || 'P'}
                   </div>
                 )}
-                <span className="leading-none flex items-center">
+                <span className="leading-none flex items-center mr-1">
                   {user?.firstName || 'Profile'}
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1 transform transition-transform duration-300 group-hover:rotate-180"
+                  className="h-3.5 w-3.5 ml-1 transform transition-transform duration-300 group-hover:rotate-180"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -161,22 +164,22 @@ const Navbar = () => {
                   />
                 </svg>
               </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform -translate-y-2 group-hover:translate-y-0">
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-slate-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform -translate-y-2 group-hover:translate-y-0">
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-blue-800 hover:bg-blue-50 rounded-t-lg"
+                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold rounded-t-xl"
                 >
                   My Profile
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="block px-4 py-2 text-blue-800 hover:bg-blue-50"
+                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold"
                 >
                   My Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-blue-800 hover:bg-blue-50 rounded-b-lg"
+                  className="block w-full text-left px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold rounded-b-xl cursor-pointer"
                 >
                   Logout
                 </button>
@@ -186,7 +189,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/login"
-                className="bg-yellow-400 hover:bg-yellow-500 text-blue-800 font-black py-2 px-6 rounded-full transition-all duration-300 hover:shadow-lg flex items-center"
+                className="bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-6 rounded-xl transition-all duration-300 hover:shadow-md flex items-center text-sm"
               >
                 Login
               </Link>
@@ -197,24 +200,24 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className="md:hidden relative" id="mobile-menu-container">
           <div
-            className="flex flex-col space-y-1 cursor-pointer"
+            className="flex flex-col space-y-1 cursor-pointer p-2"
             id="mobile-menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <span className="block w-6 h-0.5 bg-white transition-all duration-300"></span>
-            <span className="block w-6 h-0.5 bg-white transition-all duration-300"></span>
-            <span className="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
+            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
+            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
           </div>
           <ul
             id="dropdown-menu"
-            className={`absolute right-0 mt-10 w-40 bg-yellow-500 text-blue-500 rounded-lg shadow-lg flex flex-col text-blue-800 ${
+            className={`absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col py-2 ${
               mobileMenuOpen ? 'block' : 'hidden'
             }`}
           >
             <li>
               <Link
                 to="/"
-                className="block px-4 py-2 hover:bg-blue-500 hover:text-yellow-500 text-center"
+                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -223,7 +226,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/jobs"
-                className="block px-4 py-2 hover:bg-blue-500 hover:text-yellow-500 text-center"
+                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Jobs
@@ -232,7 +235,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/internships"
-                className="block px-4 py-2 hover:bg-blue-500 hover:text-yellow-500 text-center"
+                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Internships
@@ -241,57 +244,43 @@ const Navbar = () => {
             <li>
               <Link
                 to="/contact"
-                className="block px-4 py-2 hover:bg-blue-500 hover:text-yellow-500 text-center"
+                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact Us
               </Link>
             </li>
             {isAuthenticated ? (
-              <li className="relative group flex justify-center">
-                <button className="bg-yellow-400 hover:bg-blue-500 text-blue-800 font-black py-2 px-6 rounded-full transition-all duration-300 hover:shadow-lg flex items-center justify-center">
-                  {user?.firstName || 'Profile'}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 ml-1 transform transition-transform duration-300 group-hover:rotate-180"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+              <li className="relative group flex flex-col pt-2 border-t border-slate-100">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  My Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block w-full px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center cursor-pointer"
+                >
+                  Logout
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform -translate-y-2 group-hover:translate-y-0 flex justify-center flex-col">
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-blue-800 hover:bg-blue-50 rounded-t-lg"
-                  >
-                    My Profile
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="block px-4 py-2 text-blue-800 hover:bg-blue-50"
-                  >
-                    My Dashboard
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-blue-800 hover:bg-blue-50 rounded-b-lg"
-                  >
-                    Logout
-                  </button>
-                </div>
               </li>
             ) : (
-              <li>
+              <li className="pt-2 border-t border-slate-100 mx-2">
                 <Link
                   to="/login"
-                  className="bg-yellow-400 hover:bg-yellow-500 text-blue-800 font-black py-2 px-6 rounded-full transition-all duration-300 hover:shadow-lg flex justify-center"
+                  className="block bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-4 rounded-xl text-sm text-center transition-all animate-none"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Login

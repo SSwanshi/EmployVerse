@@ -380,10 +380,10 @@ const ApplyJob = () => {
                   type="button"
                   onClick={handleApply}
                   disabled={submitting || alreadyApplied || (resumeOption === 'specific' && !applicationResumeId)}
-                  className={`w-full font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg flex items-center justify-center ${alreadyApplied
-                    ? 'bg-green-400 text-green-900 cursor-not-allowed'
-                    : 'bg-yellow-400 hover:bg-yellow-500 text-blue-800'
-                    }`}
+                  className={`w-full font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:shadow-lg flex items-center justify-center cursor-pointer ${alreadyApplied
+                  ? 'bg-green-500 text-white cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
                 >
                   {alreadyApplied ? 'Successfully Applied !!' : 'Apply Now'}
                   {!alreadyApplied && (

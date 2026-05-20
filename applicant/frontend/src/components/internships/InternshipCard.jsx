@@ -8,119 +8,81 @@ const InternshipCard = ({ internship, query }) => {
   const logoUrl = internship.intCompany?.logoId ? applicantApi.getLogo(internship.intCompany.logoId) : null;
 
   return (
-    <div className="job-card bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow">
-      {/* Header Section */}
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex items-center gap-3">
-          {/* Company Logo */}
-          <div className="bg-gray-100 p-1.5 rounded-lg">
-            <img
-              src={logoUrl}
-              alt={`${companyName || "Company"} Logo`}
-              className="h-12 w-12 object-contain rounded-md"
-            />
-          </div>
+    <div className="job-card bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md p-5 transition-all duration-300 font-sans flex flex-col justify-between">
+      <div>
+        {/* Header Title Row */}
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div className="flex items-center gap-3">
+            {/* Logo */}
+            <div className="bg-slate-50 border border-slate-100 p-1 rounded-xl shrink-0">
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt={`${companyName} Logo`}
+                  className="h-10 w-10 object-contain rounded-lg"
+                />
+              ) : (
+                <div className="h-10 w-10 bg-slate-100 rounded-lg flex items-center justify-center shrink-0">
+                  <span className="text-slate-400 text-[10px] font-bold">N/A</span>
+                </div>
+              )}
+            </div>
 
-          {/* Internship Title + Company Info */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              {highlightText(internship.intTitle, query)}
-            </h3>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mt-1">
-              <span className="font-semibold">
-                {highlightText(companyName || 'N/A', query)}
-              </span>
-              <span>•</span>
-              <span className="inline-block px-3 py-1 font-medium text-orange-500 bg-orange-100 rounded-full">
-                {highlightText(`${internship.intDuration} months`, query)}
-              </span>
-              <span className="inline-block px-3 py-1 font-medium text-purple-500 bg-purple-100 rounded-full">
-                {highlightText(`Experience: ${internship.intExperience} years`, query)}
-              </span>
-              <span className="inline-block px-3 py-1 font-medium text-green-500 bg-green-100 rounded-full">
-                {highlightText(`Positions: ${internship.intPositions}`, query)}
-              </span>
-              <span className="inline-block px-3 py-1 font-medium text-red-500 bg-red-100 rounded-full">
-                {highlightText(
-                  `Expiry: ${new Date(internship.intExpiry).toLocaleDateString('en-GB')}`,
-                  query
-                )}
+            {/* Info */}
+            <div>
+              <h3 className="text-base font-extrabold text-slate-900 leading-snug tracking-tight">
+                {highlightText(internship.intTitle, query)}
+              </h3>
+              <span className="text-xs font-bold text-slate-500">
+                {highlightText(companyName, query)}
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Location + Posted Time */}
-        <div className="flex flex-col items-end">
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            <span className="text-lg font-semibold text-gray-900">
+          <div className="flex flex-col items-end text-right shrink-0">
+            <span className="text-xs font-bold text-slate-950 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
               {highlightText(internship.intLocation, query)}
             </span>
+            <span className="text-[10px] text-slate-400 font-semibold mt-0.5">
+              Posted {formatTimeAgo(internship.createdAt)}
+            </span>
           </div>
-          <span className="text-sm text-gray-500">
-            Posted {formatTimeAgo(internship.createdAt)}
+        </div>
+
+        {/* Badges row */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100/30">
+            {highlightText(`${internship.intDuration} Months`, query)}
+          </span>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold bg-slate-50 text-slate-600 border border-slate-100">
+            Exp: {internship.intExperience || 0} yrs
+          </span>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100/30">
+            {internship.intPositions || 0} Openings
+          </span>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100/30">
+            Ends: {new Date(internship.intExpiry).toLocaleDateString('en-GB')}
           </span>
         </div>
+
+        {/* Short Truncated Description */}
+        <p className="text-xs text-slate-500 line-clamp-2 mb-4 leading-relaxed">
+          {highlightText(internship.intDescription || 'No description provided.', query)}
+        </p>
       </div>
 
-      {/* Internship Requirements */}
-      {internship.intRequirements && (
-        <ul className="text-sm text-gray-600 list-disc list-inside mb-4 space-y-1.5 pl-1">
-          {internship.intRequirements.split("\n").map(
-            (point, i) =>
-              point.trim() && (
-                <li key={i}>
-                  {highlightText(point.trim(), query)}
-                </li>
-              )
-          )}
-        </ul>
-      )}
-
-      {/* Internship Description */}
-      {internship.intDescription && (
-        <ul className="text-sm text-gray-600 list-disc list-inside mb-4 space-y-1.5 pl-1">
-          {internship.intDescription.split("\n").map(
-            (point, i) =>
-              point.trim() && (
-                <li key={i}>
-                  {highlightText(point.trim(), query)}
-                </li>
-              )
-          )}
-        </ul>
-      )}
-
-      {/* Footer Section */}
-      <div className="flex items-center justify-between border-t pt-4">
-        {internship.intStipend && (
-          <div className="text-sm font-medium text-gray-800">
-            {highlightText(internship.intStipend, query)}
-          </div>
-        )}
+      {/* Footer Details */}
+      <div className="flex items-center justify-between border-t border-slate-50 pt-3.5 mt-auto">
+        <div className="text-sm font-black text-slate-900">
+          {internship.intStipend ? highlightText(internship.intStipend, query) : 'Competitive Stipend'}
+        </div>
         <Link
           to={`/internships/${internship._id}/apply`}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors"
+          className="px-3.5 py-1.5 bg-slate-900 hover:bg-black text-white rounded-lg font-bold text-xs shadow-sm transition-all duration-205 cursor-pointer"
         >
           Apply Now
         </Link>

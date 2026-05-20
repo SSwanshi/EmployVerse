@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import signupImg from "../assets/images/bgimage.png";
 import { validateEmail } from "../utils/emailValidation";
 
 const Signup = () => {
@@ -212,324 +211,347 @@ const Signup = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center font-poppins overflow-hidden"
-      style={{
-        backgroundImage: `url(${signupImg})`,
-        height: "100vh",
-      }}
-    >
-      {/* Overlay to maintain readability */}
-      <div className="absolute inset-0 bg-blue-900/60"></div>
+    <div className="min-h-screen grid lg:grid-cols-12 bg-white font-sans">
+      {/* Left side: Premium Branding Panel */}
+      <div className="hidden lg:flex lg:col-span-5 flex-col justify-between bg-slate-950 text-white p-12 relative overflow-hidden">
+        {/* Backdrop Glow */}
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-500/5 rounded-full blur-[80px] pointer-events-none animate-pulse"></div>
 
-      <div className="relative w-11/12 max-w-4xl bg-white/90 rounded-xl shadow-lg p-8 md:p-10">
-        <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
-          Create Your Account
-        </h2>
-        <p className="text-center text-yellow-500 font-medium mb-6">
-          Join EmployVerse and start your journey today!
-        </p>
+        <div>
+          <Link to="/" className="text-white text-3xl font-black tracking-tight inline-flex items-center">
+            <span className="text-blue-500">Employ</span>Verse
+          </Link>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {error && (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded text-center">
-              {error}
-            </div>
-          )}
+        <div className="my-auto max-w-sm space-y-8 relative z-10">
+          <h1 className="text-4xl font-black leading-tight tracking-tight text-white">
+            Kickstart your <span className="text-blue-500">professional</span> journey.
+          </h1>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Create an applicant profile to search, filter, and easily apply for career-defining jobs and internships.
+          </p>
+          <ul className="space-y-4">
+            <li className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+              <span className="w-5 h-5 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">✓</span>
+              Build a polished verified resume profile
+            </li>
+            <li className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+              <span className="w-5 h-5 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">✓</span>
+              Search verified listings by location or role
+            </li>
+            <li className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+              <span className="w-5 h-5 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">✓</span>
+              Access career tools & direct application pipelines
+            </li>
+          </ul>
+        </div>
 
-          {/* Name Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-semibold text-blue-800"
+        <div className="text-xs text-slate-500">
+          © {new Date().getFullYear()} EmployVerse. All corporate rights reserved.
+        </div>
+      </div>
+
+      {/* Right side: Signup Form Container */}
+      <div className="lg:col-span-7 flex items-center justify-center bg-slate-50 px-6 py-12">
+        <div className="w-full max-w-2xl bg-white border border-slate-100 rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300 hover:shadow-2xl">
+          <div className="text-center mb-8">
+            <div className="lg:hidden mb-4">
+              <Link
+                to="/"
+                className="text-slate-900 text-3xl font-black tracking-tight inline-flex items-center"
               >
-                First Name <span className="text-yellow-500">*</span>
-              </label>
-              <input
-                id="firstName"
-                name="firstName"
-                type="text"
-                required
-                value={formData.firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="First Name"
-                className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${
-                  fieldErrors.firstName
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-blue-300 focus:ring-blue-500"
-                }`}
-              />
-              {fieldErrors.firstName && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.firstName}</p>
-              )}
+                <span className="text-blue-600">Employ</span>Verse
+              </Link>
             </div>
-            <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                Last Name
-              </label>
-              <input
-                id="lastName"
-                name="lastName"
-                type="text"
-                value={formData.lastName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Last Name"
-                className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${
-                  fieldErrors.lastName
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-blue-300 focus:ring-blue-500"
-                }`}
-              />
-              {fieldErrors.lastName && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.lastName}</p>
-              )}
-            </div>
+            <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              Create your account
+            </h2>
+            <p className="text-slate-500 text-xs font-semibold mt-1">
+              Join EmployVerse and start your journey today!
+            </p>
           </div>
 
-          {/* Email */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-blue-800"
-            >
-              Email <span className="text-yellow-500">*</span>
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Email"
-              className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${
-                fieldErrors.email
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-blue-300 focus:ring-blue-500"
-              }`}
-            />
-            {fieldErrors.email && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed animate-none">
+                {error}
+              </div>
             )}
-          </div>
 
-          {/* Phone */}
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-semibold text-blue-800"
-            >
-              Phone <span className="text-yellow-500">*</span>
-            </label>
-            <div className={`flex border rounded-md overflow-hidden ${
-              fieldErrors.phone ? "border-red-500" : "border-blue-300"
-            }`}>
-              <span className="bg-blue-100 px-3 flex items-center text-blue-800 font-medium">
-                +91
-              </span>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                required
-                maxLength={10}
-                value={formData.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Phone Number"
-                className={`flex-1 p-2 focus:outline-none focus:ring-2 ${
-                  fieldErrors.phone
-                    ? "focus:ring-red-500"
-                    : "focus:ring-blue-500"
-                }`}
-              />
-            </div>
-            {fieldErrors.phone && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.phone}</p>
-            )}
-          </div>
-
-          {/* Gender */}
-          <div>
-            <label className="block text-sm font-semibold text-blue-800 mb-1">
-              Gender <span className="text-yellow-500">*</span>
-            </label>
-            <div className="flex justify-around text-blue-700">
-              {["male", "female", "other"].map((g) => (
+            {/* Name Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <label
-                  key={g}
-                  className="flex items-center gap-2 cursor-pointer"
+                  htmlFor="firstName"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
                 >
+                  First Name
+                </label>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="John"
+                  className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                    fieldErrors.firstName
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                  }`}
+                />
+                {fieldErrors.firstName && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.firstName}</p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Doe"
+                  className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                    fieldErrors.lastName
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                  }`}
+                />
+                {fieldErrors.lastName && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.lastName}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Email & Phone Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="name@example.com"
+                  className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                    fieldErrors.email
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                  }`}
+                />
+                {fieldErrors.email && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.email}</p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >
+                  Phone Number
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  maxLength="10"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="10 digit number"
+                  className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                    fieldErrors.phone
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                  }`}
+                />
+                {fieldErrors.phone && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.phone}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Gender Selection */}
+            <div>
+              <label
+                htmlFor="gender"
+                className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              >
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                required
+                value={formData.gender}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full rounded-xl border py-2.5 px-4 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                  fieldErrors.gender
+                    ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 bg-slate-50"
+                }`}
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              {fieldErrors.gender && (
+                <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.gender}</p>
+              )}
+            </div>
+
+            {/* Password Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Password */}
+              <div className="relative">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >
+                  Password
+                </label>
+                <div className="relative">
                   <input
-                    type="radio"
-                    name="gender"
-                    value={g}
-                    checked={formData.gender === g}
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={formData.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="text-blue-600 focus:ring-blue-500"
+                    placeholder="Min 8 characters"
+                    className={`w-full rounded-xl border py-2.5 px-4 pr-10 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                      fieldErrors.password
+                        ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                        : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                    }`}
                   />
-                  <span className="capitalize">{g}</span>
-                </label>
-              ))}
-            </div>
-            {fieldErrors.gender && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.gender}</p>
-            )}
-          </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+                  >
+                    <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} text-xs`}></i>
+                  </button>
+                </div>
+                {fieldErrors.password && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600 leading-normal">{fieldErrors.password}</p>
+                )}
+              </div>
 
-          {/* Passwords */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                Password <span className="text-yellow-500">*</span>
-              </label>
-
-<div className="relative">
-  <input
-    id="password"
-    name="password"
-    type={showPassword ? "text" : "password"}
-    required
-    value={formData.password}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    placeholder="Password"
-    className={`mt-1 w-full rounded-md border p-2 pr-10 focus:outline-none focus:ring-2 ${
-      fieldErrors.password
-        ? "border-red-500 focus:ring-red-500"
-        : "border-blue-300 focus:ring-blue-500"
-    }`}
-  />
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-    aria-label={showPassword ? "Hide password" : "Show password"}
-  >
-    👁️
-  </button>
-</div>
-
-{fieldErrors.password && (
-  <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
-)}
-
-<p className="mt-1 text-xs text-blue-600">
-  Password must be at least 8 characters long with at least 2 special characters
-</p>
-
-
-
-            </div>
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                Confirm Password <span className="text-yellow-500">*</span>
-              </label>
-
-             <div className="relative">
-  <input
-    id="confirmPassword"
-    name="confirmPassword"
-    type={showConfirmPassword ? "text" : "password"}
-    required
-    value={formData.confirmPassword}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    placeholder="Confirm Password"
-    className={`mt-1 w-full rounded-md border p-2 pr-10 focus:outline-none focus:ring-2 ${
-      fieldErrors.confirmPassword
-        ? "border-red-500 focus:ring-red-500"
-        : "border-blue-300 focus:ring-blue-500"
-    }`}
-  />
-  <button
-    type="button"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-    className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-  >
-    👁️
-  </button>
-</div>
-
-{fieldErrors.confirmPassword && (
-  <p className="mt-1 text-sm text-red-600">
-    {fieldErrors.confirmPassword}
-  </p>
-)}
-
-            </div>
-          </div>
-
-          {/* Terms */}
-          <div>
-            <div className="flex items-start text-sm text-blue-800">
-              <input
-                id="termsAgree"
-                name="termsAgree"
-                type="checkbox"
-                required
-                checked={formData.termsAgree}
-                onChange={handleChange}
-                className={`mt-1 mr-2 h-4 w-4 text-blue-600 border rounded focus:ring-blue-500 ${
-                  fieldErrors.termsAgree
-                    ? "border-red-500"
-                    : "border-blue-300"
-                }`}
-              />
-              <label htmlFor="termsAgree">
-                By signing up, you agree to our{" "}
-                <Link
-                  to="/privacy"
-                  className="text-yellow-600 hover:underline"
+              {/* Confirm Password */}
+              <div className="relative">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
                 >
-                  Privacy Policy
-                </Link>{" "}
-                and{" "}
-                <Link to="/terms" className="text-yellow-600 hover:underline">
-                  Terms of Use
-                </Link>
-                . <span className="text-yellow-500">*</span>
-              </label>
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Re-enter password"
+                    className={`w-full rounded-xl border py-2.5 px-4 pr-10 focus:outline-none focus:ring-2 transition-all duration-200 text-sm ${
+                      fieldErrors.confirmPassword
+                        ? "border-red-300 focus:ring-red-500/20 focus:border-red-500 text-red-900 placeholder:text-red-300"
+                        : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600 text-slate-800 placeholder:text-slate-400 bg-slate-50"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+                  >
+                    <i className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"} text-xs`}></i>
+                  </button>
+                </div>
+                {fieldErrors.confirmPassword && (
+                  <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.confirmPassword}</p>
+                )}
+              </div>
             </div>
-            {fieldErrors.termsAgree && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.termsAgree}</p>
-            )}
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Creating Account..." : "Sign Up"}
-          </button>
+            {/* Terms Agree */}
+            <div>
+              <div className="flex items-start text-xs text-slate-500 font-medium">
+                <input
+                  type="checkbox"
+                  id="termsAgree"
+                  name="termsAgree"
+                  required
+                  checked={formData.termsAgree}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className="mt-1 mr-2.5 h-4.5 w-4.5 text-blue-600 border border-slate-350 rounded focus:ring-blue-500/20"
+                />
+                <label htmlFor="termsAgree">
+                  I agree to the{" "}
+                  <Link
+                    to="/privacy"
+                    className="text-blue-600 hover:underline font-semibold"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/terms" className="text-blue-600 hover:underline font-semibold">
+                    Terms of Use
+                  </Link>
+                  .
+                </label>
+              </div>
+              {fieldErrors.termsAgree && (
+                <p className="mt-1.5 text-xs font-semibold text-red-600">{fieldErrors.termsAgree}</p>
+              )}
+            </div>
 
-          <div className="text-center text-sm text-blue-800">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-yellow-600 hover:text-yellow-500"
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all duration-200 disabled:opacity-50 mt-4 cursor-pointer"
             >
-              Login
-            </Link>
-          </div>
-        </form>
+              {loading ? "Creating Account..." : "Sign Up"}
+            </button>
+
+            <div className="text-center text-xs text-slate-500 font-medium">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-bold text-blue-600 hover:text-blue-700"
+              >
+                Log In
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
