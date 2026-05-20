@@ -5,6 +5,30 @@ const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 const { connectApplicantDB } = require('../config/applicantDb');
 const emailjs = require("@emailjs/nodejs");
+const axios = require('axios');
+
+// Helper function to send notification to applicant backend
+const sendNotificationToApplicant = async (receiverId, type, title, message, senderId = null) => {
+  try {
+    const applicantBackendUrl = process.env.APPLICANT_BACKEND_URL || 'http://localhost:3000';
+    const response = await axios.post(
+      `${applicantBackendUrl}/api/notifications/internal`,
+      {
+        receiverId,
+        senderId,
+        type,
+        title,
+        message
+      },
+      { timeout: 5000 }
+    );
+    console.log('✅ Notification sent to applicant:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('⚠️ Failed to send notification to applicant:', error.message);
+    // Don't throw - notification failure shouldn't block application status update
+  }
+};
 // Note: This assumes PremiumUser model exists in applicant DB
 // You may need to connect to applicant DB to fetch premium users
 
@@ -178,6 +202,7 @@ const selectApplicant = async (req, res) => {
     const job = await Job.findById(result.jobId);
     const position = job.jobTitle;
 
+    // Send email notification
     await emailjs.send(
       process.env.EMAILJS_APPLICATION_STATUS_SERVICE_ID,
       process.env.EMAILJS_ACCEPT_TEMPLATE_ID,
@@ -193,6 +218,14 @@ const selectApplicant = async (req, res) => {
         publicKey: process.env.EMAILJS_APPLICATION_STATUS_PUBLIC_KEY,
         privateKey: process.env.EMAILJS_APPLICATION_STATUS_PRIVATE_KEY,
       }
+    );
+
+    // Send in-app notification
+    await sendNotificationToApplicant(
+      result.userId,
+      'APPLICATION_SHORTLISTED',
+      'Congratulations!',
+      `Your application for ${position} has been shortlisted. Check your dashboard for next steps.`
     );
 
     res.json({ success: true, message: 'Applicant selected successfully' });
@@ -221,6 +254,7 @@ const rejectApplicant = async (req, res) => {
     const job = await Job.findById(result.jobId);
     const position = job.jobTitle;
 
+    // Send email notification
     await emailjs.send(
       process.env.EMAILJS_APPLICATION_STATUS_SERVICE_ID,
       process.env.EMAILJS_REJECT_TEMPLATE_ID,
@@ -236,6 +270,14 @@ const rejectApplicant = async (req, res) => {
         publicKey: process.env.EMAILJS_APPLICATION_STATUS_PUBLIC_KEY,
         privateKey: process.env.EMAILJS_APPLICATION_STATUS_PRIVATE_KEY,
       }
+    );
+    
+    // Send in-app notification
+    await sendNotificationToApplicant(
+      result.userId,
+      'APPLICATION_REJECTED',
+      'Application Status Update',
+      `Thank you for applying for ${position}. We have decided to move forward with other candidates at this time.`
     );
     
     res.json({ success: true, message: 'Applicant rejected successfully' });

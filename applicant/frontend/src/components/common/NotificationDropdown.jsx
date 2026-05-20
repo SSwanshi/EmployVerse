@@ -1,40 +1,81 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import { applicantApi } from '../../services/applicantApi';
 
 const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef(null);
 
-  // Mock data for notifications
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "Application Viewed",
-      message: "TechCorp has viewed your application for the Frontend Developer role.",
-      time: "2 hours ago",
-      read: false,
-      type: "application",
-    },
-    {
-      id: 2,
-      title: "New Job Match",
-      message: "We found a new job matching your profile at InnovateTech.",
-      time: "1 day ago",
-      read: false,
-      type: "job",
-    },
-    {
-      id: 3,
-      title: "Welcome to EmployVerse!",
-      message: "Complete your profile to increase your chances of getting hired.",
-      time: "2 days ago",
-      read: true,
-      type: "system",
-    }
-  ]);
+  // 1. Fetch initial notifications and unread count on mount
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [notifRes, countRes] = await Promise.all([
+          applicantApi.getNotifications(1, 20),
+          applicantApi.getUnreadNotificationsCount()
+        ]);
+        
+        if (notifRes?.success) {
+          setNotifications(notifRes.notifications);
+        }
+        if (countRes?.success) {
+          setUnreadCount(countRes.unreadCount);
+        }
+      } catch (err) {
+        console.error('Failed to fetch initial notifications:', err);
+      }
+    };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+    fetchInitialData();
+  }, []);
 
+  // 2. Setup Socket.IO client connection for real-time updates
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    // Use absolute base URL or default to localhost:3000
+    const socketUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    
+    // Connect to Socket.IO server passing JWT in auth payload
+    const socket = io(socketUrl, {
+      auth: { token },
+      transports: ['websocket', 'polling'] // fallback support
+    });
+
+    socket.on('connect', () => {
+      console.log('⚡ Connected to real-time notification socket');
+    });
+
+    // Handle incoming real-time notifications
+    socket.on('new_notification', (newNotif) => {
+      console.log('🔔 Received live notification:', newNotif);
+      setNotifications((prev) => {
+        // Prevent duplicates
+        if (prev.some(n => n._id === newNotif._id || n.id === newNotif.id)) return prev;
+        return [newNotif, ...prev].slice(0, 20); // Cache latest 20
+      });
+    });
+
+    // Handle incoming unread count updates
+    socket.on('unread_count_updated', ({ unreadCount }) => {
+      console.log('🔢 Live unread count update:', unreadCount);
+      setUnreadCount(unreadCount);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.warn('Socket.IO connection warning:', err.message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  // 3. Handle dropdown click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -45,13 +86,23 @@ const NotificationDropdown = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  // 4. Mark all as read
+  const handleMarkAllAsRead = async () => {
+    try {
+      const res = await applicantApi.markNotificationsAsRead();
+      if (res?.success) {
+        setNotifications((prev) => prev.map(n => ({ ...n, isRead: true })));
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error('Failed to mark notifications as read:', err);
+    }
   };
 
   const getIcon = (type) => {
     switch (type) {
-      case 'application':
+      case 'APPLICATION_RECEIVED':
+      case 'APPLICATION_VIEWED':
         return (
           <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -60,11 +111,35 @@ const NotificationDropdown = () => {
             </svg>
           </div>
         );
-      case 'job':
+      case 'APPLICATION_SHORTLISTED':
         return (
           <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+        );
+      case 'APPLICATION_REJECTED':
+        return (
+          <div className="w-8 h-8 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        );
+      case 'INTERVIEW_SCHEDULED':
+        return (
+          <div className="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        );
+      case 'PAYMENT_SUCCESS':
+        return (
+          <div className="w-8 h-8 rounded-full bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
             </svg>
           </div>
         );
@@ -107,7 +182,7 @@ const NotificationDropdown = () => {
           <h3 className="font-bold text-slate-900 text-lg">Notifications</h3>
           {unreadCount > 0 && (
             <button 
-              onClick={markAllAsRead}
+              onClick={handleMarkAllAsRead}
               className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
             >
               Mark all as read
@@ -121,29 +196,24 @@ const NotificationDropdown = () => {
             <div className="flex flex-col">
               {notifications.map((notif) => (
                 <div 
-                  key={notif.id} 
-                  className={`flex gap-4 px-5 py-4 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer ${notif.read ? 'opacity-70' : 'bg-blue-50/30'}`}
-                  onClick={() => {
-                    if (!notif.read) {
-                      setNotifications(notifications.map(n => n.id === notif.id ? { ...n, read: true } : n));
-                    }
-                  }}
+                  key={notif._id || notif.id} 
+                  className={`flex gap-4 px-5 py-4 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer ${notif.isRead ? 'opacity-70' : 'bg-blue-50/30'}`}
                 >
                   {getIcon(notif.type)}
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-1">
-                      <p className={`text-sm font-bold truncate pr-2 ${notif.read ? 'text-slate-700' : 'text-slate-900'}`}>
+                      <p className={`text-sm font-bold truncate pr-2 ${notif.isRead ? 'text-slate-700' : 'text-slate-900'}`}>
                         {notif.title}
                       </p>
                       <span className="text-[10px] font-semibold text-slate-400 whitespace-nowrap mt-0.5">
-                        {notif.time}
+                        {new Date(notif.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                       {notif.message}
                     </p>
                   </div>
-                  {!notif.read && (
+                  {!notif.isRead && (
                     <div className="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5 shadow-sm shadow-blue-500/50"></div>
                   )}
                 </div>

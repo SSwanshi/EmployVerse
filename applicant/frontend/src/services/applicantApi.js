@@ -97,5 +97,20 @@ export const applicantApi = {
     const response = await api.get('/applicant/dashboard/stats');
     return response.data;
   },
+
+  getNotifications: async (page = 1, limit = 10) => {
+    const response = await api.get(`/notifications?page=${page}&limit=${limit}`);
+    return response.data;
+  },
+
+  getUnreadNotificationsCount: async () => {
+    const response = await api.get('/notifications/unread-count');
+    return response.data;
+  },
+
+  markNotificationsAsRead: async () => {
+    const response = await api.put('/notifications/mark-read');
+    return response.data;
+  },
 };
 

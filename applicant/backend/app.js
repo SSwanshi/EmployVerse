@@ -18,6 +18,7 @@ const paymentRoutes = require('./routes/payment.routes');
 const filesRoutes = require('./routes/files.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const searchRoutes = require('./routes/search.routes');
+const notificationRoutes = require('./routes/notification.routes');
 
 const redis = require('./config/redis');
 
@@ -105,6 +106,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/files', filesRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // GraphQL (Option B: read-heavy queries)
 app.use(
@@ -134,8 +136,21 @@ app.get('/api/redis-test', async (req, res) => {
 // Error handler middleware
 app.use(errorHandler);
 
+// Wrap app with HTTP Server for Socket.IO support
+const http = require('http');
+const server = http.createServer(app);
+const { initSocket } = require('./config/socket');
+
+// Initialize Socket.IO
+initSocket(server);
+
+// Load the Notification Worker to run in background
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
+  require('./workers/notification.worker');
+}
+
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(PORT, () => {
     console.log(`[Applicant] Server running on http://localhost:${PORT}`);        
   });
 }
