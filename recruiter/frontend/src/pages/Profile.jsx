@@ -160,14 +160,14 @@ const Profile = () => {
           </div>
         )}
         {error && (
-          <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded">
+          <div className="mb-4 bg-gray-100 border border-black text-black px-4 py-3 rounded">
             {error}
           </div>
         )}
 
         {/* Profile Header Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 h-32"></div>
+          <div className=" bg-black text-white  h-32"></div>
           <div className="px-6 pb-6 -mt-16">
             {/* Profile Image Section */}
             <div className="flex flex-col items-center mb-6">
@@ -181,7 +181,7 @@ const Profile = () => {
                   }}
                 />
                 {profile.isPremium && (
-                  <div className="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-1 shadow-md">
+                  <div className="absolute -top-2 -right-2 bg-gray-900 rounded-full p-1 shadow-md">
                     <Crown className="h-5 w-5 text-white" />
                   </div>
                 )}
@@ -198,7 +198,7 @@ const Profile = () => {
 
               {/* Image Action Buttons */}
               <div className="flex gap-2 mt-4">
-                <label className="inline-flex items-center px-3 py-2 border border-blue-300 rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer">
+                <label className="inline-flex items-center px-3 py-2 border border-black rounded-md text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors cursor-pointer">
                   <Upload className="h-4 w-4 mr-2" />
                   {imagePreview ? 'Change Image' : 'Upload New'}
                     <input
@@ -234,7 +234,7 @@ const Profile = () => {
 
         {/* Profile Details Card */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold text-blue-800 mb-6 flex items-center">
+          <h2 className="text-xl font-bold text-black mb-6 flex items-center">
             <UserIcon className="h-5 w-5 mr-2" />
             Profile Information
           </h2>
@@ -298,18 +298,18 @@ const Profile = () => {
 
         {/* Action Buttons */}
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-bold text-blue-800 mb-4">Actions</h2>
+          <h2 className="text-xl font-bold text-black mb-4">Actions</h2>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => navigate('/profile/edit')}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold shadow-md transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-black hover:bg-black text-white rounded-md font-semibold shadow-md transition-colors"
             >
               <Pencil className="h-4 w-4 mr-2" />
               Edit Profile
             </button>
             <button
               onClick={() => navigate('/profile/change-password')}
-              className="inline-flex items-center px-4 py-2 border border-yellow-300 rounded-md text-yellow-700 bg-white hover:bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors"
+              className="inline-flex items-center px-4 py-2 border border-black rounded-md text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
             >
               <Lock className="h-4 w-4 mr-2" />
               Change Password

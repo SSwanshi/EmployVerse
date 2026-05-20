@@ -53,11 +53,11 @@ const ChangePassword = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-blue-800 mb-2 flex items-center justify-center">
+          <h2 className="text-3xl font-bold text-center text-black mb-2 flex items-center justify-center">
             <Lock className="h-8 w-8 mr-2" />
             Change Password
           </h2>
-          <p className="text-center text-yellow-500 font-medium mb-6">
+          <p className="text-center text-gray-800 font-medium mb-6">
             Update your account password
           </p>
 
@@ -70,7 +70,7 @@ const ChangePassword = () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded text-center">
+            <div className="mb-6 bg-gray-100 border border-black text-black px-4 py-3 rounded text-center">
               {error}
             </div>
           )}
@@ -90,9 +90,9 @@ const ChangePassword = () => {
                 <div>
                   <label
                     htmlFor="currentPassword"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
-                    Current Password <span className="text-yellow-500">*</span>
+                    Current Password <span className="text-gray-800">*</span>
                   </label>
                   <Field
                     id="currentPassword"
@@ -102,8 +102,8 @@ const ChangePassword = () => {
                     className={`mt-1 w-full rounded-md border ${
                       errors.currentPassword && touched.currentPassword
                         ? 'border-red-300'
-                        : 'border-blue-300'
-                    } p-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        : 'border-black'
+                    } p-2 focus:outline-none focus:ring-2 focus:ring-black`}
                   />
                   <ErrorMessage
                     name="currentPassword"
@@ -116,9 +116,9 @@ const ChangePassword = () => {
                 <div>
                   <label
                     htmlFor="newPassword"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
-                    New Password <span className="text-yellow-500">*</span>
+                    New Password <span className="text-gray-800">*</span>
                   </label>
                   <Field
                     id="newPassword"
@@ -128,8 +128,8 @@ const ChangePassword = () => {
                     className={`mt-1 w-full rounded-md border ${
                       errors.newPassword && touched.newPassword
                         ? 'border-red-300'
-                        : 'border-blue-300'
-                    } p-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        : 'border-black'
+                    } p-2 focus:outline-none focus:ring-2 focus:ring-black`}
                   />
                   <ErrorMessage
                     name="newPassword"
@@ -142,9 +142,9 @@ const ChangePassword = () => {
                 <div>
                   <label
                     htmlFor="confirmPassword"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
-                    Confirm New Password <span className="text-yellow-500">*</span>
+                    Confirm New Password <span className="text-gray-800">*</span>
                   </label>
                   <Field
                     id="confirmPassword"
@@ -154,8 +154,8 @@ const ChangePassword = () => {
                     className={`mt-1 w-full rounded-md border ${
                       errors.confirmPassword && touched.confirmPassword
                         ? 'border-red-300'
-                        : 'border-blue-300'
-                    } p-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        : 'border-black'
+                    } p-2 focus:outline-none focus:ring-2 focus:ring-black`}
                   />
                   <ErrorMessage
                     name="confirmPassword"
@@ -169,7 +169,7 @@ const ChangePassword = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex-1 bg-black hover:bg-black text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isSubmitting ? 'Changing Password...' : 'Change Password'}
                   </button>

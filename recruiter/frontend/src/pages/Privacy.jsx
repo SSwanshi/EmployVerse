@@ -1,20 +1,20 @@
 const Privacy = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-700 py-16 px-4">
+    <div className="min-h-screen  bg-black text-white  py-16 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-10">
 
-        <h1 className="text-3xl font-bold text-blue-700 mb-6">
+        <h1 className="text-3xl font-bold text-black mb-6">
           Privacy Policy
         </h1>
 
         <p className="text-gray-700 mb-4">
-          GoHire (“we”, “our”, “us”) is committed to protecting your privacy. This
+          EmployVerse (“we”, “our”, “us”) is committed to protecting your privacy. This
           Privacy Policy explains how we collect, use, store, and safeguard the personal
           information of applicants, recruiters, and all users accessing our platform.
-          By using GoHire, you agree to the practices described in this policy.
+          By using EmployVerse, you agree to the practices described in this policy.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           1. Information We Collect
         </h2>
 
@@ -34,7 +34,7 @@ const Privacy = () => {
           <li>Interaction logs and page activity</li>
         </ul>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           2. How We Use Your Information
         </h2>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
@@ -46,7 +46,7 @@ const Privacy = () => {
           <li>To send updates and important notifications</li>
         </ul>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           3. Sharing of Information
         </h2>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
@@ -56,7 +56,7 @@ const Privacy = () => {
           <li><strong>For legal compliance:</strong> if required by law.</li>
         </ul>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           4. Cookies and Tracking
         </h2>
         <p className="text-gray-700 mb-4">
@@ -65,7 +65,7 @@ const Privacy = () => {
           not function properly.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           5. Data Security
         </h2>
         <p className="text-gray-700 mb-4">
@@ -73,7 +73,7 @@ const Privacy = () => {
           security, no online system is completely risk-free.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           6. Your Rights
         </h2>
         <ul className="list-disc pl-6 text-gray-700 mb-4">
@@ -83,23 +83,23 @@ const Privacy = () => {
           <li>Deactivate or delete your account anytime</li>
         </ul>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           7. Data Retention
         </h2>
         <p className="text-gray-700 mb-4">
-          Your data remains stored as long as your GoHire account is active. Some
+          Your data remains stored as long as your EmployVerse account is active. Some
           information may remain in backups for security and compliance reasons.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           8. Children’s Privacy
         </h2>
         <p className="text-gray-700 mb-4">
-          GoHire is not intended for individuals under 16. We do not knowingly collect
+          EmployVerse is not intended for individuals under 16. We do not knowingly collect
           personal data from children.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           9. Updates to This Policy
         </h2>
         <p className="text-gray-700 mb-4">
@@ -107,13 +107,13 @@ const Privacy = () => {
           with a revised “Last Updated” date.
         </p>
 
-        <h2 className="text-2xl font-semibold text-blue-600 mt-8 mb-4">
+        <h2 className="text-2xl font-semibold text-black mt-8 mb-4">
           10. Contact Us
         </h2>
         <p className="text-gray-700 mb-2">
           For questions or data requests, contact:
         </p>
-        <p className="font-medium text-blue-700">support@gohire.com</p>
+        <p className="font-medium text-black">support@employverse.com</p>
 
         <p className="mt-8 text-sm text-gray-500">Last Updated: December 2025</p>
       </div>

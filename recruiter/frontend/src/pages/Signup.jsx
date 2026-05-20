@@ -247,39 +247,27 @@ const Signup = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center font-poppins overflow-hidden"
-      style={{
-        backgroundImage: `url(${signupImg})`,
-        height: "100vh",
-      }}
-    >
-      {/* Overlay to maintain readability */}
-      <div className="absolute inset-0 bg-blue-900/60"></div>
-
-      <div className="relative w-11/12 max-w-4xl bg-white/90 rounded-xl shadow-lg p-8 md:p-10">
-        <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-6 relative font-sans">
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl border border-slate-100 shadow-xl p-8 md:p-10">
+        <h2 className="text-3xl font-extrabold text-center text-slate-900 mb-2 tracking-tight">
           Create Your Account
         </h2>
-        <p className="text-center text-yellow-500 font-medium mb-6">
-          Join GoHire and start your journey today!
+        <p className="text-center text-slate-500 font-medium mb-8">
+          Join EmployVerse and start your journey today!
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded text-center">
+            <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl text-center text-sm font-medium">
               {error}
             </div>
           )}
 
           {/* Name Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                First Name <span className="text-yellow-500">*</span>
+              <label htmlFor="firstName" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                First Name <span className="text-blue-600">*</span>
               </label>
               <input
                 id="firstName"
@@ -290,20 +278,18 @@ const Signup = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="First Name"
-                className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${touchedFields.firstName && fieldErrors.firstName
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-blue-300 focus:ring-blue-500"
-                  }`}
+                className={`w-full rounded-xl border p-3.5 text-sm transition-all focus:outline-none focus:ring-2 ${
+                  touchedFields.firstName && fieldErrors.firstName
+                    ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
+                }`}
               />
               {touchedFields.firstName && fieldErrors.firstName && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.firstName}</p>
+                <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.firstName}</p>
               )}
             </div>
             <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-semibold text-blue-800"
-              >
+              <label htmlFor="lastName" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
                 Last Name
               </label>
               <input
@@ -314,24 +300,22 @@ const Signup = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Last Name"
-                className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${touchedFields.lastName && fieldErrors.lastName
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-blue-300 focus:ring-blue-500"
-                  }`}
+                className={`w-full rounded-xl border p-3.5 text-sm transition-all focus:outline-none focus:ring-2 ${
+                  touchedFields.lastName && fieldErrors.lastName
+                    ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
+                }`}
               />
               {touchedFields.lastName && fieldErrors.lastName && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.lastName}</p>
+                <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.lastName}</p>
               )}
             </div>
           </div>
 
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-blue-800"
-            >
-              Email <span className="text-yellow-500">*</span>
+            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+              Email <span className="text-blue-600">*</span>
             </label>
             <input
               id="email"
@@ -341,32 +325,25 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              placeholder="Email"
-              className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${touchedFields.email && fieldErrors.email
-                ? "border-red-500 focus:ring-red-500"
-                : "border-blue-300 focus:ring-blue-500"
-                }`}
+              placeholder="name@company.com"
+              className={`w-full rounded-xl border p-3.5 text-sm transition-all focus:outline-none focus:ring-2 ${
+                touchedFields.email && fieldErrors.email
+                  ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                  : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
+              }`}
             />
             {touchedFields.email && fieldErrors.email && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
+              <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.email}</p>
             )}
           </div>
 
           {/* Phone */}
           <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-semibold text-blue-800"
-            >
-              Phone <span className="text-yellow-500">*</span>
+            <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+              Phone Number <span className="text-blue-600">*</span>
             </label>
-            <div
-              className={`flex border rounded-md overflow-hidden ${touchedFields.phone && fieldErrors.phone
-                ? "border-red-500"
-                : "border-blue-300"
-                }`}
-            >
-              <span className="bg-blue-100 px-3 flex items-center text-blue-800 font-medium">
+            <div className="flex rounded-xl overflow-hidden border border-slate-200 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-600 transition-all">
+              <span className="bg-slate-50 border-r border-slate-200 px-4 flex items-center text-slate-500 text-sm font-medium">
                 +91
               </span>
               <input
@@ -377,29 +354,30 @@ const Signup = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="Phone Number"
+                placeholder="00000 00000"
                 maxLength="10"
-                className={`flex-1 p-2 focus:outline-none focus:ring-2 ${touchedFields.phone && fieldErrors.phone
-                  ? "focus:ring-red-500"
-                  : "focus:ring-blue-500"
-                  }`}
+                className="w-full p-3.5 text-sm focus:outline-none"
               />
             </div>
             {touchedFields.phone && fieldErrors.phone && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.phone}</p>
+              <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.phone}</p>
             )}
           </div>
 
           {/* Gender */}
           <div>
-            <label className="block text-sm font-semibold text-blue-800 mb-1">
-              Gender <span className="text-yellow-500">*</span>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+              Gender <span className="text-blue-600">*</span>
             </label>
-            <div className="flex justify-around text-blue-700">
+            <div className="grid grid-cols-3 gap-4">
               {["male", "female", "other"].map((g) => (
                 <label
                   key={g}
-                  className="flex items-center gap-2 cursor-pointer"
+                  className={`flex items-center justify-center gap-2 p-3.5 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
+                    formData.gender === g
+                      ? "border-blue-600 bg-blue-50/20 text-blue-600"
+                      : "border-slate-200 hover:bg-slate-50 text-slate-600"
+                  }`}
                 >
                   <input
                     type="radio"
@@ -408,163 +386,132 @@ const Signup = () => {
                     checked={formData.gender === g}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="text-blue-600 focus:ring-blue-500"
+                    className="sr-only"
                   />
                   <span className="capitalize">{g}</span>
                 </label>
               ))}
             </div>
             {touchedFields.gender && fieldErrors.gender && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.gender}</p>
+              <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.gender}</p>
             )}
           </div>
 
           {/* Passwords */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                Password <span className="text-yellow-500">*</span>
-              </label>
-
-             <div className="relative">
-  <input
-    id="password"
-    name="password"
-    type={showPassword ? "text" : "password"}
-    required
-    value={formData.password}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    placeholder="Password"
-    className={`mt-1 w-full rounded-md border p-2 pr-10 focus:outline-none focus:ring-2 ${
-      touchedFields.password && fieldErrors.password
-        ? "border-red-500 focus:ring-red-500"
-        : "border-blue-300 focus:ring-blue-500"
-    }`}
-  />
-
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-    aria-label={showPassword ? "Hide password" : "Show password"}
-  >
-    👁️
-  </button>
-</div>
-
-{touchedFields.password && fieldErrors.password && (
-  <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
-)}
-
-<p className="mt-1 text-xs text-blue-600">
-  Password must be at least 8 characters long with at least 2 special characters
-</p>
-
-
-            </div>
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-semibold text-blue-800"
-              >
-                Confirm Password <span className="text-yellow-500">*</span>
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                Password <span className="text-blue-600">*</span>
               </label>
 
               <div className="relative">
-  <input
-    id="confirmPassword"
-    name="confirmPassword"
-    type={showConfirmPassword ? "text" : "password"}
-    required
-    value={formData.confirmPassword}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    placeholder="Confirm Password"
-    className={`mt-1 w-full rounded-md border p-2 pr-10 focus:outline-none focus:ring-2 ${
-      touchedFields.confirmPassword && fieldErrors.confirmPassword
-        ? "border-red-500 focus:ring-red-500"
-        : "border-blue-300 focus:ring-blue-500"
-    }`}
-  />
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="••••••••"
+                  className={`w-full rounded-xl border p-3.5 pr-12 text-sm transition-all focus:outline-none focus:ring-2 ${
+                    touchedFields.password && fieldErrors.password
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-900 focus:outline-none"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
 
-  <button
-    type="button"
-    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-    className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-  >
-    👁️
-  </button>
-</div>
+              {touchedFields.password && fieldErrors.password ? (
+                <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.password}</p>
+              ) : (
+                <p className="mt-1.5 text-xs text-slate-400">
+                  Must be &ge; 8 characters with 2 special characters
+                </p>
+              )}
+            </div>
 
-{touchedFields.confirmPassword && fieldErrors.confirmPassword && (
-  <p className="mt-1 text-sm text-red-600">
-    {fieldErrors.confirmPassword}
-  </p>
-)}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                Confirm Password <span className="text-blue-600">*</span>
+              </label>
 
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="••••••••"
+                  className={`w-full rounded-xl border p-3.5 pr-12 text-sm transition-all focus:outline-none focus:ring-2 ${
+                    touchedFields.confirmPassword && fieldErrors.confirmPassword
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-900 focus:outline-none"
+                >
+                  {showConfirmPassword ? "Hide" : "Show"}
+                </button>
+              </div>
 
+              {touchedFields.confirmPassword && fieldErrors.confirmPassword && (
+                <p className="mt-1.5 text-xs text-red-600 font-medium">
+                  {fieldErrors.confirmPassword}
+                </p>
+              )}
             </div>
           </div>
 
           {/* Terms */}
-          <div>
-            <div className="flex items-start text-sm text-blue-800">
-              <input
-                id="termsAgree"
-                name="termsAgree"
-                type="checkbox"
-                required
-                checked={formData.termsAgree}
-                onChange={handleChange}
-                className="mt-1 mr-2 h-4 w-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="termsAgree">
-                By signing up, you agree to our{" "}
-                <Link
-                  to="/privacy-policy"
-                  className="text-yellow-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </Link>{" "}
-                and{" "}
-                <Link
-                  to="/terms"
-                  className="text-yellow-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Terms of Use
-                </Link>
-                . <span className="text-yellow-500">*</span>
-              </label>
-            </div>
-            {error && error.includes("agree") && (
-              <p className="mt-1 text-sm text-red-600">{error}</p>
-            )}
+          <div className="flex items-start text-sm text-slate-600 pt-2">
+            <input
+              id="termsAgree"
+              name="termsAgree"
+              type="checkbox"
+              required
+              checked={formData.termsAgree}
+              onChange={handleChange}
+              className="mt-1 mr-3 h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 focus:ring-offset-0"
+            />
+            <label htmlFor="termsAgree" className="text-xs font-medium text-slate-500 leading-normal">
+              By signing up, you agree to our{" "}
+              <Link to="/privacy-policy" className="text-blue-600 hover:text-blue-700 font-semibold" target="_blank" rel="noopener noreferrer">
+                Privacy Policy
+              </Link>{" "}
+              and{" "}
+              <Link to="/terms" className="text-blue-600 hover:text-blue-700 font-semibold" target="_blank" rel="noopener noreferrer">
+                Terms of Use
+              </Link>
+              . <span className="text-blue-600">*</span>
+            </label>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full bg-slate-900 hover:bg-black text-white py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 disabled:opacity-50 text-sm"
           >
             {loading ? "Creating Account..." : "Sign Up"}
           </button>
 
-          <div className="text-center text-sm text-blue-800">
+          <div className="text-center text-xs text-slate-500 pt-2">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-yellow-600 hover:text-yellow-500"
-            >
+            <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
               Login
             </Link>
           </div>
@@ -575,3 +522,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

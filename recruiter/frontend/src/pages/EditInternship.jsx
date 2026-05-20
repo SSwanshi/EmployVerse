@@ -130,10 +130,10 @@ const EditInternship = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
+          <h2 className="text-3xl font-bold text-center text-black mb-2">
             Edit Internship
           </h2>
-          <p className="text-center text-yellow-500 font-medium mb-6">
+          <p className="text-center text-gray-800 font-medium mb-6">
             Update internship information
           </p>
 
@@ -146,7 +146,7 @@ const EditInternship = () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded text-center">
+            <div className="mb-6 bg-gray-100 border border-black text-black px-4 py-3 rounded text-center">
               {error}
             </div>
           )}

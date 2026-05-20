@@ -73,10 +73,10 @@ const Jobs = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-blue-800">Jobs</h2>
+        <h2 className="text-3xl font-bold text-black">Jobs</h2>
         <Link
           to="/jobs/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
         >
           + Add Job
         </Link>
@@ -93,7 +93,7 @@ const Jobs = () => {
           <p className="text-gray-500 text-lg">No jobs found.</p>
           <Link
             to="/jobs/add"
-            className="mt-4 inline-block text-blue-600 hover:underline font-medium"
+            className="mt-4 inline-block text-black hover:underline font-medium"
           >
             Add your first job
           </Link>
@@ -102,30 +102,30 @@ const Jobs = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-50">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Company
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Job Title
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Salary (In LPA)
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Positions
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Deadline
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                     Action
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                     Applications
                   </th>
                 </tr>
@@ -180,7 +180,7 @@ const Jobs = () => {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => navigate(`/jobs/edit/${job._id}`)}
-                            className="inline-flex items-center px-3 py-2 border border-blue-300 rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            className="inline-flex items-center px-3 py-2 border border-black rounded-md text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
                             title="Edit Job"
                           >
                             <Pencil className="h-4 w-4" />

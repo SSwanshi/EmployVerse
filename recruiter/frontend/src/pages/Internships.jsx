@@ -78,10 +78,10 @@ const Internships = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-blue-800">Internships</h2>
+        <h2 className="text-3xl font-bold text-black">Internships</h2>
         <Link
           to="/internships/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
         >
           + Add Internship
         </Link>
@@ -98,7 +98,7 @@ const Internships = () => {
           <p className="text-gray-500 text-lg">No internships found.</p>
           <Link
             to="/internships/add"
-            className="mt-4 inline-block text-blue-600 hover:underline font-medium"
+            className="mt-4 inline-block text-black hover:underline font-medium"
           >
             Add your first internship
           </Link>
@@ -107,33 +107,33 @@ const Internships = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-50">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Company
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Internship Title
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Stipend (per month)
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Duration
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Opportunities
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Deadline
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                     Action
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                     Applications
                   </th>
                 </tr>
@@ -195,7 +195,7 @@ const Internships = () => {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => navigate(`/internships/edit/${internship._id}`)}
-                            className="inline-flex items-center px-3 py-2 border border-blue-300 rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            className="inline-flex items-center px-3 py-2 border border-black rounded-md text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
                             title="Edit Internship"
                           >
                             <Pencil className="h-4 w-4" />

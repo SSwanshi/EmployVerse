@@ -50,14 +50,14 @@ const Navbar = () => {
   };
 
   return (
-    <header className="gradient-blue shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4">
+    <header className="bg-white border-b border-slate-100 text-slate-900 sticky top-0 z-50 shadow-sm">
+      <div className="container mx-auto px-6">
         <nav className="flex justify-between items-center py-4">
           {/* Brand Logo */}
           <div>
-            <h2 className="text-2xl font-bold text-white">
-              <span style={{ color: "#dfcc24" }}>Go</span>Hire
-            </h2>
+            <Link to="/dashboard" className="text-2xl font-extrabold tracking-tight hover:opacity-90 transition-opacity">
+              <span className="text-blue-600">Employ</span><span className="text-slate-900">Verse</span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -65,7 +65,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/dashboard"
-                className="hover:text-blue-900 font-medium transition-colors duration-300"
+                className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Home
               </Link>
@@ -73,7 +73,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/companies"
-                className="hover:text-blue-900 font-medium transition-colors duration-300"
+                className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Companies
               </Link>
@@ -81,7 +81,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/upgrade"
-                className="hover:text-blue-900 font-medium transition-colors duration-300"
+                className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Upgrade
               </Link>
@@ -89,7 +89,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/jobs"
-                className="hover:text-blue-900 font-medium transition-colors duration-300"
+                className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Jobs
               </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/internships"
-                className="hover:text-blue-900 font-medium transition-colors duration-300"
+                className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Internships
               </Link>
@@ -107,12 +107,12 @@ const Navbar = () => {
               <li className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center space-x-2 hover:opacity-80 transition-opacity focus:outline-none"
+                  className="flex items-center space-x-2 hover:opacity-90 transition-opacity focus:outline-none"
                 >
                   <img
                     src={getProfileImageUrl()}
                     alt={user?.firstName || "Profile"}
-                    className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover"
+                    className="w-10 h-10 rounded-full border border-slate-200 shadow-sm object-cover"
                     onError={(e) => {
                       e.target.src = defaultImage;
                     }}
@@ -121,19 +121,19 @@ const Navbar = () => {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-1 z-50 border border-slate-100">
                     <button
                       onClick={handleViewProfile}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 flex items-center transition-colors"
+                      className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 flex items-center transition-colors font-medium"
                     >
-                      <User className="h-4 w-4 mr-2" />
+                      <User className="h-4 w-4 mr-2.5 text-slate-400" />
                       View Profile
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 flex items-center transition-colors"
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors font-medium border-t border-slate-100"
                     >
-                      <LogOut className="h-4 w-4 mr-2" />
+                      <LogOut className="h-4 w-4 mr-2.5 text-red-400" />
                       Logout
                     </button>
                   </div>
@@ -143,7 +143,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/login"
-                  className="bg-white text-blue-600 px-4 py-2 rounded-md font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors duration-300 shadow-sm"
+                  className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 shadow-sm shadow-blue-100 text-sm"
                 >
                   Login
                 </Link>
@@ -153,7 +153,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <div
-            className="md:hidden text-white cursor-pointer"
+            className="md:hidden text-slate-700 cursor-pointer"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <svg
@@ -174,11 +174,11 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {menuOpen && (
-          <ul className="flex flex-col md:hidden bg-blue-700 text-white p-4 space-y-4">
+          <ul className="flex flex-col md:hidden bg-slate-50 border-t border-slate-100 p-4 space-y-3 rounded-b-xl">
             <li>
               <Link
                 to="/dashboard"
-                className="hover:text-blue-900"
+                className="block py-2 text-slate-600 hover:text-blue-600 font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 Home
@@ -187,7 +187,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/companies"
-                className="hover:text-blue-900"
+                className="block py-2 text-slate-600 hover:text-blue-600 font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 Companies
@@ -196,7 +196,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/jobs"
-                className="hover:text-blue-900"
+                className="block py-2 text-slate-600 hover:text-blue-600 font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 Jobs
@@ -205,7 +205,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/internships"
-                className="hover:text-blue-900"
+                className="block py-2 text-slate-600 hover:text-blue-600 font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 Internships
@@ -216,7 +216,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/profile"
-                    className="hover:text-blue-900"
+                    className="block py-2 text-slate-600 hover:text-blue-600 font-medium"
                     onClick={() => setMenuOpen(false)}
                   >
                     Profile
@@ -228,7 +228,7 @@ const Navbar = () => {
                       handleLogout();
                       setMenuOpen(false);
                     }}
-                    className="hover:text-blue-900 w-full text-left"
+                    className="block py-2 text-red-600 hover:text-red-700 font-medium w-full text-left"
                   >
                     Logout
                   </button>
@@ -238,7 +238,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/login"
-                  className="bg-white text-blue-600 px-4 py-2 rounded-md font-semibold hover:bg-blue-50 hover:text-blue-700 transition-colors duration-300 inline-block"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block text-sm"
                   onClick={() => setMenuOpen(false)}
                 >
                   Login
@@ -249,16 +249,12 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Embedded gradient styles */}
       <style>{`
-        .gradient-blue {
-          background: linear-gradient(to right, #1d4ed8, #ffe819);
-        }
         .hover-grow {
           transition: transform 0.2s;
         }
         .hover-grow:hover {
-          transform: scale(1.03);
+          transform: scale(1.02);
         }
       `}</style>
     </header>

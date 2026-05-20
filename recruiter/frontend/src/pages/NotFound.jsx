@@ -10,7 +10,7 @@ const NotFound = () => {
             </div>
 
             <div className="relative z-10 text-center max-w-lg">
-                <div className="text-[8rem] sm:text-[10rem] font-extrabold leading-none bg-gradient-to-br from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent animate-pulse">
+                <div className="text-[8rem] sm:text-[10rem] font-extrabold leading-none  from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent animate-pulse">
                     404
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Page Not Found</h1>

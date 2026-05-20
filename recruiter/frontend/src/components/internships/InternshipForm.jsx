@@ -117,9 +117,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
           <div>
             <label
               htmlFor="intTitle"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Internship Title <span className="text-yellow-500">*</span>
+              Internship Title <span className="text-gray-800">*</span>
             </label>
             <Field
               id="intTitle"
@@ -139,7 +139,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
               className={`mt-1 w-full rounded-md border ${
                 errors.intTitle && touched.intTitle
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             />
             <ErrorMessage
@@ -153,9 +153,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
           <div>
             <label
               htmlFor="intCompany"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Company <span className="text-yellow-500">*</span>
+              Company <span className="text-gray-800">*</span>
             </label>
             <Field
               as="select"
@@ -164,7 +164,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
               className={`mt-1 w-full rounded-md border ${
                 errors.intCompany && touched.intCompany
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             >
               <option value="">Select a company</option>
@@ -186,7 +186,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
               className="mt-1 text-sm text-red-600"
             />
             {verifiedCompanies.length === 0 && (
-              <p className="mt-1 text-sm text-yellow-600">
+              <p className="mt-1 text-sm text-black">
                 You need at least one verified company to post an internship.
               </p>
             )}
@@ -196,9 +196,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
           <div>
             <label
               htmlFor="intDescription"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Internship Description <span className="text-yellow-500">*</span>
+              Internship Description <span className="text-gray-800">*</span>
             </label>
             <Field
               as="textarea"
@@ -209,7 +209,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
               className={`mt-1 w-full rounded-md border ${
                 errors.intDescription && touched.intDescription
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2 resize-vertical`}
             />
             <ErrorMessage
@@ -223,9 +223,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
           <div>
             <label
               htmlFor="intRequirements"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Internship Requirements <span className="text-yellow-500">*</span>
+              Internship Requirements <span className="text-gray-800">*</span>
             </label>
             <Field
               as="textarea"
@@ -236,7 +236,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
               className={`mt-1 w-full rounded-md border ${
                 errors.intRequirements && touched.intRequirements
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2 resize-vertical`}
             />
             <ErrorMessage
@@ -252,9 +252,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intStipend"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Stipend (₹) <span className="text-yellow-500">*</span>
+                Stipend (₹) <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intStipend"
@@ -276,7 +276,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intStipend && touched.intStipend
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -290,9 +290,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intLocation"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Internship Location <span className="text-yellow-500">*</span>
+                Internship Location <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intLocation"
@@ -314,7 +314,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intLocation && touched.intLocation
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -331,9 +331,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intDuration"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Duration (Months) <span className="text-yellow-500">*</span>
+                Duration (Months) <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intDuration"
@@ -355,7 +355,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intDuration && touched.intDuration
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -369,9 +369,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intExperience"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Experience (Years) <span className="text-yellow-500">*</span>
+                Experience (Years) <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intExperience"
@@ -393,7 +393,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intExperience && touched.intExperience
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -410,9 +410,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intPositions"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Number of Positions <span className="text-yellow-500">*</span>
+                Number of Positions <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intPositions"
@@ -434,7 +434,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intPositions && touched.intPositions
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -448,9 +448,9 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
             <div>
               <label
                 htmlFor="intExpiry"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Internship Expiry Date <span className="text-yellow-500">*</span>
+                Internship Expiry Date <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="intExpiry"
@@ -460,7 +460,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
                 className={`mt-1 w-full rounded-md border ${
                   errors.intExpiry && touched.intExpiry
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -475,7 +475,7 @@ const InternshipForm = ({ initialValues, onSubmit, isSubmitting, submitButtonTex
           <button
             type="submit"
             disabled={isSubmitting || verifiedCompanies.length === 0}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-black hover:bg-black text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? 'Submitting...' : submitButtonText}
           </button>

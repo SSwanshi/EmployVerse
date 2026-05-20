@@ -109,10 +109,10 @@ const Companies = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-blue-800">Companies</h2>
+        <h2 className="text-3xl font-bold text-black">Companies</h2>
         <Link
           to="/companies/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
         >
           + Add Company
         </Link>
@@ -129,7 +129,7 @@ const Companies = () => {
           <p className="text-gray-500 text-lg">No companies found.</p>
           <Link
             to="/companies/add"
-            className="mt-4 inline-block text-blue-600 hover:underline font-medium"
+            className="mt-4 inline-block text-black hover:underline font-medium"
           >
             Add your first company
           </Link>
@@ -138,24 +138,24 @@ const Companies = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-50">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Logo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Website
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Location
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                     Action
                   </th>
                 </tr>
@@ -181,7 +181,7 @@ const Companies = () => {
                             />
                           ) : null}
                           <div
-                            className={`h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-lg ${
+                            className={`h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-black font-semibold text-lg ${
                               logoUrl ? 'hidden' : ''
                             }`}
                             style={{ display: logoUrl ? 'none' : 'flex' }}
@@ -202,7 +202,7 @@ const Companies = () => {
                               href={company.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 hover:underline truncate block max-w-xs"
+                              className="text-black hover:text-black hover:underline truncate block max-w-xs"
                             >
                               Visit
                             </a>
@@ -241,7 +241,7 @@ const Companies = () => {
                           )}
                           <button
                             onClick={() => navigate(`/companies/edit/${company._id}`)}
-                            className="inline-flex items-center px-3 py-2 border border-blue-300 rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            className="inline-flex items-center px-3 py-2 border border-black rounded-md text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
                             title="Edit Company"
                           >
                             <Pencil className="h-4 w-4" />

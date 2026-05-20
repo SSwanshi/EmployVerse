@@ -112,9 +112,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
           <div>
             <label
               htmlFor="jobTitle"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Job Title <span className="text-yellow-500">*</span>
+              Job Title <span className="text-gray-800">*</span>
             </label>
             <Field
               id="jobTitle"
@@ -134,7 +134,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
               className={`mt-1 w-full rounded-md border ${
                 errors.jobTitle && touched.jobTitle
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             />
             <ErrorMessage
@@ -148,9 +148,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
           <div>
             <label
               htmlFor="jobCompany"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Company <span className="text-yellow-500">*</span>
+              Company <span className="text-gray-800">*</span>
             </label>
             <Field
               as="select"
@@ -159,7 +159,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
               className={`mt-1 w-full rounded-md border ${
                 errors.jobCompany && touched.jobCompany
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             >
               <option value="">Select a company</option>
@@ -181,7 +181,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
               className="mt-1 text-sm text-red-600"
             />
             {verifiedCompanies.length === 0 && (
-              <p className="mt-1 text-sm text-yellow-600">
+              <p className="mt-1 text-sm text-black">
                 You need at least one verified company to post a job.
               </p>
             )}
@@ -191,9 +191,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
           <div>
             <label
               htmlFor="jobDescription"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Job Description <span className="text-yellow-500">*</span>
+              Job Description <span className="text-gray-800">*</span>
             </label>
             <Field
               as="textarea"
@@ -204,7 +204,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
               className={`mt-1 w-full rounded-md border ${
                 errors.jobDescription && touched.jobDescription
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2 resize-vertical`}
             />
             <ErrorMessage
@@ -218,9 +218,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
           <div>
             <label
               htmlFor="jobRequirements"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Job Requirements <span className="text-yellow-500">*</span>
+              Job Requirements <span className="text-gray-800">*</span>
             </label>
             <Field
               as="textarea"
@@ -231,7 +231,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
               className={`mt-1 w-full rounded-md border ${
                 errors.jobRequirements && touched.jobRequirements
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2 resize-vertical`}
             />
             <ErrorMessage
@@ -247,9 +247,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="jobSalary"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Salary (in LPA) <span className="text-yellow-500">*</span>
+                Salary (in LPA) <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="jobSalary"
@@ -271,7 +271,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.jobSalary && touched.jobSalary
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -285,9 +285,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="jobLocation"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Job Location <span className="text-yellow-500">*</span>
+                Job Location <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="jobLocation"
@@ -309,7 +309,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.jobLocation && touched.jobLocation
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -326,9 +326,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="jobType"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Job Type <span className="text-yellow-500">*</span>
+                Job Type <span className="text-gray-800">*</span>
               </label>
               <Field
                 as="select"
@@ -337,7 +337,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.jobType && touched.jobType
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               >
                 <option value="">Select job type</option>
@@ -356,9 +356,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="jobExperience"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Experience (Years) <span className="text-yellow-500">*</span>
+                Experience (Years) <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="jobExperience"
@@ -380,7 +380,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.jobExperience && touched.jobExperience
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -397,9 +397,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="noofPositions"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Number of Positions <span className="text-yellow-500">*</span>
+                Number of Positions <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="noofPositions"
@@ -421,7 +421,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.noofPositions && touched.noofPositions
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -435,9 +435,9 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
             <div>
               <label
                 htmlFor="jobExpiry"
-                className="block text-sm font-semibold text-blue-800 mb-1"
+                className="block text-sm font-semibold text-black mb-1"
               >
-                Job Expiry Date <span className="text-yellow-500">*</span>
+                Job Expiry Date <span className="text-gray-800">*</span>
               </label>
               <Field
                 id="jobExpiry"
@@ -447,7 +447,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 className={`mt-1 w-full rounded-md border ${
                   errors.jobExpiry && touched.jobExpiry
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
+                    : 'border-black focus:ring-black'
                 } p-2 focus:outline-none focus:ring-2`}
               />
               <ErrorMessage
@@ -462,7 +462,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
           <button
             type="submit"
             disabled={isSubmitting || verifiedCompanies.length === 0}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-black hover:bg-black text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? 'Submitting...' : submitButtonText}
           </button>

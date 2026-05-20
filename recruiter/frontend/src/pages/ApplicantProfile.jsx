@@ -104,7 +104,7 @@ const ApplicantProfile = () => {
       <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-4xl mx-auto">
           <div className="mb-4">
-            <button onClick={() => navigate(-1)} className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            <button onClick={() => navigate(-1)} className="inline-flex items-center text-black hover:text-black font-medium">
               <ArrowLeft className="h-4 w-4 mr-2" /> Back
             </button>
           </div>
@@ -119,11 +119,11 @@ const ApplicantProfile = () => {
       <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-4xl mx-auto">
           <div className="mb-4">
-            <button onClick={() => navigate(-1)} className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            <button onClick={() => navigate(-1)} className="inline-flex items-center text-black hover:text-black font-medium">
               <ArrowLeft className="h-4 w-4 mr-2" /> Back
             </button>
           </div>
-          <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded">
+          <div className="bg-gray-100 border border-black text-black px-4 py-3 rounded">
             No applicant data found.
           </div>
         </div>
@@ -138,15 +138,15 @@ const ApplicantProfile = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <button onClick={() => navigate(-1)} className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium mb-4">
+          <button onClick={() => navigate(-1)} className="inline-flex items-center text-black hover:text-black font-medium mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" /> Back to Applications
           </button>
-          <h1 className="text-3xl font-bold text-blue-800">Applicant Profile</h1>
+          <h1 className="text-3xl font-bold text-black">Applicant Profile</h1>
         </div>
 
         {/* Profile Header Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 h-32"></div>
+          <div className=" bg-black text-white  h-32"></div>
           <div className="px-6 pb-6 -mt-16">
             <div className="flex flex-col md:flex-row md:items-end md:gap-6">
               <div className="flex justify-center md:justify-start">
@@ -164,12 +164,12 @@ const ApplicantProfile = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-center md:justify-start text-gray-600">
                     <Mail className="h-4 w-4 mr-2" />
-                    <a href={`mailto:${applicant.email}`} className="text-blue-600 hover:underline">{applicant.email}</a>
+                    <a href={`mailto:${applicant.email}`} className="text-black hover:underline">{applicant.email}</a>
                   </div>
                   {applicant.phone && (
                     <div className="flex items-center justify-center md:justify-start text-gray-600">
                       <Phone className="h-4 w-4 mr-2" />
-                      <a href={`tel:${applicant.phone}`} className="text-blue-600 hover:underline">{applicant.phone}</a>
+                      <a href={`tel:${applicant.phone}`} className="text-black hover:underline">{applicant.phone}</a>
                     </div>
                   )}
                 </div>
@@ -180,7 +180,7 @@ const ApplicantProfile = () => {
 
         {/* Personal Information */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-black mb-4 flex items-center">
             <User className="h-5 w-5 mr-2" /> Personal Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -206,7 +206,7 @@ const ApplicantProfile = () => {
         {/* About */}
         {applicant.about && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <User className="h-5 w-5 mr-2" /> About
             </h3>
             <p className="text-gray-700 whitespace-pre-wrap">{applicant.about}</p>
@@ -216,12 +216,12 @@ const ApplicantProfile = () => {
         {/* Skills */}
         {skillsList.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <Code className="h-5 w-5 mr-2" /> Skills
             </h3>
             <div className="flex flex-wrap gap-2">
               {skillsList.map((skill, index) => (
-                <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                <span key={index} className="bg-gray-100 text-black px-3 py-1 rounded-full text-sm font-medium">
                   {skill}
                 </span>
               ))}
@@ -232,7 +232,7 @@ const ApplicantProfile = () => {
         {/* Work Experience */}
         {applicant.workExperience && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <Briefcase className="h-5 w-5 mr-2" /> Work Experience
             </h3>
             <p className="text-gray-700 whitespace-pre-wrap">{applicant.workExperience}</p>
@@ -242,7 +242,7 @@ const ApplicantProfile = () => {
         {/* Achievements */}
         {applicant.achievements && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <Trophy className="h-5 w-5 mr-2" /> Achievements
             </h3>
             <p className="text-gray-700 whitespace-pre-wrap">{applicant.achievements}</p>
@@ -252,13 +252,13 @@ const ApplicantProfile = () => {
         {/* Social / Portfolio Links */}
         {(applicant.linkedinProfile || applicant.githubProfile || applicant.portfolioWebsite) && (
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <Globe className="h-5 w-5 mr-2" /> Links
             </h3>
             <div className="space-y-3">
               {applicant.linkedinProfile && (
                 <a href={applicant.linkedinProfile} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-blue-600 hover:underline">
+                  className="flex items-center gap-2 text-black hover:underline">
                   <Linkedin className="h-5 w-5" /> {applicant.linkedinProfile}
                 </a>
               )}
@@ -281,14 +281,14 @@ const ApplicantProfile = () => {
         {/* Resume */}
         {applicant.hasResume && (
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-black mb-4 flex items-center">
               <FileText className="h-5 w-5 mr-2" /> Resume
             </h3>
             <a
               href={`${API_BASE}/api/applicant/resume/${applicant.userId || applicantId}?token=${encodeURIComponent(getStoredToken())}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-black transition-colors font-medium"
             >
               <FileText className="h-4 w-4" />
               View Resume

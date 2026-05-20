@@ -107,9 +107,9 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
           <div>
             <label
               htmlFor="companyName"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Company Name <span className="text-yellow-500">*</span>
+              Company Name <span className="text-gray-800">*</span>
             </label>
             <Field
               id="companyName"
@@ -126,7 +126,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
               className={`mt-1 w-full rounded-md border ${
                 errors.companyName && touched.companyName
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             />
             <ErrorMessage
@@ -140,9 +140,9 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
           <div>
             <label
               htmlFor="website"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Website <span className="text-yellow-500">*</span>
+              Website <span className="text-gray-800">*</span>
             </label>
             <Field
               id="website"
@@ -152,7 +152,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
               className={`mt-1 w-full rounded-md border ${
                 errors.website && touched.website
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             />
             <ErrorMessage
@@ -166,9 +166,9 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
           <div>
             <label
               htmlFor="location"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
-              Location <span className="text-yellow-500">*</span>
+              Location <span className="text-gray-800">*</span>
             </label>
             <Field
               id="location"
@@ -185,7 +185,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
               className={`mt-1 w-full rounded-md border ${
                 errors.location && touched.location
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
+                  : 'border-black focus:ring-black'
               } p-2 focus:outline-none focus:ring-2`}
             />
             <ErrorMessage
@@ -199,7 +199,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
           <div>
             <label
               htmlFor="logo"
-              className="block text-sm font-semibold text-blue-800 mb-1"
+              className="block text-sm font-semibold text-black mb-1"
             >
               Company Logo
               <span className="text-gray-500 text-xs font-normal ml-2">
@@ -218,8 +218,8 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
               className={`mt-1 w-full rounded-md border ${
                 errors.logo && touched.logo
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-blue-300 focus:ring-blue-500'
-              } p-2 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`}
+                  : 'border-black focus:ring-black'
+              } p-2 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-100`}
             />
             {values.logo && (
               <p className="mt-1 text-sm text-gray-600">
@@ -239,9 +239,9 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
               <div className="flex items-center gap-2 mb-1">
                 <label
                   htmlFor="proofDocument"
-                  className="block text-sm font-semibold text-blue-800"
+                  className="block text-sm font-semibold text-black"
                 >
-                  Proof Document <span className="text-yellow-500">*</span>
+                  Proof Document <span className="text-gray-800">*</span>
                   <span className="text-gray-500 text-xs font-normal ml-2">
                     (PDF, JPG, PNG, max 10MB)
                   </span>
@@ -249,7 +249,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
                 <div className="relative group">
                   <button
                     type="button"
-                    className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 flex items-center justify-center text-xs font-bold cursor-help transition-colors"
+                    className="w-5 h-5 rounded-full bg-gray-100 text-black hover:bg-gray-100 flex items-center justify-center text-xs font-bold cursor-help transition-colors"
                     aria-label="Information about proof document"
                   >
                     i
@@ -291,8 +291,8 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
                 className={`mt-1 w-full rounded-md border ${
                   errors.proofDocument && touched.proofDocument
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-blue-300 focus:ring-blue-500'
-                } p-2 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100`}
+                    : 'border-black focus:ring-black'
+                } p-2 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-100`}
               />
               {values.proofDocument && (
                 <div className="mt-2">
@@ -330,7 +330,7 @@ const CompanyForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText =
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full bg-black hover:bg-black text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? 'Submitting...' : submitButtonText}
           </button>

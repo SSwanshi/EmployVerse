@@ -57,45 +57,32 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center font-poppins relative"
-      style={{
-        backgroundImage: `url(${signupImg})`,
-        height: "100vh",
-      }}
-    >
-      {/* Blue overlay for readability */}
-      <div className="absolute inset-0 bg-blue-900/60"></div>
-
-      <div className="relative w-11/12 max-w-md bg-white/90 rounded-xl shadow-lg p-8 md:p-10">
-        <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative font-sans">
+      <div className="relative w-11/12 max-w-md bg-white rounded-2xl border border-slate-100 shadow-xl p-8 md:p-10">
+        <h2 className="text-3xl font-extrabold text-center text-slate-900 mb-2 tracking-tight">
           {show2FA ? "Two-Factor Auth" : "Recruiter Sign In"}
         </h2>
-        <p className="text-center text-yellow-500 font-medium mb-6">
-          {show2FA ? "Verify your identity" : "Welcome back to GoHire"}
+        <p className="text-center text-slate-500 font-medium mb-8">
+          {show2FA ? "Verify your identity" : "Welcome back to EmployVerse"}
         </p>
 
-        <form onSubmit={show2FA ? handleVerify2FA : handleSubmit} className="space-y-6">
+        <form onSubmit={show2FA ? handleVerify2FA : handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded text-center">
+            <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl text-center text-sm font-medium">
               {error}
             </div>
           )}
           {message && (
-            <div className="bg-blue-100 border border-blue-400 text-blue-800 px-4 py-2 rounded text-center">
+            <div className="bg-blue-50 border border-blue-100 text-blue-700 px-4 py-3 rounded-xl text-center text-sm font-medium">
               {message}
             </div>
           )}
 
           {!show2FA ? (
             <>
-              {/* Email */}
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold text-blue-800"
-                >
-                  Email <span className="text-yellow-500">*</span>
+                <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  Email <span className="text-blue-600">*</span>
                 </label>
                 <input
                   id="email"
@@ -110,55 +97,42 @@ const Login = () => {
                     const error = validateEmail(e.target.value);
                     setEmailError(error);
                   }}
-                  placeholder="Enter your email"
-                  className={`mt-1 w-full rounded-md border p-2 focus:outline-none focus:ring-2 ${emailError
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-blue-300 focus:ring-blue-500"
+                  placeholder="name@company.com"
+                  className={`w-full rounded-xl border p-3.5 text-sm transition-all focus:outline-none focus:ring-2 ${emailError
+                      ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
+                      : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-600"
                     }`}
                 />
                 {emailError && (
-                  <p className="mt-1 text-sm text-red-600">{emailError}</p>
+                  <p className="mt-1.5 text-xs text-red-600 font-medium">{emailError}</p>
                 )}
               </div>
 
-              {/* Password */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold text-blue-800"
-                >
-                  Password <span className="text-yellow-500">*</span>
-                </label>
+                <div className="flex justify-between items-center mb-2">
+                  <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Password <span className="text-blue-600">*</span>
+                  </label>
+                  <Link to="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-semibold transition-colors">
+                    Forgot password?
+                  </Link>
+                </div>
                 <input
                   id="password"
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  className="mt-1 w-full rounded-md border border-blue-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="••••••••"
+                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600"
                 />
-              </div>
-
-              {/* Forgot Password */}
-              <div className="text-right">
-                <Link
-                  to="/forgot-password"
-                  className="text-sm text-yellow-600 hover:text-yellow-500 font-medium"
-                >
-                  Forgot password?
-                </Link>
               </div>
             </>
           ) : (
             <>
-              {/* OTP */}
               <div>
-                <label
-                  htmlFor="otp"
-                  className="block text-sm font-semibold text-blue-800"
-                >
-                  Enter OTP <span className="text-yellow-500">*</span>
+                <label htmlFor="otp" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  Enter OTP <span className="text-blue-600">*</span>
                 </label>
                 <input
                   id="otp"
@@ -167,8 +141,8 @@ const Login = () => {
                   maxLength="6"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  placeholder="Enter 6-digit OTP"
-                  className="mt-1 w-full rounded-md border border-blue-300 p-2 text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="000000"
+                  className="w-full rounded-xl border border-slate-200 p-3.5 text-center text-2xl tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 font-semibold"
                 />
               </div>
 
@@ -181,7 +155,7 @@ const Login = () => {
                     setError("");
                     setMessage("");
                   }}
-                  className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+                  className="text-xs text-blue-600 hover:text-blue-700 font-semibold transition-colors"
                 >
                   Back to login
                 </button>
@@ -189,24 +163,19 @@ const Login = () => {
             </>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full bg-slate-900 hover:bg-black text-white py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 disabled:opacity-50 text-sm mt-2"
           >
             {loading
               ? (show2FA ? "Verifying..." : "Signing in...")
               : (show2FA ? "Verify OTP" : "Sign In")}
           </button>
 
-
-          <p className="text-center text-sm text-blue-800">
+          <p className="text-center text-xs text-slate-500 pt-4">
             Don’t have an account?{" "}
-            <Link
-              to="/signup"
-              className="font-medium text-yellow-600 hover:text-yellow-500"
-            >
+            <Link to="/signup" className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
               Sign Up
             </Link>
           </p>
@@ -217,3 +186,4 @@ const Login = () => {
 };
 
 export default Login;
+

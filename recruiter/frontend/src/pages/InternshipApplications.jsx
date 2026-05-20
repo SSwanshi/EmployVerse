@@ -148,12 +148,12 @@ const InternshipApplications = () => {
         <div className="mb-6">
           <Link
             to="/internships"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
+            className="inline-flex items-center text-black hover:text-black mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Internships
           </Link>
-          <h2 className="text-3xl font-bold text-blue-800">
+          <h2 className="text-3xl font-bold text-black">
             Internship Applications
           </h2>
           {internshipTitle && (
@@ -178,30 +178,30 @@ const InternshipApplications = () => {
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-blue-50">
+                <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Phone
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Gender
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Applied Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Resume
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-blue-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
@@ -221,7 +221,7 @@ const InternshipApplications = () => {
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           {user?.isPremium ? (
-                            <div className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                            <div className="text-sm font-medium text-black hover:text-black">
                               <Link to={`/applicant/${application.userId}`} className="hover:underline">
                                 {applicantName || 'N/A'}
                               </Link>
@@ -230,7 +230,7 @@ const InternshipApplications = () => {
                             <div className="text-sm font-medium text-gray-900 flex items-center gap-1.5">
                               {applicantName || 'N/A'}
                               <Link to="/upgrade" title="Upgrade to Pro to view profile">
-                                <Lock className="h-3.5 w-3.5 text-yellow-500" />
+                                <Lock className="h-3.5 w-3.5 text-gray-800" />
                               </Link>
                             </div>
                           )}
@@ -239,7 +239,7 @@ const InternshipApplications = () => {
                           <div className="text-sm text-gray-600">
                             <a
                               href={`mailto:${application.email}`}
-                              className="text-blue-600 hover:text-blue-800 hover:underline"
+                              className="text-black hover:text-black hover:underline"
                             >
                               {application.email || 'N/A'}
                             </a>
@@ -249,7 +249,7 @@ const InternshipApplications = () => {
                           <div className="text-sm text-gray-600">
                             <a
                               href={`tel:${application.phone}`}
-                              className="text-blue-600 hover:text-blue-800 hover:underline"
+                              className="text-black hover:text-black hover:underline"
                             >
                               {application.phone || 'N/A'}
                             </a>
@@ -274,7 +274,7 @@ const InternshipApplications = () => {
                               href={getResumeUrl(application.resumeId)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline"
+                              className="inline-flex items-center text-black hover:text-black hover:underline"
                             >
                               <FileText className="h-4 w-4 mr-1" />
                               View Resume
@@ -321,12 +321,12 @@ const InternshipApplications = () => {
                             )}
                             {application.isSelected && (
                               <span className="text-green-700 text-sm font-medium">
-                                Selected ✓
+                                Selected 
                               </span>
                             )}
                             {application.isRejected && (
                               <span className="text-red-700 text-sm font-medium">
-                                Rejected ✗
+                                Rejected 
                               </span>
                             )}
                           </div>

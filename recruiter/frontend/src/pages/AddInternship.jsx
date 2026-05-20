@@ -88,10 +88,10 @@ const AddInternship = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-blue-800 mb-2">
+          <h2 className="text-3xl font-bold text-center text-black mb-2">
             Add Internship
           </h2>
-          <p className="text-center text-yellow-500 font-medium mb-6">
+          <p className="text-center text-gray-800 font-medium mb-6">
             Post a new internship opportunity and find talented interns
           </p>
 
@@ -122,7 +122,7 @@ const AddInternship = () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded text-center">
+            <div className="mb-6 bg-gray-100 border border-black text-black px-4 py-3 rounded text-center">
               {error}
             </div>
           )}
@@ -130,16 +130,16 @@ const AddInternship = () => {
           {/* Loading Companies */}
           {loadingCompanies ? (
             <div className="text-center py-8">
-              <p className="text-blue-800">Loading companies...</p>
+              <p className="text-black">Loading companies...</p>
             </div>
           ) : verifiedCompanies.length === 0 ? (
-            <div className="mb-6 bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded">
+            <div className="mb-6 bg-gray-100 border border-black text-black px-4 py-3 rounded">
               <p className="font-semibold mb-2">No Verified Companies</p>
               <p className="text-sm">
                 You need at least one verified company to post an internship.{' '}
                 <a
                   href="/companies/add"
-                  className="text-blue-600 hover:underline font-medium"
+                  className="text-black hover:underline font-medium"
                 >
                   Add a company
                 </a>{' '}

@@ -106,11 +106,11 @@ const EditProfile = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-blue-800 mb-2 flex items-center justify-center">
+          <h2 className="text-3xl font-bold text-center text-black mb-2 flex items-center justify-center">
             <UserIcon className="h-8 w-8 mr-2" />
             Edit Profile
           </h2>
-          <p className="text-center text-yellow-500 font-medium mb-6">
+          <p className="text-center text-gray-800 font-medium mb-6">
             Update your profile information
           </p>
 
@@ -123,7 +123,7 @@ const EditProfile = () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded text-center">
+            <div className="mb-6 bg-gray-100 border border-black text-black px-4 py-3 rounded text-center">
               {error}
             </div>
           )}
@@ -140,9 +140,9 @@ const EditProfile = () => {
                 <div>
                   <label
                     htmlFor="firstName"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
-                    First Name <span className="text-yellow-500">*</span>
+                    First Name <span className="text-gray-800">*</span>
                   </label>
                   <Field
                     id="firstName"
@@ -151,7 +151,7 @@ const EditProfile = () => {
                     placeholder="Enter your first name"
                     className={`mt-1 w-full rounded-md border ${errors.firstName && touched.firstName
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-blue-300 focus:ring-blue-500'
+                        : 'border-black focus:ring-black'
                       } p-2 focus:outline-none focus:ring-2`}
                     onKeyPress={(e) => {
                       const char = String.fromCharCode(e.which);
@@ -175,7 +175,7 @@ const EditProfile = () => {
                 <div>
                   <label
                     htmlFor="lastName"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
                     Last Name
                   </label>
@@ -186,7 +186,7 @@ const EditProfile = () => {
                     placeholder="Enter your last name"
                     className={`mt-1 w-full rounded-md border ${errors.lastName && touched.lastName
                         ? 'border-red-500 focus:ring-red-500'
-                        : 'border-blue-300 focus:ring-blue-500'
+                        : 'border-black focus:ring-black'
                       } p-2 focus:outline-none focus:ring-2`}
                     onKeyPress={(e) => {
                       const char = String.fromCharCode(e.which);
@@ -210,7 +210,7 @@ const EditProfile = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
                     Email
                   </label>
@@ -230,12 +230,12 @@ const EditProfile = () => {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-semibold text-blue-800 mb-1"
+                    className="block text-sm font-semibold text-black mb-1"
                   >
-                    Phone <span className="text-yellow-500">*</span>
+                    Phone <span className="text-gray-800">*</span>
                   </label>
-                  <div className="flex border border-blue-300 rounded-md overflow-hidden">
-                    <span className="bg-blue-100 px-3 flex items-center text-blue-800 font-medium">
+                  <div className="flex border border-black rounded-md overflow-hidden">
+                    <span className="bg-gray-100 px-3 flex items-center text-black font-medium">
                       +91
                     </span>
                     <Field
@@ -246,7 +246,7 @@ const EditProfile = () => {
                       maxLength="10"
                       className={`flex-1 p-2 focus:outline-none focus:ring-2 ${errors.phone && touched.phone
                           ? 'border-red-500 focus:ring-red-500'
-                          : 'focus:ring-blue-500'
+                          : 'focus:ring-black'
                         }`}
                       onKeyPress={(e) => {
                         const char = String.fromCharCode(e.which);
@@ -269,10 +269,10 @@ const EditProfile = () => {
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-semibold text-blue-800 mb-1">
-                    Gender <span className="text-yellow-500">*</span>
+                  <label className="block text-sm font-semibold text-black mb-1">
+                    Gender <span className="text-gray-800">*</span>
                   </label>
-                  <div className="flex justify-around text-blue-700 mt-2">
+                  <div className="flex justify-around text-black mt-2">
                     {['male', 'female', 'other'].map((g) => (
                       <label
                         key={g}
@@ -282,7 +282,7 @@ const EditProfile = () => {
                           type="radio"
                           name="gender"
                           value={g}
-                          className="text-blue-600 focus:ring-blue-500"
+                          className="text-black focus:ring-black"
                         />
                         <span className="capitalize">{g}</span>
                       </label>
@@ -300,7 +300,7 @@ const EditProfile = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex-1 bg-black hover:bg-black text-white py-3 rounded-md font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isSubmitting ? 'Updating...' : 'Update Profile'}
                   </button>
