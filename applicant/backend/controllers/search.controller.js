@@ -3,8 +3,6 @@ const connectRecruiterDB = require('../config/recruiterDB');
 const createJobModel = require('../models/recruiter/Job');
 const createInternshipModel = require('../models/recruiter/Internships');
 const createCompanyModel = require('../models/recruiter/Company');
-const { isSolrEnabled } = require('../config/solr');
-const { searchJobsAndInternships } = require('../services/solrSearch.service');
 
 async function searchWithFuse(enteredValue) {
   const recruiterConn = await connectRecruiterDB();
@@ -92,36 +90,12 @@ const search = async (req, res) => {
     const { parsedValue } = req.body;
     const enteredValue = typeof parsedValue === 'string' ? parsedValue : '';
 
-    let jobs;
-    let internships;
-    let engine = 'solr';
+    const out = await searchWithFuse(enteredValue);
 
-    if (isSolrEnabled() && enteredValue.trim()) {
-      try {
-        const out = await searchJobsAndInternships(enteredValue);
-        jobs = out.jobs;
-        internships = out.internships;
-        engine = 'solr';
-      } catch (e) {
-        console.error('Solr search failed, falling back to Fuse:', e.message || e);
-        const out = await searchWithFuse(enteredValue);
-        jobs = out.jobs;
-        internships = out.internships;
-        engine = 'solr';
-      }
-    } else {
-      const out = await searchWithFuse(enteredValue);
-      jobs = out.jobs;
-      internships = out.internships;
-      engine = 'solr';
-    }
-
-    res.setHeader('X-Search-Engine', engine);
     res.json({
-      engine,
       query: enteredValue,
-      jobs,
-      internships,
+      jobs: out.jobs,
+      internships: out.internships,
     });
   } catch (error) {
     console.error('Search error:', error);

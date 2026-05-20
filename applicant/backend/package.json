@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --forceExit",
-    "dev": "nodemon app.js",
-    "solr:init": "node scripts/solr-init-schema.js",
-    "solr:index": "node scripts/solr-index-all.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",

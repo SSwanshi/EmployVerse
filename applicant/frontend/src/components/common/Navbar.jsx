@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import FuzzySearch from './FuzzySearch';
+import NotificationDropdown from './NotificationDropdown';
+import { applicantApi } from '../../services/applicantApi';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -8,6 +11,48 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+  
+  // Memoize keys so Fuse doesn't re-instantiate on scroll
+  const searchKeys = useMemo(() => ['title', 'company', 'location'], []);
+
+  // Fetch data for fuzzy search on mount
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const [jobsRes, intRes] = await Promise.all([
+          applicantApi.getJobs(''),
+          applicantApi.getInternships('')
+        ]);
+        
+        const jobs = jobsRes?.jobs || [];
+        const internships = intRes?.internships || [];
+        
+        const formattedData = [
+          ...jobs.filter(j => j && j.jobTitle).map(j => ({
+            id: j._id,
+            title: j.jobTitle,
+            company: j.jobCompany?.companyName || 'Unknown',
+            location: j.jobLocation || '',
+            type: 'Job'
+          })),
+          ...internships.filter(i => i && i.intProfile).map(i => ({
+            id: i._id,
+            title: i.intProfile,
+            company: i.intCompany?.companyName || 'Unknown',
+            location: i.intLocation || '',
+            type: 'Internship'
+          }))
+        ];
+        
+        setSearchData(formattedData);
+      } catch (err) {
+        console.error("Failed to fetch search data for Navbar suggestions", err);
+      }
+    };
+    
+    fetchSearchData();
+  }, []);
 
   // Handle scroll for navbar
   useEffect(() => {
@@ -58,44 +103,13 @@ const Navbar = () => {
         </Link>
 
         {/* Search bar */}
-        <div className="relative w-2/5 md:max-w-md group hidden sm:block">
-          <form onSubmit={handleSearch} id="search-form">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 to-slate-800/20 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-              <input
-                id="search-space"
-                type="text"
-                placeholder="Search for opportunities..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleSearchKeyPress}
-                className="relative w-full py-3 px-5 pr-12 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900 border-2 border-slate-400/60 focus:outline-none focus:ring-4 focus:ring-slate-900/30 focus:border-black transition-all duration-300 text-sm placeholder:text-slate-600 font-medium shadow-lg shadow-slate-900/10 hover:border-slate-600 hover:shadow-slate-900/20"
-              />
-            </div>
-          </form>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 hover:text-black transition-colors">
-            <button
-              type="button"
-              onClick={handleSearch}
-              id="search-btn"
-              className="cursor-pointer flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
+        <div className="relative w-2/5 md:max-w-md group hidden sm:block z-50">
+          <FuzzySearch 
+            data={searchData}
+            keys={searchKeys}
+            placeholder="Search for opportunities..."
+            onSelect={(item) => navigate(`/search?q=${encodeURIComponent(item.title)}`)}
+          />
         </div>
 
         {/* Desktop Menu */}
@@ -132,6 +146,11 @@ const Navbar = () => {
               Contact Us
             </Link>
           </li>
+          {isAuthenticated && (
+            <li>
+              <NotificationDropdown />
+            </li>
+          )}
           {isAuthenticated ? (
             <li className="relative group flex items-center">
               <button className="bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-4.5 rounded-xl transition-all duration-300 hover:shadow-md flex items-center text-sm cursor-pointer">
