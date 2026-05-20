@@ -152,11 +152,11 @@ const Home = () => {
         <div className="absolute bottom-1/4 right-1/10 w-96 h-96 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-16 pl-8 pr-8">
             {/* Left Content */}
             <div
               ref={headerTextRef}
-              className="lg:w-1/2 text-center lg:text-left transform transition-all duration-700 translate-y-8 opacity-0"
+              className="lg:w-1/2 text-center lg:text-left transform transition-all duration-700 translate-y-8 opacity-0 pr-12"
               id="header-text"
             >
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 ">
