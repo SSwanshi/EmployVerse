@@ -255,7 +255,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-slate-50/50">
       <style>{shineStyle}</style>
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-slate-900 text-white border-b border-slate-800">
+      <div className="relative overflow-hidden bg-slate-900 text-white border-b border-slate-800 min-h-screen">
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-blue-900 rounded-full opacity-10 blur-3xl"></div>
@@ -263,10 +263,10 @@ const Dashboard = () => {
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-blue-950 rounded-full opacity-10 blur-3xl"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto py-20 px-6 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 min-h-screen lg:h-screen py-24 lg:py-0 flex flex-col justify-center mt-8 lg:mt-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
-            <div className="text-left space-y-6">
+            <div className="text-left space-y-6 mt-12 lg:mt-0">
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
                 Welcome,{' '}
@@ -285,7 +285,7 @@ const Dashboard = () => {
               </p>
 
               {/* Feature Pills */}
-              <div className="grid grid-cols-2 gap-3 pt-4 max-w-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 max-w-md mx-auto lg:mx-0">
                 <div className="flex items-center justify-center bg-slate-800/40 border border-slate-700/60 text-slate-300 px-4 py-2.5 rounded-xl text-sm font-medium text-center">
                   <CheckCircle className="w-4 h-4 mr-2.5 text-blue-500 flex-shrink-0" />
                   <span>Easy Management</span>

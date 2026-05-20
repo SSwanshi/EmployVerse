@@ -43,8 +43,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white fixed w-full z-20 transition-all duration-300 border-b border-slate-100 ${
-        navbarScrolled ? 'py-3.5 shadow-md bg-white/95 backdrop-blur-md' : 'py-5.5 shadow-sm bg-white'
+      className={`bg-white fixed w-full z-50 transition-all duration-300 border-b border-slate-100 ${
+        navbarScrolled && !mobileMenuOpen ? 'py-3.5 shadow-md bg-white/95 backdrop-blur-md' : 'py-5.5 shadow-sm bg-white'
       }`}
       id="navbar"
     >
@@ -198,26 +198,63 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu */}
-        <div className="md:hidden relative" id="mobile-menu-container">
-          <div
-            className="flex flex-col space-y-1 cursor-pointer p-2"
+        <div className="md:hidden relative flex items-center" id="mobile-menu-container">
+          <button
+            className="flex flex-col justify-center items-center cursor-pointer p-2 rounded-full hover:bg-slate-100 transition-colors z-50 relative"
             id="mobile-menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
-            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
-            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
-            <span className="block w-5 h-0.5 bg-slate-900 transition-all duration-300"></span>
-          </div>
+            {mobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg
+                className="w-6 h-6 text-slate-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            )}
+          </button>
+          
+          {/* Mobile Menu Overlay */}
+          <div
+            className={`fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+              mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+            }`}
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+
+          {/* Mobile Menu Content */}
           <ul
             id="dropdown-menu"
-            className={`absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col py-2 ${
-              mobileMenuOpen ? 'block' : 'hidden'
+            className={`fixed top-0 right-0 h-full w-[80vw] max-w-sm bg-white shadow-2xl z-50 flex flex-col py-20 px-6 overflow-y-auto transition-transform duration-300 ease-in-out transform ${
+              mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >
-            <li>
+            <div className="absolute top-6 left-6">
               <Link
                 to="/"
-                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                className="text-slate-900 text-2xl font-black tracking-tight flex items-center"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="text-blue-600">Employ</span>Verse
+              </Link>
+            </div>
+            
+            <li className="mt-8">
+              <Link
+                to="/"
+                className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -226,7 +263,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/jobs"
-                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Jobs
@@ -235,7 +272,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/internships"
-                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Internships
@@ -244,49 +281,63 @@ const Navbar = () => {
             <li>
               <Link
                 to="/contact"
-                className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
+                className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact Us
               </Link>
             </li>
-            {isAuthenticated ? (
-              <li className="relative group flex flex-col pt-2 border-t border-slate-100">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  My Profile
-                </Link>
-                <Link
-                  to="/dashboard"
-                  className="block px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  My Dashboard
-                </Link>
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="block w-full px-4 py-2.5 text-slate-700 hover:bg-slate-50 hover:text-blue-600 text-sm font-semibold text-center cursor-pointer"
-                >
-                  Logout
-                </button>
-              </li>
-            ) : (
-              <li className="pt-2 border-t border-slate-100 mx-2">
-                <Link
-                  to="/login"
-                  className="block bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-4 rounded-xl text-sm text-center transition-all animate-none"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-              </li>
-            )}
+            
+            <div className="mt-auto pt-8">
+              {isAuthenticated ? (
+                <li className="flex flex-col space-y-4">
+                  <div className="flex items-center mb-4">
+                    {user?.profileImageId ? (
+                      <img
+                        src={`/profile/image`}
+                        className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-slate-200"
+                        alt="Profile"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center mr-4 font-bold text-lg shadow-md">
+                        {user?.firstName?.charAt(0).toUpperCase() || 'P'}
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-bold text-slate-900">{user?.firstName || 'User'}</p>
+                      <p className="text-xs text-slate-500 font-semibold cursor-pointer" onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}>View Profile</p>
+                    </div>
+                  </div>
+                  <Link
+                    to="/dashboard"
+                    className="block w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-900 text-center font-bold rounded-xl transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    My Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full py-3.5 bg-red-50 hover:bg-red-100 text-red-600 text-center font-bold rounded-xl transition-colors cursor-pointer"
+                  >
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <li className="flex flex-col space-y-4">
+                  <Link
+                    to="/login"
+                    className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-center shadow-lg shadow-blue-500/30 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login to Your Account
+                  </Link>
+                  <p className="text-center text-xs text-slate-500 font-medium">Join EmployVerse today and accelerate your career</p>
+                </li>
+              )}
+            </div>
           </ul>
         </div>
       </div>

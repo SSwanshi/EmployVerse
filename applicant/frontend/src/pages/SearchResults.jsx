@@ -74,6 +74,7 @@ const SearchResults = () => {
   const [activeTab, setActiveTab] = useState('jobs');
   const [jobFilters, setJobFilters] = useState({});
   const [internshipFilters, setInternshipFilters] = useState({});
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   /** From API when backend includes it (`solr` | `fuse`); null if older server omits it */
   const [searchEngine, setSearchEngine] = useState(null);
 
@@ -208,9 +209,53 @@ const SearchResults = () => {
             {/* Jobs Section */}
             {activeTab === 'jobs' && (
               <div className="flex flex-col lg:flex-row gap-8 items-start">
-                <div className="w-full lg:w-1/4 lg:sticky lg:top-24">
+                
+                {/* Mobile Filter Button */}
+                <div className="lg:hidden flex w-full justify-end mb-2">
+                  <button 
+                    onClick={() => setIsMobileFilterOpen(true)}
+                    className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-black transition-colors cursor-pointer"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Filters
+                  </button>
+                </div>
+
+                {/* Filters - left column (Desktop) */}
+                <div className="hidden lg:block w-full lg:w-1/4 lg:sticky lg:top-24">
                   <JobFilters onFiltersChange={setJobFilters} />
                 </div>
+
+                {/* Filters - Mobile Dialog */}
+                {isMobileFilterOpen && (
+                  <div className="fixed inset-0 z-50 flex lg:hidden">
+                    <div 
+                      className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+                      onClick={() => setIsMobileFilterOpen(false)}
+                    ></div>
+                    <div className="relative flex flex-col w-full max-w-xs h-full bg-slate-50 shadow-2xl ml-auto transition-transform duration-300 transform translate-x-0">
+                      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-white shadow-sm">
+                        <h2 className="text-lg font-bold text-slate-900">Filters</h2>
+                        <button 
+                          onClick={() => setIsMobileFilterOpen(false)}
+                          className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto p-4 pb-20">
+                        <JobFilters onFiltersChange={(filters) => {
+                           setJobFilters(filters);
+                           setIsMobileFilterOpen(false);
+                        }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="w-full lg:w-3/4 space-y-6">
                   <h2 className="text-xl font-extrabold text-slate-900 tracking-tight flex items-center">
                     Job Opportunities
@@ -262,9 +307,53 @@ const SearchResults = () => {
             {/* Internships Section */}
             {activeTab === 'internships' && (
               <div className="flex flex-col lg:flex-row gap-8 items-start">
-                <div className="w-full lg:w-1/4 lg:sticky lg:top-24">
+                
+                {/* Mobile Filter Button */}
+                <div className="lg:hidden flex w-full justify-end mb-2">
+                  <button 
+                    onClick={() => setIsMobileFilterOpen(true)}
+                    className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-black transition-colors cursor-pointer"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Filters
+                  </button>
+                </div>
+
+                {/* Filters - left column (Desktop) */}
+                <div className="hidden lg:block w-full lg:w-1/4 lg:sticky lg:top-24">
                   <InternshipFilters onFiltersChange={setInternshipFilters} />
                 </div>
+
+                {/* Filters - Mobile Dialog */}
+                {isMobileFilterOpen && (
+                  <div className="fixed inset-0 z-50 flex lg:hidden">
+                    <div 
+                      className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+                      onClick={() => setIsMobileFilterOpen(false)}
+                    ></div>
+                    <div className="relative flex flex-col w-full max-w-xs h-full bg-slate-50 shadow-2xl ml-auto transition-transform duration-300 transform translate-x-0">
+                      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-white shadow-sm">
+                        <h2 className="text-lg font-bold text-slate-900">Filters</h2>
+                        <button 
+                          onClick={() => setIsMobileFilterOpen(false)}
+                          className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto p-4 pb-20">
+                        <InternshipFilters onFiltersChange={(filters) => {
+                           setInternshipFilters(filters);
+                           setIsMobileFilterOpen(false);
+                        }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="w-full lg:w-3/4 space-y-6">
                   <h2 className="text-xl font-extrabold text-slate-900 tracking-tight flex items-center">
                     Internship Opportunities

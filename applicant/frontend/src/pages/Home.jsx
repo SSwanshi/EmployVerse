@@ -146,17 +146,17 @@ const Home = () => {
   return (
     <div className="min-h-screen -mt-20">
       {/* Header Hero Section */}
-      <header className="h-screen flex items-center justify-center bg-slate-950 text-white relative overflow-hidden">
+      <header className="min-h-screen lg:h-screen flex items-center justify-center bg-slate-950 text-white relative overflow-hidden pt-32 pb-16 lg:py-0">
         {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/10 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/10 w-96 h-96 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/10 w-64 h-64 lg:w-96 lg:h-96 bg-blue-500/10 rounded-full blur-[100px] lg:blur-[120px] pointer-events-none animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/10 w-64 h-64 lg:w-96 lg:h-96 bg-indigo-500/5 rounded-full blur-[80px] lg:blur-[100px] pointer-events-none animate-pulse"></div>
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16 pl-8 pr-8">
+        <div className="container mx-auto px-4 lg:px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
             {/* Left Content */}
             <div
               ref={headerTextRef}
-              className="lg:w-1/2 text-center lg:text-left transform transition-all duration-700 translate-y-8 opacity-0 pr-12"
+              className="w-full lg:w-1/2 text-center lg:text-left transform transition-all duration-700 translate-y-8 opacity-0 lg:pr-12 flex flex-col items-center lg:items-start"
               id="header-text"
             >
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 ">
@@ -174,12 +174,12 @@ const Home = () => {
               {/* Advanced Search Container inside Hero */}
               <form
                 onSubmit={handleHeroSearch}
-                className="mt-10 bg-slate-900/90 border border-slate-800/80 p-2 rounded-2xl shadow-2xl max-w-xl flex gap-2 relative z-10 backdrop-blur-md"
+                className="mt-8 lg:mt-10 bg-slate-900/90 border border-slate-800/80 p-2 lg:p-2.5 rounded-2xl shadow-2xl w-full max-w-xl flex flex-col sm:flex-row gap-2 sm:gap-3 relative z-10 backdrop-blur-md"
               >
-                <div className="flex-1 flex items-center min-w-0">
+                <div className="flex-1 flex items-center min-w-0 bg-slate-800/50 sm:bg-transparent rounded-xl sm:rounded-none px-2 sm:px-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 ml-3 text-slate-400 shrink-0"
+                    className="h-5 w-5 ml-2 text-slate-400 shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -196,12 +196,12 @@ const Home = () => {
                     placeholder="Job title or keywords..."
                     value={heroSearchQuery}
                     onChange={(e) => setHeroSearchQuery(e.target.value)}
-                    className="w-full bg-transparent border-0 text-white placeholder-slate-500 focus:outline-none focus:ring-0 text-sm px-3.5 py-3"
+                    className="w-full bg-transparent border-0 text-white placeholder-slate-400 focus:outline-none focus:ring-0 text-sm px-3 py-3 lg:py-3"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all duration-200 shadow-md flex items-center justify-center shrink-0 cursor-pointer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 sm:py-3 px-6 rounded-xl text-sm transition-all duration-200 shadow-md flex items-center justify-center shrink-0 cursor-pointer w-full sm:w-auto"
                 >
                   Find Careers
                 </button>
@@ -211,7 +211,7 @@ const Home = () => {
             {/* Right Media Graphic */}
             <div
               ref={headerImageRef}
-              className="lg:w-5/12 flex justify-center relative transform transition-all duration-700 translate-x-8 opacity-0"
+              className="w-full lg:w-5/12 flex justify-center relative transform transition-all duration-700 translate-x-8 opacity-0 mt-12 lg:mt-0"
               id="header-image"
             >
               {/* Main Image */}
@@ -226,28 +226,28 @@ const Home = () => {
               </div>
 
               {/* Floating Stat Card 1 */}
-              <div className="absolute -top-6 -left-6 bg-slate-900/90 border border-slate-800 p-4 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-md animate-[float_8s_ease-in-out_infinite_delay-1s]">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <div className="absolute -top-6 -left-2 sm:-left-6 bg-slate-900/90 border border-slate-800 p-3 sm:p-4 rounded-2xl shadow-xl flex items-center gap-2 sm:gap-3 backdrop-blur-md animate-[float_8s_ease-in-out_infinite_delay-1s]">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Verified Postings</p>
-                  <p className="text-sm font-extrabold text-white">10k+ Open Roles</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wide">Verified Postings</p>
+                  <p className="text-xs sm:text-sm font-extrabold text-white">10k+ Open Roles</p>
                 </div>
               </div>
 
               {/* Floating Stat Card 2 */}
-              <div className="absolute -bottom-6 -right-6 bg-slate-900/90 border border-slate-800 p-4 rounded-2xl shadow-xl flex items-center gap-3 backdrop-blur-md animate-[float_7s_ease-in-out_infinite_delay-2.5s]">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <div className="absolute -bottom-6 -right-2 sm:-right-6 bg-slate-900/90 border border-slate-800 p-3 sm:p-4 rounded-2xl shadow-xl flex items-center gap-2 sm:gap-3 backdrop-blur-md animate-[float_7s_ease-in-out_infinite_delay-2.5s]">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Corporate Network</p>
-                  <p className="text-sm font-extrabold text-white">Top Tech Firms</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wide">Corporate Network</p>
+                  <p className="text-xs sm:text-sm font-extrabold text-white">Top Tech Firms</p>
                 </div>
               </div>
             </div>
