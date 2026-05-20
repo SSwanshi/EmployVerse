@@ -9,12 +9,34 @@ const createJobModel = require('../models/recruiter/Job');
 const createInternshipModel = require('../models/recruiter/Internships');
 const createCompanyModel = require('../models/recruiter/Company');
 const bcrypt = require('bcrypt');
+const redis = require('../config/redis');
 
 const getProfile = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Not authenticated' });
     }
+
+    // -------- REDIS CACHE CHECK --------
+    const cacheKey = `profile:${req.user.id}`;
+
+    let cachedData = null;
+    try {
+      cachedData = await redis.get(cacheKey);
+    } catch (error) {
+      console.error("Redis GET error:", error);
+    }
+
+    if (cachedData) {
+      res.set("X-Cache", "HIT");
+      console.log("Serving user profile from Redis cache");
+      return res.status(200).json(JSON.parse(cachedData));
+    } else {
+      res.set("X-Cache", "MISS");
+    }
+
+    console.log("Cache miss - querying database for user profile");
+    // -------- END REDIS CACHE CHECK --------
 
     const user = await User.findOne({ userId: req.user.id });
     if (!user) {
@@ -115,7 +137,7 @@ const getProfile = async (req, res) => {
 
     applicationHistory.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
 
-    res.json({
+    const responseData = {
       user: {
         firstName: user.firstName,
         lastName: user.lastName,
@@ -138,7 +160,17 @@ const getProfile = async (req, res) => {
       },
       resumeName,
       applicationHistory
-    });
+    };
+
+    // -------- REDIS CACHE SET --------
+    try {
+      await redis.set(cacheKey, JSON.stringify(responseData), "EX", 300);
+    } catch (err) {
+      console.error("Redis SET error:", err);
+    }
+    // -------- END REDIS CACHE SET --------
+
+    res.status(200).json(responseData);
 
   } catch (error) {
     console.error('Profile API error:', error);
@@ -221,6 +253,16 @@ const updateProfile = async (req, res) => {
       await User.findOneAndUpdate({ userId }, { password: hashedPassword });
     }
 
+    // -------- REDIS CACHE INVALIDATION --------
+    const cacheKey = `profile:${userId}`;
+    try {
+      await redis.del(cacheKey);
+      console.log("Profile cache invalidated for user:", userId);
+    } catch (err) {
+      console.error("Redis DEL error:", err);
+    }
+    // -------- END REDIS CACHE INVALIDATION --------
+
     // With JWT, profile updates don't require session updates
     // Client will continue using the same token until it expires
 
@@ -273,6 +315,17 @@ const uploadResume = async (req, res) => {
     uploadStream.on('finish', async () => {
       user.resumeId = uploadStream.id;
       await user.save();
+      
+      // -------- REDIS CACHE INVALIDATION --------
+      const cacheKey = `profile:${req.user.id}`;
+      try {
+        await redis.del(cacheKey);
+        console.log("Profile cache invalidated after resume upload for user:", req.user.id);
+      } catch (err) {
+        console.error("Redis DEL error:", err);
+      }
+      // -------- END REDIS CACHE INVALIDATION --------
+
       res.json({ success: true, message: 'Resume uploaded successfully' });
     });
 

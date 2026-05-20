@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { sendOtpEmail } = require('../utils/emailService');
+const redis = require('../config/redis');
 
 const login = async (req, res) => {
   try {
@@ -169,7 +170,7 @@ const checkSession = async (req, res) => {
         email: req.user.email,
         phone: req.user.phone,
         gender: req.user.gender,
-        profileImage: req.user.profileImage,
+        profileImage: req.user.profileImage && req.user.profileImage.data ? { data: true } : null,
         isPremium: req.user.isPremium
       }
     });
@@ -183,6 +184,23 @@ const checkSession = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
+    const cacheKey = `recruiter:profile:${req.user._id}`;
+    
+    // Check cache first
+    try {
+      const cachedProfile = await redis.get(cacheKey);
+      if (cachedProfile) {
+        res.set('X-Cache', 'HIT');
+        return res.json({
+          success: true,
+          user: JSON.parse(cachedProfile),
+          source: 'cache'
+        });
+      }
+    } catch (cacheError) {
+      console.error('Redis cache error (get profile):', cacheError);
+    }
+
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({
@@ -191,19 +209,29 @@ const getProfile = async (req, res) => {
       });
     }
 
+    const profileData = {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      gender: user.gender,
+      profileImage: user.profileImage && user.profileImage.data ? { data: true } : null,
+      createdAt: user.createdAt,
+      isPremium: user.isPremium
+    };
+
+    // Cache the profile
+    try {
+      await redis.setex(cacheKey, 300, JSON.stringify(profileData)); // Cache for 5 mins
+    } catch (cacheError) {
+      console.error('Redis cache error (set profile):', cacheError);
+    }
+
+    res.set('X-Cache', 'MISS');
     res.json({
       success: true,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        gender: user.gender,
-        profileImage: user.profileImage,
-        createdAt: user.createdAt,
-        isPremium: user.isPremium
-      }
+      user: profileData
     });
   } catch (error) {
     console.error('Profile fetch error:', error);
@@ -233,6 +261,13 @@ const updateProfile = async (req, res) => {
 
     await user.save();
 
+    // Invalidate cache
+    try {
+      await redis.del(`recruiter:profile:${req.user._id}`);
+    } catch (cacheError) {
+      console.error('Redis cache error (invalidate profile):', cacheError);
+    }
+
     res.json({
       success: true,
       message: 'Profile updated successfully',
@@ -243,7 +278,7 @@ const updateProfile = async (req, res) => {
         email: user.email,
         phone: user.phone,
         gender: user.gender,
-        profileImage: user.profileImage,
+        profileImage: user.profileImage && user.profileImage.data ? { data: true } : null,
         createdAt: user.createdAt
       }
     });
@@ -280,10 +315,17 @@ const uploadProfileImage = async (req, res) => {
 
     await user.save();
 
+    // Invalidate cache
+    try {
+      await redis.del(`recruiter:profile:${req.user._id}`);
+    } catch (cacheError) {
+      console.error('Redis cache error (invalidate profile on image upload):', cacheError);
+    }
+
     res.json({
       success: true,
       message: 'Profile image updated successfully',
-      profileImage: user.profileImage
+      profileImage: { data: true }
     });
   } catch (err) {
     console.error('Upload Error:', err);
