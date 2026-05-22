@@ -57,8 +57,13 @@ const Navbar = () => {
         <nav className="flex justify-between items-center py-4">
           {/* Brand Logo */}
           <div>
-            <Link to="/dashboard" className="text-2xl font-extrabold tracking-tight hover:opacity-90 transition-opacity">
-              <span className="text-blue-600">Employ</span><span className="text-slate-900">Verse</span>
+            <Link to="/dashboard" className="text-2xl font-extrabold tracking-tight hover:opacity-90 transition-opacity flex items-center gap-2">
+              <img
+                src="/images/logoo.png"
+                alt="EmployVerse Logo"
+                className="h-12 w-auto"
+              />
+              <span><span className="text-blue-600">Employ</span><span className="text-slate-900">Verse</span></span>
             </Link>
           </div>
 
@@ -201,10 +206,15 @@ const Navbar = () => {
               <div className="absolute top-6 left-6">
                 <Link
                   to="/dashboard"
-                  className="text-2xl font-extrabold tracking-tight hover:opacity-90 transition-opacity flex items-center"
+                  className="text-2xl font-extrabold tracking-tight hover:opacity-90 transition-opacity flex items-center gap-2"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <span className="text-blue-600">Employ</span><span className="text-slate-900">Verse</span>
+                  <img
+                    src="/images/logoo.png"
+                    alt="EmployVerse Logo"
+                    className="h-9 w-auto"
+                  />
+                  <span><span className="text-blue-600">Employ</span><span className="text-slate-900">Verse</span></span>
                 </Link>
               </div>
 

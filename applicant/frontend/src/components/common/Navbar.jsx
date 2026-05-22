@@ -8,8 +8,8 @@ import { applicantApi } from '../../services/applicantApi';
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [navbarScrolled, setNavbarScrolled] = useState(false);
   const [searchData, setSearchData] = useState([]);
   
@@ -54,6 +54,11 @@ const Navbar = () => {
     fetchSearchData();
   }, []);
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
   // Handle scroll for navbar
   useEffect(() => {
     const handleScroll = () => {
@@ -68,28 +73,12 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
-
-  const handleSearchKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch(e);
-    }
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
+  // Handle scroll for navbar
 
   return (
     <nav
       className={`bg-white fixed w-full z-50 transition-all duration-300 border-b border-slate-100 ${
-        navbarScrolled && !mobileMenuOpen ? 'py-3.5 shadow-md bg-white/95 backdrop-blur-md' : 'py-5.5 shadow-sm bg-white'
+        navbarScrolled && !mobileMenuOpen ? 'py-2 shadow-md bg-white/95 backdrop-blur-md' : 'py-3 shadow-sm bg-white'
       }`}
       id="navbar"
     >
@@ -97,9 +86,13 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="text-slate-900 text-3xl font-black transition-transform hover:scale-102 duration-300 tracking-tight flex items-center"
+          className="text-slate-900 text-xl md:text-3xl font-black transition-transform hover:scale-102 duration-300 tracking-tight flex items-center gap-1"
         >
-          <span className="text-blue-600">Employ</span>Verse
+          <img
+            src="/images/logoo.png"
+            alt="EmployVerse Logo"
+            className="h-10 md:h-16 w-auto shrink-0"
+          /><span className="min-w-0"><span className="text-blue-600">Employ</span>Verse</span>
         </Link>
 
         {/* Search bar */}
@@ -217,12 +210,29 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu */}
-        <div className="md:hidden relative flex items-center gap-3" id="mobile-menu-container">
+        <div className="md:hidden ml-auto flex items-center gap-0" id="mobile-menu-container">
+          {/* Mobile Search Icon */}
+          <button
+            className="flex items-center justify-center cursor-pointer p-1 rounded-full hover:bg-slate-100 transition-colors"
+            onClick={() => { setMobileSearchOpen(prev => !prev); setMobileMenuOpen(false); }}
+            aria-label="Toggle search"
+          >
+            {mobileSearchOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+              </svg>
+            )}
+          </button>
+
           {isAuthenticated && (
             <NotificationDropdown />
           )}
           <button
-            className="flex flex-col justify-center items-center cursor-pointer p-2 rounded-full hover:bg-slate-100 transition-colors z-50 relative"
+            className="flex flex-col justify-center items-center cursor-pointer p-1 rounded-full hover:bg-slate-100 transition-colors z-50 relative"
             id="mobile-menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle mobile menu"
@@ -266,10 +276,14 @@ const Navbar = () => {
             <div className="absolute top-6 left-6">
               <Link
                 to="/"
-                className="text-slate-900 text-2xl font-black tracking-tight flex items-center"
+                className="text-slate-900 text-2xl font-black tracking-tight flex items-center gap-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="text-blue-600">Employ</span>Verse
+                <img
+                  src="/images/logoo.png"
+                  alt="EmployVerse Logo"
+                  className="h-10 w-auto"
+                /><span><span className="text-blue-600">Employ</span>Verse</span>
               </Link>
             </div>
             
@@ -362,6 +376,23 @@ const Navbar = () => {
             </div>
           </ul>
         </div>
+      </div>
+
+      {/* Mobile Search Bar Panel */}
+      <div
+        className={`md:hidden absolute top-full left-0 w-full bg-white shadow-md transition-all duration-300 ease-in-out border-t border-slate-100 ${
+          mobileSearchOpen ? 'opacity-100 visible py-3 px-4 translate-y-0' : 'opacity-0 invisible py-0 px-4 -translate-y-2'
+        }`}
+      >
+        <FuzzySearch
+          data={searchData}
+          keys={searchKeys}
+          placeholder="Search jobs & internships..."
+          onSelect={(item) => {
+            navigate(`/search?q=${encodeURIComponent(item.title)}`);
+            setMobileSearchOpen(false);
+          }}
+        />
       </div>
     </nav>
   );
