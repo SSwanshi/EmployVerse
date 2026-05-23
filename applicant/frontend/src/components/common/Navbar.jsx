@@ -141,6 +141,16 @@ const Navbar = () => {
           </li>
           {isAuthenticated && (
             <li>
+              <Link
+                to="/my-applications"
+                className="hover:text-blue-600 transition-colors duration-200 font-bold"
+              >
+                My Applications
+              </Link>
+            </li>
+          )}
+          {isAuthenticated && (
+            <li>
               <NotificationDropdown />
             </li>
           )}
@@ -350,6 +360,13 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     My Dashboard
+                  </Link>
+                  <Link
+                    to="/my-applications"
+                    className="block w-full py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-900 text-center font-bold rounded-xl transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    My Applications
                   </Link>
                   <button
                     onClick={() => {

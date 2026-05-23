@@ -116,6 +116,7 @@ const getProfile = async (req, res) => {
           type: 'Job',
           title: job?.jobTitle || 'Job No Longer Available',
           company: company?.companyName || 'Company No Longer Available',
+          logoId: company?.logoId || null,
           appliedAt: app.AppliedAt,
           status: app.isSelected ? 'Accepted' : app.isRejected ? 'Rejected' : 'Pending',
           applicationId: app._id
@@ -128,6 +129,7 @@ const getProfile = async (req, res) => {
           type: 'Internship',
           title: internship?.intTitle || 'Internship No Longer Available',
           company: company?.companyName || 'Company No Longer Available',
+          logoId: company?.logoId || null,
           appliedAt: app.AppliedAt,
           status: app.isSelected ? 'Accepted' : app.isRejected ? 'Rejected' : 'Pending',
           applicationId: app._id

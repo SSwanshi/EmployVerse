@@ -6,6 +6,7 @@ const { ObjectId } = require('mongodb');
 const { connectApplicantDB } = require('../config/applicantDb');
 const emailjs = require("@emailjs/nodejs");
 const axios = require('axios');
+const redis = require('../config/redis');
 
 // Helper function to send notification to applicant backend
 const sendNotificationToApplicant = async (receiverId, type, title, message, senderId = null) => {
@@ -229,6 +230,15 @@ const selectApplicant = async (req, res) => {
       `Your application for ${position} at ${companyName} has been shortlisted.`
     );
 
+    // Invalidate applicant's profile cache
+    try {
+      if (result.userId) {
+        await redis.del(`profile:${result.userId}`);
+      }
+    } catch (cacheError) {
+      console.error('Redis cache error (invalidate applicant profile):', cacheError);
+    }
+
     res.json({ success: true, message: 'Applicant selected successfully' });
   } catch (error) {
     console.error('Error selecting applicant:', error);
@@ -282,6 +292,15 @@ const rejectApplicant = async (req, res) => {
       `Your application for ${position} at ${companyName} was not selected.`
     );
     
+    // Invalidate applicant's profile cache
+    try {
+      if (result.userId) {
+        await redis.del(`profile:${result.userId}`);
+      }
+    } catch (cacheError) {
+      console.error('Redis cache error (invalidate applicant profile):', cacheError);
+    }
+
     res.json({ success: true, message: 'Applicant rejected successfully' });
   } catch (error) {
     console.error('Error rejecting applicant:', error);
