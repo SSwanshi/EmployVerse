@@ -3,6 +3,7 @@ const Job = require('../models/Jobs');
 const Internship = require('../models/Internship');
 const AppliedJob = require('../models/AppliedJob');
 const AppliedInternship = require('../models/AppliedInternship');
+const analyticsService = require('../services/analytics.service');
 
 const recruiterDashboard = async (args, context, info) => {
   try {
@@ -139,9 +140,54 @@ const applicationStatistics = async (args, context, info) => {
   }
 };
 
+// ==================== NEW ANALYTICS RESOLVERS ====================
+
+const analyticsDashboard = async (args, context, info) => {
+  try {
+    const userId = context.userId;
+
+    console.log('[AnalyticsDashboard Resolver] UserId:', userId);
+
+    if (!userId) {
+      throw new Error('Unauthorized: User ID not found in context');
+    }
+
+    const dashboard = await analyticsService.getAnalyticsDashboard(userId);
+    return dashboard;
+  } catch (error) {
+    console.error('[AnalyticsDashboard Resolver] Error:', error.message);
+    throw error;
+  }
+};
+
+const jobAnalytics = async (args, context, info) => {
+  try {
+    const userId = context.userId;
+    const { jobId } = args;
+
+    console.log('[JobAnalytics Resolver] UserId:', userId, 'JobId:', jobId);
+
+    if (!userId) {
+      throw new Error('Unauthorized: User ID not found in context');
+    }
+
+    if (!jobId) {
+      throw new Error('jobId is required');
+    }
+
+    const analytics = await analyticsService.getJobAnalytics(userId, jobId);
+    return analytics;
+  } catch (error) {
+    console.error('[JobAnalytics Resolver] Error:', error.message);
+    throw error;
+  }
+};
+
 module.exports = {
   Query: {
     recruiterDashboard,
-    applicationStatistics
+    applicationStatistics,
+    analyticsDashboard,
+    jobAnalytics
   }
 };
