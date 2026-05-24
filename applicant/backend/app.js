@@ -36,7 +36,9 @@ const allowedOrigins = [
   'http://localhost:5174',
   'http://localhost:5175',
   'http://localhost:3000',
-  'https://employverse.swanshi.me'
+  "https://employverse.swanshi.me",
+  "https://employverse-recruiter.swanshi.me",
+  "https://employverse-admin.swanshi.me"
 ];
 
 app.use(cors({

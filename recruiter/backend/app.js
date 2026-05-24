@@ -41,7 +41,9 @@ app.use(cors({
       "http://localhost:5174",
       "http://localhost:5175",
       "http://localhost:3000",
-      "https://employverse-recruiter.swanshi.me"
+      "https://employverse.swanshi.me",
+      "https://employverse-recruiter.swanshi.me",
+      "https://employverse-admin.swanshi.me"
     ];
 
     if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
