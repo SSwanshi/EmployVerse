@@ -339,7 +339,7 @@ const Home = () => {
                   Post opportunities and screen applicants directly with smart tools.
                 </p>
                 <Link
-                  to="https://employverse-recruiter.vercel.app/login"
+                  to="https://employverse-recruiter.swanshi.me/login"
                   className="bg-slate-900 hover:bg-black text-white text-xs font-bold py-3 px-5 rounded-xl transition-all duration-200 inline-block shadow-sm"
                 >
                   Login as Recruiter
