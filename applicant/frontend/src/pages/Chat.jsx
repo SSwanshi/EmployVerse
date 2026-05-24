@@ -1,0 +1,352 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../hooks/useAuth';
+
+const Chat = () => {
+  const { applicationId } = useParams();
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const { user } = useAuth();
+  
+  const [chat, setChat] = useState(null);
+  const [details, setDetails] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
+
+  const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  // Load chat and messages
+  useEffect(() => {
+    const initChat = async () => {
+      try {
+        setLoading(true);
+        // 1. Create or Get Chat
+        const chatRes = await axios.post(
+          `${API_BASE}/api/chat`,
+          { applicationId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (chatRes.data.success) {
+          const chatData = chatRes.data.chat;
+          setChat(chatData);
+          setDetails(chatRes.data.details);
+
+          // 2. Fetch Messages
+          const msgRes = await axios.get(
+            `${API_BASE}/api/chat/${chatData._id}/messages`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          if (msgRes.data.success) {
+            setMessages(msgRes.data.messages);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading chat:', error);
+        showToast(error.response?.data?.message || 'Failed to load chat room', 'error');
+        navigate('/my-applications');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (applicationId) {
+      initChat();
+    }
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, [applicationId, API_BASE, token, navigate]);
+
+  // Set up socket connections
+  useEffect(() => {
+    if (!chat) return;
+
+    console.log('🔌 Connecting to Socket.IO server at:', API_BASE);
+    // Connect to applicant socket server
+    const socket = io(API_BASE, {
+      auth: { token },
+      transports: ['websocket', 'polling']
+    });
+
+    socketRef.current = socket;
+
+    socket.on('connect', () => {
+      console.log('⚡ Socket connected successfully. ID:', socket.id);
+      // Join the application chat room
+      console.log('🔌 Emitting join_chat for applicationId:', applicationId);
+      socket.emit('join_chat', { applicationId }, (res) => {
+        if (res?.success) {
+          console.log('✅ Successfully joined chat room:', applicationId);
+        } else {
+          console.error('❌ Failed to join chat room:', res?.error);
+          showToast(res?.error || 'Failed to join chat room', 'error');
+        }
+      });
+    });
+
+    socket.on('receive_message', (message) => {
+      console.log('📥 Received message via Socket:', message);
+      setMessages((prev) => {
+        // Dedup: if we already have this message ID, or if it replaces an optimistic temp message
+        const hasId = prev.some((m) => m._id === message._id);
+        if (hasId) {
+          console.log('⚠️ Duplicate message ID ignored:', message._id);
+          return prev;
+        }
+
+        const optimisticIndex = prev.findIndex(
+          (m) => m._id.startsWith('temp-') && m.message === message.message && m.senderRole === message.senderRole
+        );
+        
+        if (optimisticIndex !== -1) {
+          console.log('🔄 Replacing optimistic message with actual message:', message._id);
+          const updated = [...prev];
+          updated[optimisticIndex] = message;
+          return updated;
+        }
+
+        console.log('➕ Appending new message to state:', message.message);
+        return [...prev, message];
+      });
+    });
+
+    socket.on('typing', (data) => {
+      console.log('⌨️ Recipient typing status:', data);
+      if (data.role === 'recruiter') {
+        setIsTyping(true);
+      }
+    });
+
+    socket.on('stop_typing', (data) => {
+      console.log('⌨️ Recipient stopped typing status:', data);
+      if (data.role === 'recruiter') {
+        setIsTyping(false);
+      }
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('❌ Socket connection error:', err.message);
+    });
+
+    socket.on('disconnect', (reason) => {
+      console.log('🔌 Socket disconnected. Reason:', reason);
+    });
+
+    return () => {
+      console.log('🔌 Cleaning up and disconnecting socket...');
+      socket.disconnect();
+    };
+  }, [chat, API_BASE, token, applicationId]);
+
+  // Scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
+
+  const handleInputChange = (e) => {
+    setNewMessage(e.target.value);
+
+    if (!socketRef.current) return;
+
+    if (!typing) {
+      setTyping(true);
+      socketRef.current.emit('typing', { applicationId });
+    }
+
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+
+    typingTimeoutRef.current = setTimeout(() => {
+      if (socketRef.current) {
+        socketRef.current.emit('stop_typing', { applicationId });
+      }
+      setTyping(false);
+    }, 2000);
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+
+    const messageText = newMessage.trim();
+    setNewMessage('');
+
+    if (socketRef.current) {
+      socketRef.current.emit('stop_typing', { applicationId });
+      setTyping(false);
+    }
+
+    // Optimistic UI update
+    const tempId = `temp-${Date.now()}`;
+    const tempMsg = {
+      _id: tempId,
+      chatId: chat._id,
+      senderId: user.id,
+      senderRole: 'applicant',
+      message: messageText,
+      createdAt: new Date().toISOString()
+    };
+    setMessages((prev) => [...prev, tempMsg]);
+
+    // Send over socket!
+    if (socketRef.current && socketRef.current.connected) {
+      console.log('📤 Sending message via Socket:', messageText);
+      socketRef.current.emit('send_message', { chatId: chat._id, message: messageText }, (response) => {
+        if (!response?.success) {
+          console.error('❌ Failed to send message via Socket callback:', response?.error);
+          showToast(response?.error || 'Failed to send message', 'error');
+          // Rollback optimistic update
+          setMessages((prev) => prev.filter((m) => m._id !== tempId));
+        } else {
+          console.log('✅ Message sent and acknowledged by Socket server:', response.message._id);
+          // Replace temp message with actual message
+          setMessages((prev) => prev.map((m) => m._id === tempId ? response.message : m));
+        }
+      });
+    } else {
+      // Fallback to REST API
+      console.log('📤 Socket not connected or unavailable. Falling back to REST API to send message...');
+      try {
+        const response = await axios.post(
+          `${API_BASE}/api/chat/${chat._id}/message`,
+          { message: messageText },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.data.success) {
+          console.log('✅ Message sent successfully via REST fallback:', response.data.message._id);
+          setMessages((prev) => prev.map((m) => m._id === tempId ? response.data.message : m));
+        }
+      } catch (error) {
+        console.error('❌ Failed to send message via REST fallback:', error);
+        showToast('Failed to send message', 'error');
+        setMessages((prev) => prev.filter((m) => m._id !== tempId));
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen pt-20">
+        <div className="text-center">
+          <i className="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+          <p className="mt-4 text-slate-600 font-semibold">Opening chat room...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pt-28 pb-10 bg-slate-50 min-h-screen font-sans">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate('/my-applications')}
+          className="mb-4 text-xs font-bold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <i className="fas fa-chevron-left"></i> Back to Applications
+        </button>
+
+        {/* Chat window */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-150/60 overflow-hidden flex flex-col h-[75vh]">
+          {/* Header */}
+          <div className="px-6 py-4 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
+            <div>
+              <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+              <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+                {details?.companyName} &bull; Recruiter: {details?.recruiterName}
+              </p>
+            </div>
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm" title="Connected"></div>
+          </div>
+
+          {/* Chat Space */}
+          <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-4">
+            {messages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-slate-400 py-10">
+                <i className="fas fa-comments text-4xl mb-2"></i>
+                <p className="text-xs font-semibold">No messages yet. Send a message to start chatting!</p>
+              </div>
+            ) : (
+              messages.map((msg) => {
+                const isMe = msg.senderRole === 'applicant';
+                return (
+                  <div
+                    key={msg._id}
+                    className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[70%] rounded-2xl px-4 py-2.5 shadow-sm text-sm font-medium ${
+                        isMe
+                          ? 'bg-slate-900 text-white rounded-tr-none'
+                          : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap leading-relaxed">{msg.message}</p>
+                      <span
+                        className={`block text-[9px] mt-1 text-right ${
+                          isMe ? 'text-slate-400' : 'text-slate-400'
+                        }`}
+                      >
+                        {new Date(msg.createdAt).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-white text-slate-400 border border-slate-100 rounded-2xl rounded-tl-none px-4 py-2.5 text-xs font-semibold flex items-center gap-1">
+                  <span>Recruiter is typing</span>
+                  <span className="flex gap-0.5 items-center">
+                    <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce"></span>
+                    <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce delay-100"></span>
+                    <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce delay-200"></span>
+                  </span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Box */}
+          <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-100 bg-white flex gap-2">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              className="flex-grow px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-slate-800 placeholder-slate-400"
+            />
+            <button
+              type="submit"
+              className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-sm font-bold rounded-xl transition duration-150 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              Send <i className="fas fa-paper-plane text-[10px]"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Chat;

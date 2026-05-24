@@ -25,6 +25,7 @@ const proofRoutes = require('./routes/proof.routes');
 const upgradeRoutes = require('./routes/upgrade.routes');
 const applicantRoutes = require('./routes/applicant.routes');
 const graphqlRoutes = require('./routes/graphql.routes');
+const chatRoutes = require('./routes/chat.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -93,6 +94,7 @@ app.use('/recruiter/proof', proofRoutes);
 app.use('/api/upgrade', upgradeRoutes);
 app.use('/api/applicant', applicantRoutes);
 app.use('/api', graphqlRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Cron jobs for cleanup
 cron.schedule('0 0 * * *', () => {

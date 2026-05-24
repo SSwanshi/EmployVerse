@@ -1,5 +1,7 @@
 const AppliedJob = require('../models/AppliedJob');
+const AppliedInternship = require('../models/AppliedInternship');
 const Job = require('../models/Jobs');
+const Internship = require('../models/Internship');
 const PremiumUser = require('../models/PremiumUser');
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
@@ -380,10 +382,80 @@ const getResume = async (req, res) => {
   }
 };
 
+const getSelectedApplicants = async (req, res) => {
+  try {
+    // Ensure applicant database connection is established
+    await connectApplicantDB();
+
+    const recruiterId = req.userId;
+
+    // Find all jobs and internships created by this recruiter
+    const jobs = await Job.find({ createdBy: recruiterId }).populate('jobCompany');
+    const internships = await Internship.find({ createdBy: recruiterId }).populate('intCompany');
+
+    const jobIds = jobs.map(j => j._id.toString());
+    const internshipIds = internships.map(i => i._id.toString());
+
+    // Find selected job applications
+    const selectedJobs = await AppliedJob.find({ jobId: { $in: jobIds }, isSelected: true });
+
+    // Find selected internship applications
+    const selectedInternships = await AppliedInternship.find({ internshipId: { $in: internshipIds }, isSelected: true });
+
+    // Format job applications
+    const jobApps = selectedJobs.map(app => {
+      const job = jobs.find(j => j._id.toString() === app.jobId);
+      return {
+        applicationId: app._id,
+        opportunityId: app.jobId,
+        type: 'Job',
+        companyName: job?.jobCompany?.companyName || 'N/A',
+        title: job?.jobTitle || 'N/A',
+        applicantName: `${app.firstName} ${app.lastName}`,
+        email: app.email,
+        phone: app.phone,
+        appliedDate: app.AppliedAt || app.createdAt,
+        resumeId: app.resumeId,
+        applicantId: app.userId
+      };
+    });
+
+    // Format internship applications
+    const internshipApps = selectedInternships.map(app => {
+      const internship = internships.find(i => i._id.toString() === app.internshipId);
+      return {
+        applicationId: app._id,
+        opportunityId: app.internshipId,
+        type: 'Internship',
+        companyName: internship?.intCompany?.companyName || 'N/A',
+        title: internship?.intTitle || 'N/A',
+        applicantName: `${app.firstName} ${app.lastName}`,
+        email: app.email,
+        phone: app.phone,
+        appliedDate: app.AppliedAt || app.createdAt,
+        resumeId: app.resumeId,
+        applicantId: app.userId
+      };
+    });
+
+    // Combine
+    const selectedApplicants = [...jobApps, ...internshipApps];
+
+    // Sort by applied date descending
+    selectedApplicants.sort((a, b) => new Date(b.appliedDate) - new Date(a.appliedDate));
+
+    res.json({ success: true, selectedApplicants });
+  } catch (error) {
+    console.error('Error in getSelectedApplicants:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getJobApplications,
   selectApplicant,
   rejectApplicant,
-  getResume
+  getResume,
+  getSelectedApplicants
 };
 

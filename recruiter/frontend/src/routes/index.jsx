@@ -30,6 +30,8 @@ import ApplicantProfile from '../pages/ApplicantProfile';
 import ChangePassword from '../pages/ChangePassword';
 import NotFound from '../pages/NotFound';
 import Upgrade from '../pages/Upgrade';
+import SelectedApplicants from '../pages/selectedApplicants';
+import Chat from '../pages/Chat';
 
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -91,6 +93,8 @@ const AppRoutes = () => {
           <Route path="profile/edit" element={<EditProfile />} />
           <Route path="profile/change-password" element={<ChangePassword />} />
           <Route path="upgrade" element={<Upgrade />} />
+          <Route path="selected-applicants" element={<SelectedApplicants />} />
+          <Route path="chat/:applicationId" element={<Chat />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -131,12 +131,23 @@ const MyApplications = () => {
                         <i className="far fa-calendar-alt text-[11px]"></i>
                         {new Date(app.appliedAt).toLocaleDateString()}
                       </span>
-                      <button
-                        className="text-xs font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-                        onClick={() => showToast("Messaging feature coming soon!", "info")}
-                      >
-                        <i className="fas fa-comment-dots text-[11px]"></i> Message
-                      </button>
+                      {app.status === 'Accepted' || app.status === 'selected' ? (
+                        <Link
+                          to={`/chat/${app.applicationId}`}
+                          className="w-9 h-9 rounded-full bg-slate-900 border border-slate-900 hover:bg-black text-white transition-all shadow-sm inline-flex items-center justify-center"
+                          title="Message Recruiter"
+                        >
+                          <i className="fas fa-comment-dots"></i>
+                        </Link>
+                      ) : (
+                        <button
+                          disabled
+                          className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 text-slate-300 cursor-not-allowed inline-flex items-center justify-center"
+                          title="Messages locked until selected"
+                        >
+                          <i className="fas fa-comment-dots"></i>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

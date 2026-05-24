@@ -22,6 +22,7 @@ import AppliedJobs from '../pages/AppliedJobs';
 import AppliedInternships from '../pages/AppliedInternships';
 import Dashboard from '../pages/Dashboard';
 import MyApplications from '../pages/MyApplications';
+import Chat from '../pages/Chat';
 import ApplyJob from '../pages/ApplyJob';
 import ApplyInternship from '../pages/ApplyInternship';
 import SearchResults from '../pages/SearchResults';
@@ -85,6 +86,7 @@ const AppRoutes = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="profile/edit" element={<EditProfile />} />
           <Route path="my-applications" element={<MyApplications />} />
+          <Route path="chat/:applicationId" element={<Chat />} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="applied-jobs" element={<AppliedJobs />} />

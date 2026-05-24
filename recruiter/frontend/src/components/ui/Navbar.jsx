@@ -109,6 +109,16 @@ const Navbar = () => {
                 Internships
               </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  to="/selected-applicants"
+                  className="text-slate-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                >
+                  Selected Applications
+                </Link>
+              </li>
+            )}
 
             {isAuthenticated ? (
               <li className="relative" ref={dropdownRef}>
@@ -254,6 +264,17 @@ const Navbar = () => {
                   Internships
                 </Link>
               </li>
+              {isAuthenticated && (
+                <li>
+                  <Link
+                    to="/selected-applicants"
+                    className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Selected Applications
+                  </Link>
+                </li>
+              )}
 
               <div className="mt-auto pt-8">
                 {isAuthenticated ? (
