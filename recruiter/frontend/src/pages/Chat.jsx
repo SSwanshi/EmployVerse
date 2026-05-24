@@ -24,7 +24,7 @@ const Chat = () => {
   const typingTimeoutRef = useRef(null);
 
   const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
-  const SOCKET_URL = 'http://localhost:3000'; // Socket IO runs on applicant backend (port 3000)
+  const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000'; // Socket IO runs on applicant backend (port 3000)
   const token = getStoredToken();
 
   useEffect(() => {

@@ -32,13 +32,24 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || "http://localhost:5175",
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "http://localhost:3000"
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = [
+      process.env.FRONTEND_URL || "https://employverse-recruiter.swanshi.me",
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5175",
+      "http://localhost:3000",
+      "https://employverse-recruiter.swanshi.me"
+    ];
+
+    if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires'],
   exposedHeaders: ['Cache-Control', 'Pragma', 'Expires']

@@ -29,19 +29,21 @@ const PORT = 3000; // Hardcoded port
 // Disable ETag generation to prevent 304 Not Modified responses
 app.set('etag', false);
 
-// CORS configuration (Local development URLs)
+// CORS configuration
 const allowedOrigins = [
+  process.env.FRONTEND_URL || "https://employverse.swanshi.me",
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'https://employverse.swanshi.me'
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
