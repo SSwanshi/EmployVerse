@@ -276,21 +276,23 @@ const Chat = () => {
         {/* Chat window */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-150/60 overflow-hidden flex flex-col h-[75vh]">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
+          <div className="px-5 py-4 border-b border-slate-100 bg-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-md sm:text-lg font-bold leading-tight">{details?.jobTitle}</h2>
                 {details?.type && (
-                  <span className="inline-flex items-center text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-white/20 text-white uppercase tracking-wide">
+                  <span className="inline-flex items-center text-[10px] sm:text-xs font-extrabold px-1.5 py-0.5 rounded bg-white/20 text-white uppercase tracking-wide shrink-0">
                     {details.type === 'job' ? 'Job' : 'Internship'}
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-slate-300 font-medium mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-300 font-medium mt-0.5">
                 {details?.companyName} 
               </p>
             </div>
-            <div className="text-md font-bold leading-tight font-sans">Recruiter: {details?.recruiterName}</div>
+            <div className="text-sm sm:text-md font-bold leading-tight font-sans self-start sm:self-auto bg-white/10 px-3 py-1.5 rounded-lg border border-white/5">
+              Recruiter: {details?.recruiterName}
+            </div>
           </div>
 
           {/* Chat Space */}

@@ -209,8 +209,8 @@ const Navbar = () => {
 
             {/* Mobile Menu Content */}
             <ul
-              className={`fixed top-0 right-0 h-full w-[80vw] max-w-sm bg-white shadow-2xl z-50 flex flex-col py-20 px-6 overflow-y-auto transition-transform duration-300 ease-in-out transform ${
-                menuOpen ? 'translate-x-0' : 'translate-x-full'
+              className={`fixed top-0 right-0 h-full w-[80vw] max-w-sm bg-white shadow-2xl z-50 flex flex-col py-20 px-6 overflow-y-auto transition-all duration-300 ease-in-out transform ${
+                menuOpen ? 'translate-x-0 opacity-100 visible' : 'translate-x-full opacity-0 invisible pointer-events-none'
               }`}
             >
               <div className="absolute top-6 left-6">

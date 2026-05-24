@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const notificationWorker = new Worker('notifications', async (job) => {
-  const { receiverId, senderId, type, title, message, createdAt } = job.data;
+  const { receiverId, senderId, type, title, message, link, createdAt } = job.data;
   
   console.log(`🤖 Processing notification job for user: ${receiverId}`);
 
@@ -49,6 +49,7 @@ const notificationWorker = new Worker('notifications', async (job) => {
       type,
       title,
       message,
+      link,
       createdAt: createdAt || new Date()
     });
     const savedNotification = await notification.save();
@@ -82,6 +83,7 @@ const notificationWorker = new Worker('notifications', async (job) => {
         type,
         title,
         message,
+        link,
         isRead: false,
         createdAt: savedNotification.createdAt
       };

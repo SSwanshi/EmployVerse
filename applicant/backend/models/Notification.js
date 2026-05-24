@@ -22,7 +22,8 @@ const NotificationSchema = new mongoose.Schema({
       'INTERVIEW_SCHEDULED',
       'PAYMENT_SUCCESS',
       'APPLICATION_VIEWED',
-      'SYSTEM'
+      'SYSTEM',
+      'CHAT_MESSAGE'
     ],
     required: true
   },
@@ -33,6 +34,10 @@ const NotificationSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true
+  },
+  link: {
+    type: String,
+    required: false
   },
   isRead: {
     type: Boolean,

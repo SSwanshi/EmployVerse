@@ -24,6 +24,7 @@ const sendNotification = async (payload) => {
     type: payload.type,
     title: payload.title,
     message: payload.message,
+    link: payload.link || null,
     createdAt: new Date()
   });
 

@@ -73,6 +73,36 @@ const initSocket = (server) => {
                 const roomId = chat.applicationId.toString();
                 console.log(`📢 Redis Sub broadcasting message to roomId: ${roomId} | message ID: ${message._id}`);
                 io.to(roomId).emit('receive_message', message);
+
+                // Send notification if recipient is not active in the chat room
+                const recipientId = message.senderRole === 'applicant' ? chat.recruiterId.toString() : chat.applicantId.toString();
+                
+                // Fetch active sockets in the chat room
+                const activeSockets = await io.in(roomId).fetchSockets();
+                const isRecipientActive = activeSockets.some(s => s.userId && s.userId.toString() === recipientId);
+
+                if (!isRecipientActive) {
+                  console.log(`👤 Recipient ${recipientId} is NOT active in chat room ${roomId}. Triggering notification...`);
+                  
+                  const appDetails = await getApplicationAndRecruiter(chat.applicationId);
+                  if (appDetails) {
+                    const { jobOrInternship, type } = appDetails;
+                    const titleText = type === 'job' ? jobOrInternship.jobTitle : jobOrInternship.intTitle;
+                    const companyName = type === 'job' ? jobOrInternship.jobCompany?.companyName : jobOrInternship.intCompany?.companyName;
+                    
+                    const notificationTitle = `New message from ${companyName || 'Recruiter'} for ${titleText || 'Opportunity'}`;
+                    
+                    const { sendNotification } = require('../services/notification.service');
+                    await sendNotification({
+                      receiverId: recipientId,
+                      senderId: message.senderId,
+                      type: 'CHAT_MESSAGE',
+                      title: notificationTitle,
+                      message: message.message,
+                      link: `/chat/${chat.applicationId}`
+                    });
+                  }
+                }
               } else {
                 console.error(`❌ Redis Sub Chat not found with ID: ${message.chatId}`);
               }
@@ -129,6 +159,10 @@ const initSocket = (server) => {
     const userId = socket.userId;
     const role = socket.userRole;
     console.log(`🔌 User connected to Socket: ${userId} (${role})`);
+
+    // Join personal notification room
+    socket.join(`user:${userId}`);
+    console.log(`🔌 User ${userId} joined personal notification room: user:${userId}`);
 
     // join_chat room event
     socket.on('join_chat', async ({ applicationId }, callback) => {
