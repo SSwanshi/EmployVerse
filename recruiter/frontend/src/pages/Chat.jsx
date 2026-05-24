@@ -279,12 +279,19 @@ const Chat = () => {
           {/* Header */}
           <div className="px-6 py-4 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
             <div>
-              <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+                {details?.type && (
+                  <span className="inline-flex items-center text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-white/20 text-white uppercase tracking-wide">
+                    {details.type === 'job' ? 'Job' : 'Internship'}
+                  </span>
+                )}
+              </div>
               <p className="text-[15px] text-slate-300 font-medium mt-0.5">
                 {details?.companyName} 
               </p>
             </div>
-            <div className="text-md font-bold leading-tight">Candidate: {details?.applicantName}</div>
+            <div className="text-md font-bold leading-tight font-sans">Candidate: {details?.applicantName}</div>
           </div>
 
           {/* Chat Space */}

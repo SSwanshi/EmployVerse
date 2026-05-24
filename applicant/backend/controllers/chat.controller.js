@@ -89,7 +89,7 @@ const createOrGetChat = async (req, res) => {
 
     // Fetch extra details for response
     const recruiterConn = await connectRecruiterDB();
-    const RecruiterModel = recruiterConn.models.User || recruiterConn.model('User', new mongoose.Schema({
+    const RecruiterModel = recruiterConn.models.RecruiterUser || recruiterConn.model('RecruiterUser', new mongoose.Schema({
       firstName: String,
       lastName: String
     }));
@@ -107,7 +107,8 @@ const createOrGetChat = async (req, res) => {
         jobTitle: jobTitle || 'N/A',
         companyName: companyName || 'N/A',
         recruiterName,
-        applicantName
+        applicantName,
+        type: type // 'job' or 'internship'
       }
     });
   } catch (error) {

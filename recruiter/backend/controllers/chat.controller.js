@@ -99,7 +99,8 @@ const createOrGetChat = async (req, res) => {
         jobTitle: jobTitle || 'N/A',
         companyName: companyName || 'N/A',
         recruiterName,
-        applicantName
+        applicantName,
+        type: type // 'job' or 'internship'
       }
     });
   } catch (error) {

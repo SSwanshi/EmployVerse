@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 import axios from 'axios';
 import { useToast } from '../contexts/ToastContext';
 import { useAuth } from '../hooks/useAuth';
+import { ArrowLeft, Send } from 'lucide-react';
 
 const Chat = () => {
   const { applicationId } = useParams();
@@ -269,7 +270,7 @@ const Chat = () => {
           onClick={() => navigate('/my-applications')}
           className="mb-4 text-xs font-bold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer"
         >
-          <i className="fas fa-chevron-left"></i> Back to Applications
+          <ArrowLeft className="h-3.5 w-3.5" /> Back to My Applications
         </button>
 
         {/* Chat window */}
@@ -277,12 +278,19 @@ const Chat = () => {
           {/* Header */}
           <div className="px-6 py-4 border-b border-slate-100 bg-slate-900 text-white flex items-center justify-between">
             <div>
-              <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-md font-bold leading-tight">{details?.jobTitle}</h2>
+                {details?.type && (
+                  <span className="inline-flex items-center text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-white/20 text-white uppercase tracking-wide">
+                    {details.type === 'job' ? 'Job' : 'Internship'}
+                  </span>
+                )}
+              </div>
               <p className="text-[11px] text-slate-300 font-medium mt-0.5">
                 {details?.companyName} 
               </p>
             </div>
-            <div className="text-md font-bold leading-tight">Recruiter: {details?.recruiterName}</div>
+            <div className="text-md font-bold leading-tight font-sans">Recruiter: {details?.recruiterName}</div>
           </div>
 
           {/* Chat Space */}
@@ -350,7 +358,7 @@ const Chat = () => {
               type="submit"
               className="px-5 py-2.5 bg-green-600 hover:bg-black text-white text-sm font-bold rounded-xl transition duration-150 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              Send <i className="fas fa-paper-plane text-[10px]"></i>
+              Send <Send className="h-3.5 w-3.5" />
             </button>
           </form>
         </div>
