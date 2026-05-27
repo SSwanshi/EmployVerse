@@ -75,7 +75,8 @@ export const adminApi = {
     </soap:Body>
   </soap:Envelope>`;
 
-    const response = await fetch(`${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/wsdl`, {
+    const baseUrl = import.meta.env.VITE_API_BASE || "";
+    const response = await fetch(`${baseUrl}/wsdl`, {
       method: "POST",
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
@@ -100,7 +101,8 @@ export const adminApi = {
 
   // Proof Document
   getProofDocumentUrl: (proofId) => {
-    return `${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/api/admin/company/proof/${proofId}`;
+    const baseUrl = import.meta.env.VITE_API_BASE || "";
+    return `${baseUrl}/api/admin/company/proof/${proofId}`;
   },
 
   getProofDocument: async (proofId) => {

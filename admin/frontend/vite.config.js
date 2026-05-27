@@ -7,6 +7,18 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/wsdl': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   preview: {
     port: 5173,

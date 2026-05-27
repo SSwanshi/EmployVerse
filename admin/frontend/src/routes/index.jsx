@@ -11,6 +11,8 @@ import JobList from '../pages/admin/JobList';
 import InternshipList from '../pages/admin/InternshipList';
 import PremiumUsers from '../pages/admin/PremiumUsers';
 import CompaniesAwaitingVerification from '../pages/admin/CompaniesAwaitingVerification';
+import VerificationManagerLayout from '../layouts/VerificationManagerLayout';
+import VerificationManagerDashboard from '../pages/admin/VerificationManagerDashboard';
 import { useAuth } from '../hooks/useAuth';
 
 const PublicRoute = ({ children }) => {
@@ -35,6 +37,9 @@ const PublicRoute = ({ children }) => {
 };
 
 const AppRoutes = () => {
+  const { user } = useAuth();
+  const isVerificationManager = user?.role === 'company_verification_manager';
+
   return (
     <BrowserRouter>
       <Routes>
@@ -48,18 +53,23 @@ const AppRoutes = () => {
         
         <Route path="/" element={
           <ProtectedRoute>
-            <AdminLayout />
+            {isVerificationManager ? <VerificationManagerLayout /> : <AdminLayout />}
           </ProtectedRoute>
         }>
           <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="applicants" element={<ApplicantList />} />
-          <Route path="recruiters" element={<RecruiterList />} />
-          <Route path="companies" element={<CompanyList />} />
-          <Route path="companies/awaiting-verification" element={<CompaniesAwaitingVerification />} />
-          <Route path="jobs" element={<JobList />} />
-          <Route path="internships" element={<InternshipList />} />
-          <Route path="premium-users" element={<PremiumUsers />} />
+          <Route path="dashboard" element={isVerificationManager ? <VerificationManagerDashboard /> : <Dashboard />} />
+          
+          {!isVerificationManager && (
+            <>
+              <Route path="applicants" element={<ApplicantList />} />
+              <Route path="recruiters" element={<RecruiterList />} />
+              <Route path="companies" element={<CompanyList />} />
+              <Route path="companies/awaiting-verification" element={<CompaniesAwaitingVerification />} />
+              <Route path="jobs" element={<JobList />} />
+              <Route path="internships" element={<InternshipList />} />
+              <Route path="premium-users" element={<PremiumUsers />} />
+            </>
+          )}
         </Route>
 
         {/* Catch all - redirect to dashboard or login */}

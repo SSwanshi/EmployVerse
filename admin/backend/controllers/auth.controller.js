@@ -1,21 +1,19 @@
 const validUsers = [
+  { email: "sarvjeetswanshi25@gmail.com", password: "123456@@", isPremium: true, role: "company_verification_manager", name: "sarvjeetswanshi25" },
   { email: "sarvjeet.s23@iiits.in", password: "123456@@", isPremium: true },
-  { email: "sauravkumar.r23@iiits.in", password: "123456@@", isPremium: false },
-  { email: "kartik.r23@iiits.in", password: "123456@@", isPremium: true },
-  { email: "anuj.r23@iiits.in", password: "123456@@", isPremium: true },
-  { email: "likhitha.b23@iiits.in", password: "123456@@", isPremium: true },
 ];
 
 const { sendOtpEmail } = require('../utils/emailService');
 
 const generateOtp = () => {
+  // Generate a random 6-digit OTP
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, loginRole } = req.body;
 
     const user = validUsers.find((u) => u.email === email);
 
@@ -26,6 +24,16 @@ const login = async (req, res) => {
     if (user.password !== password) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+
+    const userRole = user.role || 'admin';
+    const expectedRole = loginRole || 'admin';
+    
+    if (userRole !== expectedRole) {
+      return res.status(403).json({ error: `Unauthorized: This account does not have access to the ${expectedRole === 'admin' ? 'admin' : 'Verification Manager'} portal.` });
+    }
+    
+    // Assign the selected role to the user object so it can be passed to the session later
+    user.currentRole = expectedRole;
 
     // Generate OTP for 2FA
     const otp = generateOtp();
@@ -107,13 +115,21 @@ const verify2FA = async (req, res) => {
     // Set session user
     req.session.user = {
       email: user.email,
-      isPremium: user.isPremium
+      isPremium: user.isPremium,
+      role: user.currentRole || user.role || 'admin',
+      name: user.name || user.email.split('@')[0]
     };
 
-    res.json({
-      success: true,
-      message: '2FA verified. Login successful.',
-      user: req.session.user
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ success: false, error: 'Failed to save session' });
+      }
+      res.json({
+        success: true,
+        message: '2FA verified. Login successful.',
+        user: req.session.user
+      });
     });
   } catch (error) {
     console.error('Verify 2FA error:', error);

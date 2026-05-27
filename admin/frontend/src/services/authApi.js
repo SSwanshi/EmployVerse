@@ -1,8 +1,8 @@
 import api from './api';
 
 export const authApi = {
-  login: async (email, password) => {
-    const response = await api.post('/api/auth/login', { email, password });
+  login: async (email, password, loginRole) => {
+    const response = await api.post('/api/auth/login', { email, password, loginRole });
     return response.data;
   },
 

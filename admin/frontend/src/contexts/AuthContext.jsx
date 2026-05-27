@@ -27,9 +27,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, loginRole) => {
     try {
-      const response = await authApi.login(email, password);
+      const response = await authApi.login(email, password, loginRole);
       if (response.success && !response.require2FA) {
         setUser(response.user);
       }

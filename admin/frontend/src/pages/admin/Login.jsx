@@ -12,6 +12,7 @@ const Login = () => {
   const [show2FA, setShow2FA] = useState(false);
   const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
+  const [isVerificationManager, setIsVerificationManager] = useState(false);
   const { login, verify2FA } = useAuth();
   const navigate = useNavigate();
 
@@ -22,7 +23,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const result = await login(email, password);
+      const loginRole = isVerificationManager ? 'company_verification_manager' : 'admin';
+      const result = await login(email, password, loginRole);
       if (result.success) {
         if (result.require2FA) {
           setShow2FA(true);
@@ -63,10 +65,10 @@ const Login = () => {
     <div className="bg-white shadow-lg rounded-lg p-8">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900">
-          {show2FA ? 'Two-Factor Auth' : 'Admin Login'}
+          {show2FA ? 'Two-Factor Auth' : (isVerificationManager ? 'Verification Manager Login' : 'Admin Login')}
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          {show2FA ? 'Verify your identity' : 'Sign in to your admin account'}
+          {show2FA ? 'Verify your identity' : `Sign in to your ${isVerificationManager ? 'manager' : 'admin'} account`}
         </p>
       </div>
 
@@ -173,6 +175,18 @@ const Login = () => {
         </button>
 
       </form>
+
+      {!show2FA && (
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={() => setIsVerificationManager(!isVerificationManager)}
+            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+          >
+            {isVerificationManager ? 'Login as Admin instead' : 'Login as Company Verification Manager'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

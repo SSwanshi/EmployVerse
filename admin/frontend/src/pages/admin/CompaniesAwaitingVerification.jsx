@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useAuth } from '../../hooks/useAuth';
 import { adminApi } from '../../services/adminApi';
 import { decrementCount, fetchPendingVerificationsCount } from '../../store/slices/pendingVerificationsSlice';
 import Header from '../../components/common/Header';
@@ -7,6 +8,8 @@ import Table, { TableRow, TableCell } from '../../components/ui/Table';
 
 const CompaniesAwaitingVerification = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+  const isVerificationManager = user?.role === 'company_verification_manager';
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -91,7 +94,7 @@ const CompaniesAwaitingVerification = () => {
     { label: 'Website' },
     { label: 'Location' },
     { label: 'Proof Document' },
-    { label: 'Actions', align: 'right' },
+    isVerificationManager ? { label: 'Actions', align: 'right' } : { label: 'Status' },
   ];
 
   return (
@@ -121,22 +124,30 @@ const CompaniesAwaitingVerification = () => {
                     '-'
                   )}
                 </TableCell>
-                <TableCell align="right">
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => handleVerify(company._id)}
-                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium"
-                    >
-                      Verify
-                    </button>
-                    <button
-                      onClick={() => handleReject(company._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </TableCell>
+                {isVerificationManager ? (
+                  <TableCell align="right">
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => handleVerify(company._id)}
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium"
+                      >
+                        Verify
+                      </button>
+                      <button
+                        onClick={() => handleReject(company._id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium"
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </TableCell>
+                ) : (
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${company.verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                      {company.verified ? 'Accepted' : 'Pending'}
+                    </span>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </Table>
