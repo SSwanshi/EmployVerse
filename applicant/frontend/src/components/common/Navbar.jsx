@@ -86,7 +86,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="text-slate-900 text-xl md:text-3xl font-black transition-transform hover:scale-102 duration-300 tracking-tight flex items-center gap-1"
+          className="text-slate-900 text-xl md:text-2xl lg:text-3xl font-black transition-transform hover:scale-102 duration-300 tracking-tight flex items-center gap-1 shrink-0 whitespace-nowrap"
         >
           <img
             src="/images/logoo.png"
@@ -96,7 +96,7 @@ const Navbar = () => {
         </Link>
 
         {/* Search bar */}
-        <div className="relative w-2/5 md:max-w-md group hidden sm:block z-50">
+        <div className="relative flex-grow max-w-sm lg:max-w-md group hidden md:block z-50 mx-2 lg:mx-6">
           <FuzzySearch 
             data={searchData}
             keys={searchKeys}
@@ -106,7 +106,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center space-x-10 text-slate-600 text-sm font-semibold">
+        <ul className="hidden md:flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-slate-600 text-[13px] lg:text-sm font-semibold shrink-0">
           <li>
             <Link
               to="/"
