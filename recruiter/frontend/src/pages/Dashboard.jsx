@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { applicationsApi } from '../services/applicationsApi';
 import { AuthContext } from '../contexts/AuthContext';
 import { Briefcase, Users, TrendingUp, CheckCircle, BadgeCheck, Star, Crown } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -112,6 +113,27 @@ const Dashboard = () => {
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
+
+  const handleAddJobClick = (e) => {
+    if (!user?.isPremium && statistics?.jobCount >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only post 1 job. Upgrade to Pro for unlimited job posts!");
+    }
+  };
+
+  const handleAddCompanyClick = (e) => {
+    if (!user?.isPremium && statistics?.companyCount >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only add 1 company. Upgrade to Pro for unlimited companies!");
+    }
+  };
+
+  const handleAddInternshipClick = (e) => {
+    if (!user?.isPremium && statistics?.internshipCount >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only post 1 internship. Upgrade to Pro for unlimited internship posts!");
+    }
+  };
 
   // Generate chart data
   const jobApplications = groupByDate(applicationData.jobApplications, 'jobApplication');
@@ -333,7 +355,15 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-12 text-center">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link to="/jobs/add" className="flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-blue-50/30 hover:border-blue-200 transition duration-200 hover-grow">
+            <Link 
+              to="/jobs/add" 
+              onClick={handleAddJobClick}
+              className={`flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl transition duration-200 ${
+                !user?.isPremium && statistics?.jobCount >= 1 
+                  ? 'opacity-60 cursor-not-allowed' 
+                  : 'hover:bg-blue-50/30 hover:border-blue-200 hover-grow'
+              }`}
+            >
               <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -341,7 +371,15 @@ const Dashboard = () => {
               </div>
               <span className="font-bold text-slate-900">Add New Job</span>
             </Link>
-            <Link to="/companies/add" className="flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-blue-50/30 hover:border-blue-200 transition duration-200 hover-grow">
+            <Link 
+              to="/companies/add" 
+              onClick={handleAddCompanyClick}
+              className={`flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl transition duration-200 ${
+                !user?.isPremium && statistics?.companyCount >= 1 
+                  ? 'opacity-60 cursor-not-allowed' 
+                  : 'hover:bg-blue-50/30 hover:border-blue-200 hover-grow'
+              }`}
+            >
               <div className="w-14 h-14 bg-slate-900 rounded-xl flex items-center justify-center mb-5 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -349,7 +387,15 @@ const Dashboard = () => {
               </div>
               <span className="font-bold text-slate-900">Add New Company</span>
             </Link>
-            <Link to="/internships/add" className="flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl hover:bg-blue-50/30 hover:border-blue-200 transition duration-200 hover-grow">
+            <Link 
+              to="/internships/add" 
+              onClick={handleAddInternshipClick}
+              className={`flex flex-col items-center p-8 bg-slate-50 border border-slate-100 rounded-2xl transition duration-200 ${
+                !user?.isPremium && statistics?.internshipCount >= 1 
+                  ? 'opacity-60 cursor-not-allowed' 
+                  : 'hover:bg-blue-50/30 hover:border-blue-200 hover-grow'
+              }`}
+            >
               <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-5 text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V6a4 4 0 018 0v1m4 0a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2h16zM10 12h4" />

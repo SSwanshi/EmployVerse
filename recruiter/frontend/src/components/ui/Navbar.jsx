@@ -42,11 +42,29 @@ const Navbar = () => {
     navigate("/profile");
   };
 
-  const getProfileImageUrl = () => {
-    if (user?.id) {
-      return authApi.getProfileImage(user.id);
+  const hasProfileImage = user?.profileImage?.data;
+
+  const renderAvatar = (className) => {
+    if (hasProfileImage) {
+      return (
+        <img
+          src={authApi.getProfileImage(user.id)}
+          alt={user?.firstName || "Profile"}
+          className={className}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = defaultImage;
+          }}
+        />
+      );
     }
-    return defaultImage;
+    
+    const initial = user?.firstName?.charAt(0)?.toUpperCase() || 'U';
+    return (
+      <div className={`${className} bg-blue-600 text-white flex items-center justify-center font-bold`}>
+        {initial}
+      </div>
+    );
   };
 
   return (
@@ -126,14 +144,7 @@ const Navbar = () => {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center space-x-2 hover:opacity-90 transition-opacity focus:outline-none"
                 >
-                  <img
-                    src={getProfileImageUrl()}
-                    alt={user?.firstName || "Profile"}
-                    className="w-10 h-10 rounded-full border border-slate-200 shadow-sm object-cover"
-                    onError={(e) => {
-                      e.target.src = defaultImage;
-                    }}
-                  />
+                  {renderAvatar("w-10 h-10 rounded-full border border-slate-200 shadow-sm object-cover")}
                 </button>
 
                 {/* Dropdown Menu */}
@@ -280,14 +291,7 @@ const Navbar = () => {
                 {isAuthenticated ? (
                   <li className="flex flex-col space-y-4">
                     <div className="flex items-center mb-4">
-                      <img
-                        src={getProfileImageUrl()}
-                        alt={user?.firstName || "Profile"}
-                        className="w-12 h-12 rounded-full border-2 border-slate-200 shadow-sm object-cover mr-4"
-                        onError={(e) => {
-                          e.target.src = defaultImage;
-                        }}
-                      />
+                      {renderAvatar("w-12 h-12 rounded-full border-2 border-slate-200 shadow-sm object-cover mr-4")}
                       <div>
                         <p className="font-bold text-slate-900">{user?.firstName || 'User'}</p>
                         <p className="text-xs text-slate-500 font-semibold cursor-pointer" onClick={() => { navigate('/profile'); setMenuOpen(false); }}>View Profile</p>

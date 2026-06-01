@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { internshipsApi } from "../services/internshipsApi";
 import { Pencil, Trash2, Eye } from "lucide-react";
 import { formatDate } from "../utils/formatDate";
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-hot-toast";
 
 const Internships = () => {
   const [internships, setInternships] = useState([]);
@@ -10,6 +12,7 @@ const Internships = () => {
   const [error, setError] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,6 +68,13 @@ const Internships = () => {
     return `${duration} ${duration === 1 ? 'Month' : 'Months'}`;
   };
 
+  const handleAddClick = (e) => {
+    if (!user?.isPremium && internships.length >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only post 1 internship. Upgrade to Pro for unlimited internship posts!");
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
@@ -81,7 +91,12 @@ const Internships = () => {
         <h2 className="text-3xl font-bold text-black">Internships</h2>
         <Link
           to="/internships/add"
-          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          onClick={handleAddClick}
+          className={`px-4 py-2 rounded-md font-semibold shadow-md transition-colors ${
+            !user?.isPremium && internships.length >= 1 
+              ? 'bg-gray-400 cursor-not-allowed text-white opacity-70'
+              : 'bg-black hover:bg-black text-white'
+          }`}
         >
           + Add Internship
         </Link>

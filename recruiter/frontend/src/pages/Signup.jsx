@@ -20,7 +20,10 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
-  const { signup } = useAuth();
+  const [show2FA, setShow2FA] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [message, setMessage] = useState("");
+  const { signup, verify2FA } = useAuth();
   const navigate = useNavigate();
 
   // Validation functions
@@ -235,11 +238,36 @@ const Signup = () => {
 
     try {
       const response = await signup(formData);
-      if (response.success) {
-        navigate("/login");
+      if (response && response.success) {
+        if (response.require2FA) {
+          setShow2FA(true);
+          setMessage(response.message || "Please enter the OTP sent to your email.");
+        } else {
+          navigate("/login");
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerify2FA = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await verify2FA(formData.email, otp);
+      if (response && response.success) {
+        navigate("/");
+      } else {
+        setError(response?.message || "Invalid OTP. Please try again.");
+      }
+    } catch (err) {
+      console.error('2FA verification error:', err);
+      setError(err.response?.data?.error || err.response?.data?.message || "Invalid OTP. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -300,20 +328,28 @@ const Signup = () => {
               </Link>
             </div>
             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Create your account
+              {show2FA ? "Two-Factor Auth" : "Create your account"}
             </h2>
             <p className="text-slate-500 text-xs font-semibold mt-1">
-              Join EmployVerse and start your journey today!
+              {show2FA ? "Verify your email to continue" : "Join EmployVerse and start your journey today!"}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={show2FA ? handleVerify2FA : handleSubmit} className="space-y-5">
             {error && (
               <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed animate-none">
                 {error}
               </div>
             )}
 
+            {message && (
+              <div className="bg-blue-50 border border-blue-100 text-blue-700 px-4 py-2.5 rounded-xl text-xs font-semibold text-center leading-relaxed animate-none">
+                {message}
+              </div>
+            )}
+
+            {!show2FA ? (
+              <>
             {/* Name Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -564,21 +600,50 @@ const Signup = () => {
               </label>
             </div>
 
+              </>
+            ) : (
+              <>
+                {/* OTP */}
+                <div>
+                  <label
+                    htmlFor="otp"
+                    className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                  >
+                    Enter Verification Code
+                  </label>
+                  <input
+                    id="otp"
+                    type="text"
+                    required
+                    maxLength="6"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="0 0 0 0 0 0"
+                    className="w-full rounded-xl border border-slate-200 py-3 px-4 text-center text-xl font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all duration-200 text-slate-800 placeholder:text-slate-300 bg-slate-50"
+                  />
+                </div>
+              </>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-slate-900 hover:bg-black text-white py-3 rounded-xl font-bold transition-all duration-200 text-sm shadow-md hover:shadow-lg disabled:opacity-50 mt-2"
             >
-              {loading ? "Creating Account..." : "Sign Up"}
+              {loading
+                ? (show2FA ? "Verifying..." : "Creating Account...")
+                : (show2FA ? "Verify OTP" : "Sign Up")}
             </button>
 
-            <div className="text-center text-xs text-slate-500 pt-2">
-              Already have an account?{" "}
-              <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
-                Login
-              </Link>
-            </div>
+            {!show2FA && (
+              <div className="text-center text-xs text-slate-500 pt-2">
+                Already have an account?{" "}
+                <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                  Login
+                </Link>
+              </div>
+            )}
           </form>
         </div>
       </div>

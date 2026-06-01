@@ -128,21 +128,39 @@ const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Generate OTP
+    const otp = generateOtp();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
     const newUser = new User({
       firstName,
       lastName,
       email,
       phone,
       gender,
-      password: hashedPassword
+      password: hashedPassword,
+      otp,
+      otpExpiry
     });
 
     await newUser.save();
 
-    res.json({
-      success: true,
-      message: 'Signed up successfully! Please login.'
-    });
+    try {
+      await sendOtpEmail(newUser.email, otp);
+      return res.json({
+        success: true,
+        require2FA: true,
+        email: newUser.email,
+        message: 'Signed up successfully! OTP sent to your email for verification.'
+      });
+    } catch (emailError) {
+      console.error('Signup 2FA OTP email error:', emailError);
+      return res.status(500).json({
+        success: false,
+        error: emailError.message || 'Failed to send verification OTP. Please try again later.'
+      });
+    }
   } catch (error) {
     console.error('Signup error:', error);
     res.status(500).json({
@@ -351,9 +369,9 @@ const getProfileImage = async (req, res) => {
 };
 
 // Generate 6-digit OTP
-const generateOtp = () => {
+function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
-};
+}
 
 // Send OTP for forgot password
 const sendForgotPasswordOtp = async (req, res) => {

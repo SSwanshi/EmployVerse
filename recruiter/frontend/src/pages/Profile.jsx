@@ -149,6 +149,7 @@ const Profile = () => {
   }
 
   const displayImage = imagePreview || getProfileImageUrl();
+  const hasProfileImage = imagePreview || profile?.profileImage?.data;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -172,14 +173,21 @@ const Profile = () => {
             {/* Profile Image Section */}
             <div className="flex flex-col items-center mb-6">
               <div className="relative">
-                <img
-                  src={displayImage}
-                  alt={`${profile.firstName} ${profile.lastName}`}
-                  className="h-32 w-32 rounded-full border-4 border-white shadow-lg object-cover"
-                  onError={(e) => {
-                    e.target.src = defaultImage;
-                  }}
-                />
+                {hasProfileImage ? (
+                  <img
+                    src={displayImage}
+                    alt={`${profile.firstName} ${profile.lastName}`}
+                    className="h-32 w-32 rounded-full border-4 border-white shadow-lg object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = defaultImage;
+                    }}
+                  />
+                ) : (
+                  <div className="h-32 w-32 rounded-full border-4 border-white shadow-lg flex items-center justify-center bg-blue-600 text-white text-5xl font-bold">
+                    {profile?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                )}
                 {profile.isPremium && (
                   <div className="absolute -top-2 -right-2 bg-gray-900 rounded-full p-1 shadow-md">
                     <Crown className="h-5 w-5 text-white" />

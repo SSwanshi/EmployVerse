@@ -4,6 +4,8 @@ import { companiesApi } from "../services/companiesApi";
 import Badge from "../components/ui/Badge";
 import { CheckCircle, Eye } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-hot-toast";
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -12,6 +14,7 @@ const Companies = () => {
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [viewingProof, setViewingProof] = useState(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
 
@@ -96,6 +99,13 @@ const Companies = () => {
     setViewingProof(null);
   };
 
+  const handleAddClick = (e) => {
+    if (!user?.isPremium && companies.length >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only add 1 company. Upgrade to Pro for unlimited companies!");
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
@@ -112,7 +122,12 @@ const Companies = () => {
         <h2 className="text-3xl font-bold text-black">Companies</h2>
         <Link
           to="/companies/add"
-          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          onClick={handleAddClick}
+          className={`px-4 py-2 rounded-md font-semibold shadow-md transition-colors ${
+            !user?.isPremium && companies.length >= 1 
+              ? 'bg-gray-400 cursor-not-allowed text-white opacity-70'
+              : 'bg-black hover:bg-black text-white'
+          }`}
         >
           + Add Company
         </Link>

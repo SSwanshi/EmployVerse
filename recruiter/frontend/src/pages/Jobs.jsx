@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { jobsApi } from "../services/jobsApi";
 import { Pencil, Trash2, Eye } from "lucide-react";
 import { formatDate } from "../utils/formatDate";
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-hot-toast";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -10,6 +12,7 @@ const Jobs = () => {
   const [error, setError] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,6 +63,13 @@ const Jobs = () => {
     return `${salary} LPA`;
   };
 
+  const handleAddClick = (e) => {
+    if (!user?.isPremium && jobs.length >= 1) {
+      e.preventDefault();
+      toast.error("Free users can only post 1 job. Upgrade to Pro for unlimited job posts!");
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
@@ -76,7 +86,12 @@ const Jobs = () => {
         <h2 className="text-3xl font-bold text-black">Jobs</h2>
         <Link
           to="/jobs/add"
-          className="bg-black hover:bg-black text-white px-4 py-2 rounded-md font-semibold shadow-md transition-colors"
+          onClick={handleAddClick}
+          className={`px-4 py-2 rounded-md font-semibold shadow-md transition-colors ${
+            !user?.isPremium && jobs.length >= 1 
+              ? 'bg-gray-400 cursor-not-allowed text-white opacity-70'
+              : 'bg-black hover:bg-black text-white'
+          }`}
         >
           + Add Job
         </Link>
