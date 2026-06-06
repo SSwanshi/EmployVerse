@@ -42,7 +42,7 @@ const Navbar = () => {
     navigate("/profile");
   };
 
-  const hasProfileImage = user?.profileImage?.data;
+  const hasProfileImage = user?.profileImage?.data || user?.profileImage;
 
   const renderAvatar = (className) => {
     if (hasProfileImage) {

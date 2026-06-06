@@ -66,6 +66,7 @@ const login = async (req, res) => {
         email: user.email,
         phone: user.phone,
         gender: user.gender,
+        profileImage: user.profileImage && user.profileImage.data ? { data: true } : null,
         isPremium: user.isPremium
       }
     });
@@ -715,6 +716,7 @@ const verify2FA = async (req, res) => {
         email: user.email,
         phone: user.phone,
         gender: user.gender,
+        profileImage: user.profileImage && user.profileImage.data ? { data: true } : null,
         isPremium: user.isPremium
       }
     });
