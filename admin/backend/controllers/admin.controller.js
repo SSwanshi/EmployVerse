@@ -6,6 +6,28 @@ const createInternshipModel = require('../models/Internship');
 const createCompanyModel = require('../models/Company');
 const { initGridFS } = require('../db/gridfs');
 
+function createAppliedJobModel(connection) {
+  if (connection.models.Applied_for_Jobs) {
+    return connection.models.Applied_for_Jobs;
+  }
+  const schema = new mongoose.Schema({
+    AppliedAt: Date,
+    isSelected: Boolean
+  }, { collection: 'applied_for_jobs' });
+  return connection.model("Applied_for_Jobs", schema);
+}
+
+function createAppliedInternshipModel(connection) {
+  if (connection.models.Applied_for_Internships) {
+    return connection.models.Applied_for_Internships;
+  }
+  const schema = new mongoose.Schema({
+    AppliedAt: Date,
+    isSelected: Boolean
+  }, { collection: 'applied_for_internships' });
+  return connection.model("Applied_for_Internships", schema);
+}
+
 function createPremiumUserModel(connection) {
   if (connection.models.Premium_User) {
     return connection.models.Premium_User; // reuse existing model
@@ -209,10 +231,31 @@ const getStats = async (req, res) => {
   }
 };
 
+const getApplicationsAndSelections = async (req, res) => {
+  try {
+    const applicantConn = await connectApplicantDB();
+    
+    const AppliedJobModel = createAppliedJobModel(applicantConn);
+    const AppliedInternshipModel = createAppliedInternshipModel(applicantConn);
+
+    const jobApps = await AppliedJobModel.find({}).select('AppliedAt isSelected').lean();
+    const intApps = await AppliedInternshipModel.find({}).select('AppliedAt isSelected').lean();
+
+    res.json({
+      jobApplications: jobApps,
+      internshipApplications: intApps
+    });
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getPremiumUsers,
   getPremiumUsersSoap,
   getProofDocument,
-  getStats
+  getStats,
+  getApplicationsAndSelections
 };
 

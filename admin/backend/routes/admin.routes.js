@@ -6,6 +6,9 @@ const { isAdmin } = require('../middleware/auth');
 // Get premium users
 router.get('/premium-users', isAdmin, adminController.getPremiumUsers);
 
+// Get applications and selections
+router.get('/applications', isAdmin, adminController.getApplicationsAndSelections);
+
 // Get proof document - handle OPTIONS for CORS preflight
 router.options('/company/proof/:proofId', (req, res) => {
   res.set('Access-Control-Allow-Origin', req.headers.origin || '*');

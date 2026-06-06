@@ -911,11 +911,12 @@ const getDashboardStats = async (req, res) => {
         ? Math.round(((selected + rejected) / totalApplications) * 100)
         : 0;
 
-    // Build monthly timeline for the last 12 months
-    const now = new Date();
+    // Build monthly timeline for 12 months starting from June 2026
+    const startYear = 2026;
+    const startMonthIndex = 5; // June (0-indexed)
     const monthlyData = {};
-    for (let i = 11; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(startYear, startMonthIndex + i, 1);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       monthlyData[key] = 0;
     }

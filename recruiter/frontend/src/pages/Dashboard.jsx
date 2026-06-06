@@ -57,24 +57,38 @@ const Dashboard = () => {
   `;
 
   // Helper function to group data by date
-  const groupByDate = () => {
-    const last6Months = [];
-    const currentDate = new Date();
+  const groupByDate = (data) => {
+    const displayMonths = [];
     
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+    // Start from June 2026 (month index 5)
+    const startYear = 2026;
+    const startMonth = 5; 
+    
+    // Generate 12 months starting from June 2026
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(startYear, startMonth + i, 1);
       const monthName = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
       
-      // Mock data for demonstration
-      const count = Math.floor(Math.random() * 15) + 5;
+      const targetMonth = date.getMonth();
+      const targetYear = date.getFullYear();
+
+      const count = data?.filter(item => {
+        let itemDate;
+        if (item.createdAt) itemDate = new Date(item.createdAt);
+        else if (item.appliedAt) itemDate = new Date(item.appliedAt);
+        else if (item.selectedAt) itemDate = new Date(item.selectedAt);
+        else return false;
+        
+        return itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear;
+      }).length || 0;
       
-      last6Months.push({
+      displayMonths.push({
         period: monthName,
         count: count
       });
     }
     
-    return last6Months;
+    return displayMonths;
   };
 
   useEffect(() => {
@@ -83,23 +97,18 @@ const Dashboard = () => {
         const data = await applicationsApi.getStatistics();
         setStatistics(data);
         
-        // Mock application and selection data
+        // Set application and selection data from backend
+        const jobApps = data.jobApplications || [];
+        const intApps = data.internshipApplications || [];
+
         setApplicationData({
-          jobApplications: Array(50).fill().map(() => ({
-            appliedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-          })),
-          internshipApplications: Array(30).fill().map(() => ({
-            appliedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-          }))
+          jobApplications: jobApps,
+          internshipApplications: intApps
         });
         
         setSelectionData({
-          jobSelections: Array(15).fill().map(() => ({
-            selectedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-          })),
-          internshipSelections: Array(8).fill().map(() => ({
-            selectedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-          }))
+          jobSelections: jobApps.filter(a => a.isSelected),
+          internshipSelections: intApps.filter(a => a.isSelected)
         });
       } catch (error) {
         console.error('Error fetching statistics:', error);

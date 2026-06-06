@@ -60,26 +60,39 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   // Helper function to group registrations by date
-  const groupRegistrationsByDate = () => {
-    const last6Months = [];
-    const currentDate = new Date();
+  const groupRegistrationsByDate = (data) => {
+    const displayMonths = [];
     
-    // Generate last 6 months
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+    // Start from June 2026 (month index 5)
+    const startYear = 2026;
+    const startMonth = 5; 
+    
+    // Generate 12 months starting from June 2026
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(startYear, startMonth + i, 1);
       const monthName = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
       
-      // Count registrations for this month (mock data processing)
-      // In real implementation, filter by createdAt date
-      const count = Math.floor(Math.random() * 20) + 5; // Mock data
+      const targetMonth = date.getMonth();
+      const targetYear = date.getFullYear();
+
+      const count = data?.filter(item => {
+        let itemDate;
+        if (item.createdAt) itemDate = new Date(item.createdAt);
+        else if (item.submittedAt) itemDate = new Date(item.submittedAt);
+        else if (item.selectedAt) itemDate = new Date(item.selectedAt);
+        else if (item.appliedAt) itemDate = new Date(item.appliedAt);
+        else return false;
+        
+        return itemDate.getMonth() === targetMonth && itemDate.getFullYear() === targetYear;
+      }).length || 0;
       
-      last6Months.push({
+      displayMonths.push({
         period: monthName,
         count: count
       });
     }
     
-    return last6Months;
+    return displayMonths;
   };
 
   useEffect(() => {
@@ -89,13 +102,14 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const [applicants, recruiters, companies, jobs, internships, premiumUsers] = await Promise.all([
+      const [applicants, recruiters, companies, jobs, internships, premiumUsers, appsAndSelections] = await Promise.all([
         adminApi.getApplicants().catch(() => []),
         adminApi.getRecruiters().catch(() => []),
         adminApi.getCompanies().catch(() => []),
         adminApi.getJobs().catch(() => []),
         adminApi.getInternships().catch(() => []),
         adminApi.getPremiumUsers().catch(() => []),
+        adminApi.getApplicationsAndSelections().catch(() => ({ jobApplications: [], internshipApplications: [] })),
       ]);
 
       setStats({
@@ -119,30 +133,25 @@ const Dashboard = () => {
         internships: internships.flatMap(c => c.internships || []) || []
       });
 
-      // Process time-based selection data (mock data for now)
+      // Set selection data to real values
       setSelectionData({
-        jobSelections: Array(30).fill().map(() => ({ // Mock 30 selections
-          selectedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-        })),
-        internshipSelections: Array(15).fill().map(() => ({ // Mock 15 selections
-          selectedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-        }))
+        jobSelections: appsAndSelections.jobApplications?.filter(a => a.isSelected) || [],
+        internshipSelections: appsAndSelections.internshipApplications?.filter(a => a.isSelected) || []
       });
 
-      // Process time-based application data (mock data for now)
+      // Set application data to real values
       setApplicationData({
-        jobApplications: Array(150).fill().map(() => ({ // Mock 150 job applications
-          submittedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-        })),
-        internshipApplications: Array(80).fill().map(() => ({ // Mock 80 internship applications
-          submittedAt: new Date(Date.now() - Math.random() * 180 * 24 * 60 * 60 * 1000)
-        }))
+        jobApplications: appsAndSelections.jobApplications || [],
+        internshipApplications: appsAndSelections.internshipApplications || []
       });
 
-      // Set revenue data based on premium users
+      // Since PremiumUsers doesn't specify if user is an applicant or recruiter, 
+      // we'll assign the revenue using the real count instead of hardcoded numbers.
+      // E.g. we distribute them proportionally (or equally) using real stats.premiumUsers
+      const totalPremium = premiumUsers.length || 0;
       setRevenueData({
-        premiumApplicants: Math.floor(stats.premiumUsers * 0.6) || 12, // 60% applicants
-        premiumRecruiters: Math.floor(stats.premiumUsers * 0.4) || 8   // 40% recruiters
+        premiumApplicants: Math.ceil(totalPremium * 0.6), // 60% approx
+        premiumRecruiters: Math.floor(totalPremium * 0.4)  // 40% approx
       });
     } catch (error) {
       console.error('Error fetching stats:', error);

@@ -111,6 +111,11 @@ export const adminApi = {
     });
     return response.data;
   },
+
+  getApplicationsAndSelections: async () => {
+    const response = await api.get("/api/admin/applications");
+    return response.data;
+  },
 };
 
 export default adminApi;
