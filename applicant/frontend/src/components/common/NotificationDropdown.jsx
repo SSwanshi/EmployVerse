@@ -7,6 +7,7 @@ const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -27,6 +28,8 @@ const NotificationDropdown = () => {
         }
       } catch (err) {
         console.error('Failed to fetch initial notifications:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -231,7 +234,23 @@ const NotificationDropdown = () => {
 
         {/* Notifications List */}
         <div className="max-h-96 overflow-y-auto custom-scrollbar">
-          {notifications.length > 0 ? (
+          {loading ? (
+            <div className="flex flex-col">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex gap-4 px-5 py-4 border-b border-slate-50 animate-pulse">
+                  <div className="w-8 h-8 rounded-full bg-slate-200 shrink-0"></div>
+                  <div className="flex-1 min-w-0 py-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="h-3 bg-slate-200 rounded w-1/2"></div>
+                      <div className="h-2 bg-slate-200 rounded w-8"></div>
+                    </div>
+                    <div className="h-2 bg-slate-200 rounded w-3/4 mb-1.5"></div>
+                    <div className="h-2 bg-slate-200 rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : notifications.length > 0 ? (
             <div className="flex flex-col">
               {notifications.map((notif) => (
                 <div 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import profileService from "../services/profileService";
 import { useToast } from "../contexts/ToastContext";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -304,14 +305,7 @@ const Profile = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <i className="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
-        </div>
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   if (!userData) {

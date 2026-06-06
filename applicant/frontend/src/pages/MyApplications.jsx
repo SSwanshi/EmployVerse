@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import profileService from "../services/profileService";
 import { applicantApi } from "../services/applicantApi";
 import { useToast } from "../contexts/ToastContext";
+import ApplicationCardSkeleton from "./ApplicationCardSkeleton";
 
 const statusConfig = {
   Pending:  { cls: "bg-amber-50 text-amber-700 border-amber-100",  icon: "fa-clock" },
@@ -43,16 +44,7 @@ const MyApplications = () => {
     rejected: applicationHistory.filter(a => a.status === "Rejected").length,
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <i className="fas fa-spinner fa-spin text-3xl text-slate-400"></i>
-          <p className="mt-3 text-sm text-slate-500">Loading your applications...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen bg-slate-50 pt-7 pb-16 px-6 lg:px-10 font-sans">
@@ -87,7 +79,14 @@ const MyApplications = () => {
       </div>
 
       {/* Applications grid */}
-      {applicationHistory.length > 0 ? (
+      {loading ? (
+        <>
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-400 mb-3">All applications</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">
+            {[1, 2, 3, 4, 5, 6].map(i => <ApplicationCardSkeleton key={i} />)}
+          </div>
+        </>
+      ) : applicationHistory.length > 0 ? (
         <>
           <p className="text-xs font-medium uppercase tracking-wider text-slate-400 mb-3">All applications</p>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">

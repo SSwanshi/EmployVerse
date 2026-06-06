@@ -6,6 +6,7 @@ import EmptyState from "../components/common/EmptyState";
 import JobCard from "../components/jobs/JobCard";
 import JobFilters from "../components/jobs/JobFilters";
 import Pagination from "../components/jobs/Pagination";
+import JobCardSkeleton from "../components/jobs/JobCardSkeleton";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -45,13 +46,7 @@ const Jobs = () => {
     fetchJobs();
   }, [filters, page]); // Trigger when either filters or page changes
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
-      </div>
-    );
-  }
+
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -119,7 +114,13 @@ const Jobs = () => {
 
           {/* Job list - right column */}
           <div className="w-full lg:w-3/4">
-            {jobs.length === 0 ? (
+            {loading ? (
+              <div className="flex flex-col gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <JobCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : jobs.length === 0 ? (
               <EmptyState message="No jobs available at the moment" />
             ) : (
               <div className="flex flex-col gap-6">

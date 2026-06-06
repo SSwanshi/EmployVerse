@@ -5,6 +5,7 @@ import EmptyState from '../components/common/EmptyState';
 import InternshipCard from '../components/internships/InternshipCard';
 import InternshipFilters from '../components/internships/InternshipFilters';
 import Pagination from '../components/jobs/Pagination';
+import InternshipCardSkeleton from '../components/internships/InternshipCardSkeleton';
 
 const Internships = () => {
   const [internships, setInternships] = useState([]);
@@ -44,9 +45,7 @@ const Internships = () => {
     fetchInternships();
   }, [filters, page]);
 
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
+
 
   const handlePageChange = (newpage) => {
     setPage(newpage);
@@ -107,7 +106,13 @@ const Internships = () => {
 
         {/* Internship List Right */}
         <div className="flex-1">
-          {internships.length === 0 ? (
+          {loading ? (
+            <div className="flex flex-col gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <InternshipCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : internships.length === 0 ? (
             <EmptyState message="No internships available at the moment" />
           ) : (
             <div className="flex flex-col gap-6">
