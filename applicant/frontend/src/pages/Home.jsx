@@ -587,25 +587,25 @@ const Home = () => {
             <div className="md:w-5/12 grid grid-cols-2 gap-4">
               <div className="bg-slate-800/40 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors duration-200 text-center">
                 <h3 className="text-3xl font-black mb-2 text-white">
-                  {statsLoading ? '...' : statsError ? '—' : stats.jobCount}
+                  {statsLoading ? <div className="h-8 w-16 bg-slate-700 rounded animate-pulse mx-auto"></div> : statsError ? '—' : stats.jobCount}
                 </h3>
                 <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">Job Opportunities</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors duration-200 text-center">
                 <h3 className="text-3xl font-black mb-2 text-white">
-                  {statsLoading ? '...' : statsError ? '—' : stats.companyCount}
+                  {statsLoading ? <div className="h-8 w-16 bg-slate-700 rounded animate-pulse mx-auto"></div> : statsError ? '—' : stats.companyCount}
                 </h3>
                 <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">Hiring Companies</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors duration-200 text-center">
                 <h3 className="text-3xl font-black mb-2 text-white">
-                  {statsLoading ? '...' : statsError ? '—' : stats.internshipCount}
+                  {statsLoading ? <div className="h-8 w-16 bg-slate-700 rounded animate-pulse mx-auto"></div> : statsError ? '—' : stats.internshipCount}
                 </h3>
                 <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">Internship Roles</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors duration-200 text-center">
                 <h3 className="text-3xl font-black mb-2 text-white">
-                  {statsLoading ? '...' : statsError ? '—' : stats.applicantCount}
+                  {statsLoading ? <div className="h-8 w-16 bg-slate-700 rounded animate-pulse mx-auto"></div> : statsError ? '—' : stats.applicantCount}
                 </h3>
                 <p className="text-blue-400 text-xs font-semibold uppercase tracking-wider">Registered Users</p>
               </div>

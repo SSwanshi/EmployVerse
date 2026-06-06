@@ -14,6 +14,7 @@ import {
   Legend
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import DashboardSkeleton from '../components/common/DashboardSkeleton';
 
 // Register Chart.js components
 ChartJS.register(
@@ -120,7 +121,7 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <DashboardSkeleton />;
   }
 
   const handleAddJobClick = (e) => {

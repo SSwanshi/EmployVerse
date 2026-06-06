@@ -5,6 +5,7 @@ import { Pencil, Trash2, Eye } from "lucide-react";
 import { formatDate } from "../utils/formatDate";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import TableSkeleton from "../components/common/TableSkeleton";
 
 const Internships = () => {
   const [internships, setInternships] = useState([]);
@@ -76,13 +77,7 @@ const Internships = () => {
   };
 
   if (loading) {
-    return (
-      <div className="p-6 bg-gray-50 min-h-screen">
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-500 text-lg">Loading internships...</p>
-        </div>
-      </div>
-    );
+    return <TableSkeleton title="Internships" columns={9} />;
   }
 
   return (

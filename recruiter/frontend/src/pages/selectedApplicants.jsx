@@ -45,11 +45,35 @@ const SelectedApplicants = () => {
 
   if (loading) {
     return (
-      <div className="p-6 bg-slate-50 min-h-screen pt-24">
-        <div className="flex items-center justify-center py-12">
-          <div className="text-center">
-            <i className="fas fa-spinner fa-spin text-3xl text-slate-500"></i>
-            <p className="mt-3 text-sm text-slate-500 font-semibold">Loading selected applicants...</p>
+      <div className="p-6 bg-slate-50 min-h-screen pt-24 font-sans text-slate-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Selected Applications</h2>
+            <p className="text-slate-500 mt-1 text-sm font-medium">Manage and chat with candidates whose applications have been shortlisted.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-150/60 overflow-hidden animate-pulse">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-slate-100">
+                <thead className="bg-slate-900 text-white">
+                  <tr>
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                      <th key={i} className="px-6 py-4 text-left"><div className="h-4 bg-slate-700 rounded w-20"></div></th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-slate-100">
+                  {[1, 2, 3, 4, 5].map((row) => (
+                    <tr key={row}>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((col) => (
+                        <td key={col} className="px-6 py-4 whitespace-nowrap">
+                          <div className="h-4 bg-slate-200 rounded w-full max-w-[100px]"></div>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

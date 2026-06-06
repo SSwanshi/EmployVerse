@@ -6,6 +6,7 @@ import { CheckCircle, Eye } from "lucide-react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import TableSkeleton from "../components/common/TableSkeleton";
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -107,13 +108,7 @@ const Companies = () => {
   };
 
   if (loading) {
-    return (
-      <div className="p-6 bg-gray-50 min-h-screen">
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-500 text-lg">Loading companies...</p>
-        </div>
-      </div>
-    );
+    return <TableSkeleton title="Companies" columns={6} />;
   }
 
   return (

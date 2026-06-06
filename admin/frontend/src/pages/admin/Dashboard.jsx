@@ -53,10 +53,7 @@ const Dashboard = () => {
     jobApplications: [],
     internshipApplications: []
   });
-  const [revenueData, setRevenueData] = useState({
-    premiumApplicants: 0,
-    premiumRecruiters: 0
-  });
+  const [premiumUsersData, setPremiumUsersData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Helper function to group registrations by date
@@ -145,14 +142,7 @@ const Dashboard = () => {
         internshipApplications: appsAndSelections.internshipApplications || []
       });
 
-      // Since PremiumUsers doesn't specify if user is an applicant or recruiter, 
-      // we'll assign the revenue using the real count instead of hardcoded numbers.
-      // E.g. we distribute them proportionally (or equally) using real stats.premiumUsers
-      const totalPremium = premiumUsers.length || 0;
-      setRevenueData({
-        premiumApplicants: Math.ceil(totalPremium * 0.6), // 60% approx
-        premiumRecruiters: Math.floor(totalPremium * 0.4)  // 40% approx
-      });
+      setPremiumUsersData(premiumUsers || []);
     } catch (error) {
       console.error('Error fetching stats:', error);
     } finally {
@@ -194,10 +184,25 @@ const Dashboard = () => {
   const jobApplications = groupRegistrationsByDate(applicationData.jobApplications, 'jobApplication');
   const internshipApplications = groupRegistrationsByDate(applicationData.internshipApplications, 'internshipApplication');
 
-  // Calculate revenue data
-  const applicantRevenue = revenueData.premiumApplicants * 299;
-  const recruiterRevenue = revenueData.premiumRecruiters * 999;
-  
+  // Process premium users by date for revenue
+  const premiumByDate = groupRegistrationsByDate(
+    premiumUsersData.map(u => ({ createdAt: u.memberSince })), 
+    'premium'
+  );
+
+  const applicantRevenueByDate = premiumByDate.map(item => ({
+    period: item.period,
+    revenue: Math.ceil(item.count * 0.6) * 299
+  }));
+
+  const recruiterRevenueByDate = premiumByDate.map(item => ({
+    period: item.period,
+    revenue: Math.floor(item.count * 0.4) * 999
+  }));
+
+  const totalRevenue = applicantRevenueByDate.reduce((sum, item) => sum + item.revenue, 0) + 
+                       recruiterRevenueByDate.reduce((sum, item) => sum + item.revenue, 0);
+
   // Chart.js configuration for time-based registration chart
   const chartData = {
     labels: applicantRegistrations.map(item => item.period),
@@ -452,18 +457,18 @@ const Dashboard = () => {
 
   // Chart.js configuration for revenue chart
   const revenueChartData = {
-    labels: ['Premium Revenue'],
+    labels: applicantRevenueByDate.map(item => item.period),
     datasets: [
       {
-        label: `Applicant Revenue (₹${applicantRevenue.toLocaleString()})`,
-        data: [applicantRevenue],
+        label: 'Applicant Revenue (₹)',
+        data: applicantRevenueByDate.map(item => item.revenue),
         backgroundColor: 'rgba(16, 185, 129, 0.8)',
         borderColor: 'rgb(16, 185, 129)',
         borderWidth: 1,
       },
       {
-        label: `Recruiter Revenue (₹${recruiterRevenue.toLocaleString()})`,
-        data: [recruiterRevenue],
+        label: 'Recruiter Revenue (₹)',
+        data: recruiterRevenueByDate.map(item => item.revenue),
         backgroundColor: 'rgba(99, 102, 241, 0.8)',
         borderColor: 'rgb(99, 102, 241)',
         borderWidth: 1,
@@ -480,7 +485,7 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: `Revenue from Premium Users (Total: ₹${(applicantRevenue + recruiterRevenue).toLocaleString()})`,
+        text: `Revenue from Premium Users (Total: ₹${totalRevenue.toLocaleString()})`,
         font: {
           size: 16
         }
@@ -501,7 +506,7 @@ const Dashboard = () => {
         },
         title: {
           display: true,
-          text: 'Revenue Sources'
+          text: 'Time Period'
         }
       },
       y: {

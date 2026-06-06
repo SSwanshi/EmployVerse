@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import AuthLayout from '../layouts/AuthLayout';
 import MainLayout from '../layouts/MainLayout';
 import ProtectedRoute from '../components-guard/ProtectedRoute';
+import AuthSkeleton from '../components/common/AuthSkeleton';
 
 // Auth Pages
 import Login from '../pages/Login';
@@ -37,7 +38,7 @@ const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <AuthSkeleton />;
   }
 
   if (isAuthenticated) {
