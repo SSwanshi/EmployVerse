@@ -131,14 +131,6 @@ const Navbar = () => {
               Internships
             </Link>
           </li>
-          <li>
-            <Link
-              to="/contact"
-              className="hover:text-blue-600 transition-colors duration-200"
-            >
-              Contact Us
-            </Link>
-          </li>
           {isAuthenticated && (
             <li>
               <Link
@@ -149,11 +141,30 @@ const Navbar = () => {
               </Link>
             </li>
           )}
+          <li>
+            <Link
+              to="/resume-analyser"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Resume Analyser
+            </Link>
+          </li>
           {isAuthenticated && (
             <li>
               <NotificationDropdown />
             </li>
           )}
+          <li className="flex items-center">
+            <Link
+              to="/contact"
+              className="text-slate-600 hover:text-blue-600 transition-colors duration-200"
+              title="Contact Us"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </Link>
+          </li>
           {isAuthenticated ? (
             <li className="relative group flex items-center">
               <button className="bg-slate-900 hover:bg-black text-white font-bold py-2.5 px-4.5 rounded-xl transition-all duration-300 hover:shadow-md flex items-center text-sm cursor-pointer">
@@ -322,6 +333,15 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Internships
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/resume-analyser"
+                className="block py-4 text-slate-800 hover:text-blue-600 text-lg font-bold border-b border-slate-100"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Resume Analyser
               </Link>
             </li>
             <li>

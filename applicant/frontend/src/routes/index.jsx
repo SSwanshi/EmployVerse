@@ -27,6 +27,7 @@ import Chat from '../pages/Chat';
 import ApplyJob from '../pages/ApplyJob';
 import ApplyInternship from '../pages/ApplyInternship';
 import SearchResults from '../pages/SearchResults';
+import ResumeAnalyser from '../pages/ResumeAnalyser';
 import Terms from '../pages/Terms';
 import Privacy from '../pages/Privacy';
 import Contact from '../pages/ContactUs';
@@ -75,6 +76,7 @@ const AppRoutes = () => {
           <Route path="internships" element={<Internships />} />
           <Route path="companies" element={<Companies />} />
           <Route path="search" element={<SearchResults />} />
+          <Route path="resume-analyser" element={<ResumeAnalyser />} />
           <Route path="terms" element={<Terms />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="contact" element={<Contact />} />

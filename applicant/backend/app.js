@@ -20,6 +20,7 @@ const uploadRoutes = require('./routes/upload.routes');
 const searchRoutes = require('./routes/search.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const chatRoutes = require('./routes/chat.routes');
+const resumeRoutes = require('./routes/resume.routes');
 
 const redis = require('./config/redis');
 
@@ -113,6 +114,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/resume', resumeRoutes);
 
 // GraphQL (Option B: read-heavy queries)
 app.use(

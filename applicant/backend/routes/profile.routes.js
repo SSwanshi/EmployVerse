@@ -16,6 +16,9 @@ router.delete('/', requireAuth, profileController.deleteProfile);
 // Upload resume
 router.post('/resume', requireAuth, resumeUpload.single('resume'), profileController.uploadResume);
 
+// Get resume info
+router.get('/resume/info', requireAuth, profileController.getResumeInfo);
+
 // Get resume
 router.get('/resume', requireAuth, profileController.getResume);
 

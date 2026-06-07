@@ -365,6 +365,25 @@ const getResume = async (req, res) => {
   }
 };
 
+const getResumeInfo = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ success: false, message: 'Not logged in' });
+
+    const user = await User.findOne({ userId });
+    if (!user?.resumeId) return res.json({ success: true, hasResume: false });
+
+    const bucket = getBucket();
+    const files = await bucket.find({ _id: new ObjectId(user.resumeId) }).toArray();
+    if (files.length === 0) return res.json({ success: true, hasResume: false });
+
+    return res.json({ success: true, hasResume: true, resumeName: files[0].filename });
+  } catch (error) {
+    console.error('getResumeInfo error:', error);
+    res.status(500).json({ success: false, message: 'Error fetching resume info' });
+  }
+};
+
 const deleteResume = async (req, res) => {
   try {
     const userId = req.user?.id;
@@ -485,6 +504,7 @@ module.exports = {
   deleteProfile,
   uploadResume,
   getResume,
+  getResumeInfo,
   deleteResume,
   uploadProfileImage,
   getProfileImage,

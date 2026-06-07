@@ -125,6 +125,19 @@ const profileService = {
   },
 
   /**
+   * Get resume info (metadata)
+   */
+  getResumeInfo: async () => {
+    try {
+      const response = await apiClient.get('/profile/resume/info');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching resume info:', error);
+      throw error;
+    }
+  },
+
+  /**
    * Get resume
    */
   getResume: async () => {
@@ -161,6 +174,27 @@ const profileService = {
    */
   getResumeUrl: () => {
     return `${apiClient.defaults.baseURL}/profile/resume`;
+  },
+  /**
+   * Get ATS score for resume
+   */
+  getAtsScore: async (resumeFile = null, jobDescription = '', targetRole = '') => {
+    try {
+      const formData = new FormData();
+      if (resumeFile) formData.append('resumeFile', resumeFile);
+      if (jobDescription) formData.append('jobDescription', jobDescription);
+      if (targetRole) formData.append('targetRole', targetRole);
+
+      const response = await apiClient.post('/resume/ats-score', formData, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error calculating ATS score:', error);
+      throw error;
+    }
   },
 };
 

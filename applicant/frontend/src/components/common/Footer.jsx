@@ -48,6 +48,14 @@ const Footer = () => {
                   Companies
                 </Link>
               </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-200 block"
+                >
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
 
