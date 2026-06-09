@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { applicantApi } from "../services/applicantApi";
+import recommendationService from "../services/recommendationService";
+import { useToast } from "../contexts/ToastContext";
 import Header from "../components/common/Header";
 import EmptyState from "../components/common/EmptyState";
 import JobCard from "../components/jobs/JobCard";
 import JobFilters from "../components/jobs/JobFilters";
 import Pagination from "../components/jobs/Pagination";
 import JobCardSkeleton from "../components/jobs/JobCardSkeleton";
+import RecommendedJobsList from "../components/jobs/RecommendedJobsList";
 
 const Jobs = () => {
+  const toast = useToast();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isRecommending, setIsRecommending] = useState(false);
+  const [isShowingRecommendations, setIsShowingRecommendations] = useState(false);
 
-  useEffect(() => {
-    const fetchJobs = async () => {
+  const fetchJobs = async () => {
       try {
         // Build query string from both filters and pagination
         const params = new URLSearchParams();
@@ -42,11 +47,33 @@ const Jobs = () => {
         setLoading(false);
       }
     };
-    
-    fetchJobs();
-  }, [filters, page]); // Trigger when either filters or page changes
 
+  useEffect(() => {
+    if (!isShowingRecommendations) {
+      fetchJobs();
+    }
+  }, [filters, page, isShowingRecommendations]); 
 
+  const handleGetRecommendations = async () => {
+    try {
+      setIsRecommending(true);
+      setLoading(true);
+      const data = await recommendationService.getJobRecommendations();
+      if (data && data.recommendedJobs) {
+        setJobs(data.recommendedJobs);
+        setTotalPages(1); // Recommendations are a single page
+        setIsShowingRecommendations(true);
+        toast.success("Loaded personalized job recommendations!");
+      }
+    } catch (error) {
+      console.error("Recommendation error:", error);
+      const msg = error.response?.data?.error || "Please upload and analyze your resume on the Profile page first.";
+      toast.error(msg);
+    } finally {
+      setIsRecommending(false);
+      setLoading(false);
+    }
+  };
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -55,6 +82,7 @@ const Jobs = () => {
   const handleFiltersChange = (newFilters) => {
     // Reset to page 1 when filters change
     setPage(1);
+    setIsShowingRecommendations(false); // Clear recommendations when filtering
     setFilters(newFilters);
   };
 
@@ -62,6 +90,24 @@ const Jobs = () => {
     <div>
       <Header title="Available Jobs" />
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        
+        {!isShowingRecommendations && (
+          <div className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-1">Get Personalized Job Matches</h2>
+              <p className="text-slate-600 text-sm">We'll analyze your uploaded resume and recommend the best jobs for your skills and experience.</p>
+            </div>
+            <button
+              onClick={handleGetRecommendations}
+              disabled={isRecommending}
+              className="shrink-0 bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-70 flex flex-col items-center"
+            >
+              {isRecommending ? 'Analyzing Resume...' : 'Job Recommendation'}
+              {!isRecommending && <span className="text-[10px] text-blue-100 opacity-90">(Analysed from your resume)</span>}
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-8">
           
           {/* Mobile Filter Button */}
@@ -120,6 +166,15 @@ const Jobs = () => {
                   <JobCardSkeleton key={i} />
                 ))}
               </div>
+            ) : isShowingRecommendations ? (
+              <RecommendedJobsList 
+                jobs={jobs} 
+                onBack={() => {
+                  setIsShowingRecommendations(false);
+                  setPage(1);
+                  setFilters({});
+                }} 
+              />
             ) : jobs.length === 0 ? (
               <EmptyState message="No jobs available at the moment" />
             ) : (

@@ -255,7 +255,7 @@ const JobForm = ({ initialValues, onSubmit, isSubmitting, submitButtonText = "Su
                 id="jobSalary"
                 name="jobSalary"
                 type="text"
-                placeholder="e.g., 50000"
+                placeholder="e.g., 25"
                 onKeyPress={(e) => {
                   // Only allow digits
                   const char = String.fromCharCode(e.which);

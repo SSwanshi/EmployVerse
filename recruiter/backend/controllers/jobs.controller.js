@@ -3,6 +3,8 @@ const Job = require('../models/Jobs');
 const Company = require('../models/Companies');
 const redis = require('../config/redis');
 const { invalidateJobCache } = require('../utils/cacheInvalidation');
+const jobIndexer = require('../services/jobIndexer.service');
+
 const getJobs = async (req, res) => {
   try {
     const jobs = await Job.find({ createdBy: req.userId }).populate("jobCompany");
@@ -70,6 +72,10 @@ const addJob = async (req, res) => {
     });
 
     await newJob.save();
+    
+    // Background indexing
+    jobIndexer.indexJob(newJob).catch(err => console.error("Job indexing error:", err));
+    
     invalidateJobCache(redis);
 
     res.json({ success: true, message: "Job added successfully!", job: newJob });
@@ -128,6 +134,10 @@ const updateJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({ success: false, message: 'Job not found' });
     }
+    
+    // Background indexing
+    jobIndexer.indexJob(job).catch(err => console.error("Job indexing error:", err));
+
     invalidateJobCache(redis);
     res.json({ success: true, message: "Job updated successfully!", job });
   } catch (err) {

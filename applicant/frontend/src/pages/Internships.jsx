@@ -1,27 +1,33 @@
 import { useEffect, useState } from 'react';
 import { applicantApi } from '../services/applicantApi';
+import recommendationService from '../services/recommendationService';
+import { useToast } from '../contexts/ToastContext';
 import Header from '../components/common/Header';
 import EmptyState from '../components/common/EmptyState';
 import InternshipCard from '../components/internships/InternshipCard';
 import InternshipFilters from '../components/internships/InternshipFilters';
 import Pagination from '../components/jobs/Pagination';
 import InternshipCardSkeleton from '../components/internships/InternshipCardSkeleton';
+import RecommendedInternshipsList from '../components/internships/RecommendedInternshipsList';
 
 const Internships = () => {
+  const toast = useToast();
   const [internships, setInternships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isRecommending, setIsRecommending] = useState(false);
+  const [isShowingRecommendations, setIsShowingRecommendations] = useState(false);
 
   const handleFiltersChange = (newFilters) => {
     setPage(1);
+    setIsShowingRecommendations(false);
     setFilters(newFilters);
   };
 
-  useEffect(() => {
-    const fetchInternships = async () => {
+  const fetchInternships = async () => {
       try {
         const params = new URLSearchParams();
         params.set("page", page);
@@ -42,10 +48,33 @@ const Internships = () => {
         setLoading(false);
       }
     };
-    fetchInternships();
-  }, [filters, page]);
 
+  useEffect(() => {
+    if (!isShowingRecommendations) {
+      fetchInternships();
+    }
+  }, [filters, page, isShowingRecommendations]);
 
+  const handleGetRecommendations = async () => {
+    try {
+      setIsRecommending(true);
+      setLoading(true);
+      const data = await recommendationService.getInternshipRecommendations();
+      if (data && data.recommendedInternships) {
+        setInternships(data.recommendedInternships);
+        setTotalPages(1); // Recommendations are a single page
+        setIsShowingRecommendations(true);
+        toast.success("Loaded personalized internship recommendations!");
+      }
+    } catch (error) {
+      console.error("Recommendation error:", error);
+      const msg = error.response?.data?.error || "Please upload and analyze your resume on the Profile page first.";
+      toast.error(msg);
+    } finally {
+      setIsRecommending(false);
+      setLoading(false);
+    }
+  };
 
   const handlePageChange = (newpage) => {
     setPage(newpage);
@@ -54,7 +83,26 @@ const Internships = () => {
   return (
     <div>
       <Header title="Available Internships" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        {!isShowingRecommendations && (
+          <div className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-1">Get Personalized Internship Matches</h2>
+              <p className="text-slate-600 text-sm">We'll analyze your uploaded resume and recommend the best internships for your skills and experience.</p>
+            </div>
+            <button
+              onClick={handleGetRecommendations}
+              disabled={isRecommending}
+              className="shrink-0 bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-70 flex flex-col items-center"
+            >
+              {isRecommending ? 'Analyzing Resume...' : 'Internship Recommendation'}
+              {!isRecommending && <span className="text-[10px] text-blue-100 opacity-90">(Analysed from your resume)</span>}
+            </button>
+          </div>
+        )}
+
+        <div className="flex flex-col lg:flex-row gap-6">
         
         {/* Mobile Filter Button */}
         <div className="lg:hidden flex justify-between items-center mb-2">
@@ -112,6 +160,15 @@ const Internships = () => {
                 <InternshipCardSkeleton key={i} />
               ))}
             </div>
+          ) : isShowingRecommendations ? (
+            <RecommendedInternshipsList 
+              internships={internships} 
+              onBack={() => {
+                setIsShowingRecommendations(false);
+                setPage(1);
+                setFilters({});
+              }} 
+            />
           ) : internships.length === 0 ? (
             <EmptyState message="No internships available at the moment" />
           ) : (
@@ -129,6 +186,7 @@ const Internships = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

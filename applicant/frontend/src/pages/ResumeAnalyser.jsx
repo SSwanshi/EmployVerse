@@ -7,8 +7,14 @@ import profileService from '../services/profileService';
 const ResumeAnalyser = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [atsScore, setAtsScore] = useState(null);
-  const [atsReport, setAtsReport] = useState(null);
+  const [atsScore, setAtsScore] = useState(() => {
+    const saved = sessionStorage.getItem('atsScore');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [atsReport, setAtsReport] = useState(() => {
+    const saved = sessionStorage.getItem('atsReport');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [hasResume, setHasResume] = useState(false);
@@ -17,26 +23,26 @@ const ResumeAnalyser = () => {
   useEffect(() => {
     // Check if the user actually has a resume uploaded in their profile
     const checkResume = async () => {
-      if (isAuthenticated) {
-        try {
-          // Use getProfile which is already cached in Redis and guaranteed to exist
-          const profile = await profileService.getProfile();
-          if (profile && profile.resumeName) {
-            setHasResume(true);
-            setResumeName(profile.resumeName);
-          } else {
-            setHasResume(false);
-          }
-        } catch (error) {
-          console.error("Failed to fetch profile info", error);
+      try {
+        // Use getProfile which is already cached in Redis and guaranteed to exist
+        const profile = await profileService.getProfile();
+        if (profile && profile.resumeName) {
+          setHasResume(true);
+          setResumeName(profile.resumeName);
+        } else {
           setHasResume(false);
+          setAtsScore(null);
+          setAtsReport(null);
+          sessionStorage.removeItem('atsScore');
+          sessionStorage.removeItem('atsReport');
         }
-      } else {
+      } catch (error) {
+        console.error("Failed to fetch profile info", error);
         setHasResume(false);
       }
     };
     checkResume();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const handleGetAtsScore = async () => {
     setIsAnalyzing(true);
@@ -45,6 +51,8 @@ const ResumeAnalyser = () => {
       if (response && response.success) {
         setAtsScore(response.report.overallScore);
         setAtsReport(response.report);
+        sessionStorage.setItem('atsScore', JSON.stringify(response.report.overallScore));
+        sessionStorage.setItem('atsReport', JSON.stringify(response.report));
       } else {
         alert(response.message || 'Failed to analyze resume');
       }
@@ -57,11 +65,6 @@ const ResumeAnalyser = () => {
   };
 
   const handleFileUpload = async (e) => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-
     const file = e.target.files[0];
     if (file) {
       setIsUploading(true);
@@ -70,6 +73,10 @@ const ResumeAnalyser = () => {
         if (response.success || response.message) {
           setHasResume(true);
           setResumeName(file.name);
+          setAtsScore(null);
+          setAtsReport(null);
+          sessionStorage.removeItem('atsScore');
+          sessionStorage.removeItem('atsReport');
         }
       } catch (error) {
         console.error("Upload error", error);
@@ -81,8 +88,8 @@ const ResumeAnalyser = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 py-12 lg:py-20 mt-16">
-      <div className="max-w-4xl mx-auto">
+    <div className="container px-1 py-4 lg:py-10">
+      <div className="max-w-6xl mx-auto">
         <div className="mb-10 text-center">
           <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">Resume Analyser</h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -131,13 +138,31 @@ const ResumeAnalyser = () => {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Your Resume is Ready</h3>
-                  <p className="text-slate-600 mb-8">
-                    We've found your uploaded resume. Click the button below to analyze it against our AI-powered ATS system to discover your score.
-                  </p>
+              <div className="w-full">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6 border-b border-slate-100 pb-8">
+                  <div className="max-w-2xl">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Your Resume is Ready</h3>
+                    <p className="text-slate-600">
+                      We've found your uploaded resume. Click the button below to analyze it against our AI-powered ATS system to discover your score.
+                    </p>
+                  </div>
                   
+                  <div className="flex items-center gap-3 bg-blue-50/50 border border-blue-100 py-3 px-5 rounded-xl shrink-0 shadow-sm relative group">
+                    <div className="bg-blue-100 p-2 rounded-lg relative z-10">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="flex flex-col relative z-10">
+                      <span className="font-semibold text-slate-700 text-sm max-w-[280px] truncate" title={resumeName || 'resume.pdf'}>
+                        {resumeName || 'resume.pdf'}
+                      </span>
+                      <span className="text-xs text-blue-600 font-medium mt-0.5"> Your Resume</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="w-full">
                   {atsScore !== null ? (
                     <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-8">
                       <div className="flex items-center justify-between mb-2">
@@ -159,25 +184,66 @@ const ResumeAnalyser = () => {
                       </p>
                       
                       {atsReport && (
-                        <div className="mt-6 border-t border-slate-200 pt-4">
-                          <h4 className="font-semibold text-slate-800 mb-2">Score Breakdown</h4>
-                          <div className="grid grid-cols-2 gap-2 text-sm text-slate-600">
-                            <div>Completeness: {atsReport.breakdown.completeness}/20</div>
-                            <div>Formatting: {atsReport.breakdown.formatting}/15</div>
-                            <div>Keyword Match: {atsReport.breakdown.keywordCoverage}/25</div>
-                            <div>Experience: {atsReport.breakdown.experienceQuality}/15</div>
-                            <div>Projects: {atsReport.breakdown.projectQuality}/15</div>
-                            <div>Grammar: {atsReport.breakdown.grammar}/10</div>
+                        <div className="mt-8 space-y-6">
+                          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="bg-slate-50 border-b border-slate-200 px-5 py-3">
+                              <h4 className="font-bold text-slate-800 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                                </svg>
+                                Score Breakdown
+                              </h4>
+                            </div>
+                            <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Completeness</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.completeness}<span className="text-sm text-slate-400 font-medium">/20</span></div>
+                              </div>
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Formatting</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.formatting}<span className="text-sm text-slate-400 font-medium">/15</span></div>
+                              </div>
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Keyword Match</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.keywordCoverage}<span className="text-sm text-slate-400 font-medium">/25</span></div>
+                              </div>
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Experience</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.experienceQuality}<span className="text-sm text-slate-400 font-medium">/15</span></div>
+                              </div>
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Projects</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.projectQuality}<span className="text-sm text-slate-400 font-medium">/15</span></div>
+                              </div>
+                              <div className="bg-slate-50 p-3 rounded-lg text-center border border-slate-100">
+                                <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Grammar</div>
+                                <div className="text-lg font-bold text-slate-800">{atsReport.breakdown.grammar}<span className="text-sm text-slate-400 font-medium">/10</span></div>
+                              </div>
+                            </div>
                           </div>
                           
                           {atsReport.recommendations && atsReport.recommendations.length > 0 && (
-                            <div className="mt-4">
-                              <h4 className="font-semibold text-slate-800 mb-2">Top Recommendations</h4>
-                              <ul className="list-disc pl-5 text-sm text-slate-600">
-                                {atsReport.recommendations.map((rec, i) => (
-                                  <li key={i}>{rec}</li>
-                                ))}
-                              </ul>
+                            <div className="bg-amber-50/50 rounded-xl border border-amber-200 overflow-hidden">
+                              <div className="bg-amber-100/50 border-b border-amber-200 px-5 py-3">
+                                <h4 className="font-bold text-amber-800 flex items-center gap-2">
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                  </svg>
+                                  Top Recommendations
+                                </h4>
+                              </div>
+                              <div className="p-5">
+                                <ul className="space-y-3">
+                                  {atsReport.recommendations.map((rec, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-slate-700">
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                      </svg>
+                                      <span className="leading-relaxed">{rec}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -185,38 +251,39 @@ const ResumeAnalyser = () => {
                     </div>
                   ) : null}
 
-                  <button 
-                    onClick={handleGetAtsScore}
-                    disabled={isAnalyzing}
-                    className="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl transition-all shadow-md flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {isAnalyzing ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Analyzing...
-                      </>
-                    ) : (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Get ATS Score
-                      </>
-                    )}
-                  </button>
-                </div>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button 
+                      onClick={handleGetAtsScore}
+                      disabled={isAnalyzing}
+                      className="flex-1 bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl transition-all shadow-md flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Get ATS Score
+                        </>
+                      )}
+                    </button>
 
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-blue-500 rounded-2xl transform rotate-3 scale-105 opacity-10 group-hover:rotate-6 transition-transform duration-300"></div>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative z-10 flex flex-col items-center justify-center min-h-[300px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-blue-100 mb-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-semibold text-slate-700 text-center px-4 break-words max-w-full">{resumeName || 'resume.pdf'}</span>
-                    <span className="text-xs text-slate-400 mt-1">Ready for analysis</span>
+                    <button 
+                      onClick={() => navigate('/jobs')}
+                      className="flex-1 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-bold py-4 rounded-xl transition-all shadow-sm flex justify-center items-center gap-2 cursor-pointer"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Recommended Jobs
+                    </button>
                   </div>
                 </div>
               </div>

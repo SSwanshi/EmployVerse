@@ -76,7 +76,6 @@ const AppRoutes = () => {
           <Route path="internships" element={<Internships />} />
           <Route path="companies" element={<Companies />} />
           <Route path="search" element={<SearchResults />} />
-          <Route path="resume-analyser" element={<ResumeAnalyser />} />
           <Route path="terms" element={<Terms />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="contact" element={<Contact />} />
@@ -96,6 +95,7 @@ const AppRoutes = () => {
           <Route path="applied-internships" element={<AppliedInternships />} />
           <Route path="jobs/:jobId/apply" element={<ApplyJob />} />
           <Route path="internships/:internshipId/apply" element={<ApplyInternship />} />
+          <Route path="resume-analyser" element={<ResumeAnalyser />} />
         </Route>
 
         {/* Error Routes */}

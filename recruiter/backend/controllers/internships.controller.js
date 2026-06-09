@@ -3,6 +3,8 @@ const Internship = require('../models/Internship');
 const Company = require('../models/Companies');
 const invalidateInternshipCache = require('../utils/cacheInvalidation').invalidateInternshipCache;
 const redis = require('../config/redis');
+const jobIndexer = require('../services/jobIndexer.service');
+
 const getInternships = async (req, res) => {
   try {
     const internships = await Internship.find({ createdBy: req.userId }).populate("intCompany");
@@ -70,6 +72,10 @@ const addInternship = async (req, res) => {
     });
 
     await newInternship.save();
+    
+    // Background indexing
+    jobIndexer.indexInternship(newInternship).catch(err => console.error("Internship indexing error:", err));
+
     invalidateInternshipCache(redis);
     res.json({ success: true, message: "Internship added successfully!", internship: newInternship });
   } catch (error) {
@@ -127,6 +133,10 @@ const updateInternship = async (req, res) => {
     if (!internship) {
       return res.status(404).json({ success: false, message: 'Internship not found' });
     }
+    
+    // Background indexing
+    jobIndexer.indexInternship(internship).catch(err => console.error("Internship indexing error:", err));
+
     invalidateInternshipCache(redis)
     res.json({ success: true, message: "Internship updated successfully!", internship });
   } catch (err) {
