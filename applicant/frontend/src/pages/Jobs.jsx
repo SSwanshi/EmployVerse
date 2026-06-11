@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { applicantApi } from "../services/applicantApi";
 import recommendationService from "../services/recommendationService";
 import { useToast } from "../contexts/ToastContext";
+import { useAuth } from "../hooks/useAuth";
+import profileService from "../services/profileService";
 import Header from "../components/common/Header";
 import EmptyState from "../components/common/EmptyState";
 import JobCard from "../components/jobs/JobCard";
@@ -13,6 +15,8 @@ import RecommendedJobsList from "../components/jobs/RecommendedJobsList";
 
 const Jobs = () => {
   const toast = useToast();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
@@ -55,6 +59,27 @@ const Jobs = () => {
   }, [filters, page, isShowingRecommendations]); 
 
   const handleGetRecommendations = async () => {
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      toast.showToast("Please login to see recommended jobs", "warning");
+      navigate("/login");
+      return;
+    }
+
+    // Check if user has uploaded a resume
+    try {
+      const resumeInfo = await profileService.getResumeInfo();
+      if (!resumeInfo || !resumeInfo.hasResume) {
+        toast.showToast("Please upload your resume", "warning");
+        navigate("/profile");
+        return;
+      }
+    } catch {
+      toast.showToast("Please upload your resume", "warning");
+      navigate("/profile");
+      return;
+    }
+
     try {
       setIsRecommending(true);
       setLoading(true);
