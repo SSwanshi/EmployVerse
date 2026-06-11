@@ -91,6 +91,11 @@ if (process.env.NODE_ENV !== 'test') {
   backfillApplicantCompanyName();
 }
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("Admin server is running");
+});
+
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, service: "admin", port: PORT });

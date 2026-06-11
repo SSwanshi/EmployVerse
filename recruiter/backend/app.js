@@ -78,6 +78,11 @@ if (process.env.MONGO_URI_APPLICANT && process.env.NODE_ENV !== 'test') {
   })();
 }
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('Recruiter server is running');
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'recruiter', port: PORT });
